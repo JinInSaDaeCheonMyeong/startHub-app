@@ -4,6 +4,8 @@ import { Colors } from "../../constants/color";
 type AuthTextInputProps = {
     placeHolder : string,
     placeHolderTextColor : string,
+    value : string,
+    onChange : (text : string) => void
 }
 
 export default function AuthTextInput(props : AuthTextInputProps){
@@ -13,6 +15,10 @@ export default function AuthTextInput(props : AuthTextInputProps){
                 style={styles.textInput}
                 placeholder={props.placeHolder}
                 placeholderTextColor={props.placeHolderTextColor}
+                value={props.value}
+                onChangeText={
+                    (text) => props.onChange(text)
+                }
             />
         </View>
     )
