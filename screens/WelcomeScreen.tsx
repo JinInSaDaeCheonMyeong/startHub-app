@@ -1,9 +1,9 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
 import {StackScreenProps} from "@react-navigation/stack";
-import { RootStackParamList } from '../navigation/RootStack';
+import {AuthStackParamList} from "../navigation/AuthStack";
 
-type WelcomeScreenProps = StackScreenProps<RootStackParamList, 'Welcome'>;
+type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Welcome'>;
 
 export default function WelcomeScreen(navigation: WelcomeScreenProps) {
   return (
