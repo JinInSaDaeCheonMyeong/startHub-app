@@ -1,14 +1,19 @@
-import { Platform, StyleSheet, TextInput, View } from "react-native";
+import { Platform, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../constants/color";
+import VisibleIcon from "../../assets/icons/eye.svg"
+import InVisibleIcon from "../../assets/icons/eye.fill.svg"
+import { useState } from "react";
 
 type AuthTextInputProps = {
     placeHolder : string,
     placeHolderTextColor : string,
     value : string,
+    isPassword : boolean,
     onChange : (text : string) => void
 }
 
 export default function AuthTextInput(props : AuthTextInputProps){
+    const [visible, setVisible] = useState(true)
     return (
         <View style={styles.container}>
             <TextInput 
@@ -19,7 +24,20 @@ export default function AuthTextInput(props : AuthTextInputProps){
                 onChangeText={
                     (text) => props.onChange(text)
                 }
+                secureTextEntry={props.isPassword && visible}
+                autoCapitalize="none"
             />
+            {props.isPassword ? (
+                <TouchableOpacity
+                onPressIn={() => {setVisible(!visible)}}>{
+                    visible ? 
+                    <InVisibleIcon width={18} height={12} color={Colors.gray2}/>:
+                    <VisibleIcon width={18} height={12} color={Colors.gray2}/>
+                    }
+                </TouchableOpacity>
+            ) : 
+            <></>
+            }
         </View>
     )
 }
@@ -29,16 +47,21 @@ const styles = StyleSheet.create({
         width : "100%",
         backgroundColor : Colors.white2,
         borderRadius : 8,
+        flexDirection : "row",
         ...Platform.select({
             ios : {
-                padding : 16
+                padding : 16,
+                gap : 16
             },
             android : {
-                padding : 8
+                padding : 8,
+                gap : 8
             }
-        })
+        }),
+        justifyContent : "space-between"
     },
     textInput : {
+        flex : 1,
         fontSize : 14,
         color : Colors.black2,
     }
