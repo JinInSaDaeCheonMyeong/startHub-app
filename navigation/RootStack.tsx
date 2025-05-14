@@ -1,19 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from "@react-navigation/stack";
-import WelcomeScreen from "../screens/WelcomeScreen";
+import AuthStack from "./AuthStack";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export type RootStackParamList = {
-    Welcome: undefined;
+    Auth: undefined;
 };
 
 export default function RootStack() {
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName={"Welcome"}>
-                <Stack.Screen name="Welcome" component={WelcomeScreen} />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <Stack.Navigator initialRouteName={"Auth"}>
+            <Stack.Screen name="Auth" component={AuthStack} />
+        </Stack.Navigator>
     )
 };
