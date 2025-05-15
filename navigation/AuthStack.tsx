@@ -14,16 +14,11 @@ export type AuthStackParamList = {
 
 export default function AuthStack() {
     return (
-<<<<<<< HEAD
-        <Stack.Navigator initialRouteName={"Welcome"}>
-            <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
-=======
         <Stack.Navigator 
         initialRouteName="Welcome" 
         screenOptions={{
             cardStyle : {
                 backgroundColor : Colors.white1,
-                paddingHorizontal : 16
             },
             headerShown: false
         }}
@@ -31,7 +26,6 @@ export default function AuthStack() {
             <Stack.Screen name="Welcome" component={WelcomeScreen} />
             <Stack.Screen name="Signin" component={SigninScreen} />
             <Stack.Screen name="Signup" component={SignupScreen} />
->>>>>>> develop
         </Stack.Navigator>
     )
 };
