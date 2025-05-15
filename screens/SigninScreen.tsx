@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Colors } from "../constants/color";
@@ -16,7 +16,7 @@ export default function SigninScreen({navigation} : SigninScreenProps) {
     const [password, setPassword] = useState("")
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <BackButton 
             width={18} 
             height={18} 
@@ -57,7 +57,7 @@ export default function SigninScreen({navigation} : SigninScreenProps) {
                     <LinkActionText title="회원가입" onPress={() => {}}/>
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
     container : {
         flex : 1,
         padding : 16,
-        backgroundColor : Colors.white1,
         gap : 68
     },
     titleText : {
@@ -87,6 +86,8 @@ const styles = StyleSheet.create({
     },
     signupContainer : {
         flexDirection : "row",
+        justifyContent : "center",
+        alignItems : "center",
         gap : 12
     },
     errorText : {
