@@ -49,7 +49,7 @@ export default function SigninScreen(navigation : SigninScreenProps) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <Text style={styles.errorText}>{visible ? errorState : ""}</Text>
-                    <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}}/>
+                    <CommonButton title="로그인" onPress={() => {navigation.navigation.navigate("Signup")}}/>
                 </View>
                 <View style={styles.signupContainer}>
                     <LinkActionText title="이메일 찾기" onPress={() => {}}/>
