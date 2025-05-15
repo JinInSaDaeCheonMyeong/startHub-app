@@ -23,7 +23,7 @@ export default function SigninScreen(navigation : SigninScreenProps) {
             color={Colors.black2} 
             onClick={() => {navigation.navigation.goBack()}}
             />
-            <Text style={styles.titleText}>StartHub 계정 로그인</Text>
+            <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
             <View style={styles.interactionContainer}>
                 <View style={styles.textInputContainer}>
                     <AuthTextInput 
@@ -72,6 +72,13 @@ const styles = StyleSheet.create({
         fontSize : 24,
         fontWeight : "bold",
         textAlign : "center"
+    },
+    accentText : {
+        width : "100%",
+        fontSize : 24,
+        fontWeight : "bold",
+        textAlign : "center",
+        color : Colors.primary
     },
     interactionContainer : {
         alignItems : "center",
