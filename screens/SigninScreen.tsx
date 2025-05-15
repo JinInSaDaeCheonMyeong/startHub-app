@@ -6,6 +6,7 @@ import { Colors } from "../constants/color";
 import AuthTextInput from "../component/auth/AuthTextInput";
 import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
+import LinkActionText from "../component/auth/LinkActionText";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, "Signin">
 
@@ -49,11 +50,11 @@ export default function SigninScreen({navigation} : SigninScreenProps) {
                     <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}}/>
                 </View>
                 <View style={styles.signupContainer}>
-                    <Text style={styles.linkActionText}>이메일 찾기</Text>
-                    <Text style={styles.linkActionText}>⏐</Text>
-                    <Text style={styles.linkActionText}>비밀번호 찾기</Text>
-                    <Text style={styles.linkActionText}>⏐</Text>
-                    <Text style={styles.linkActionText}>회원가입</Text>
+                    <LinkActionText title="이메일 찾기" onPress={() => {}}/>
+                    <Text style={styles.contourText}>⏐</Text>
+                    <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
+                    <Text style={styles.contourText}>⏐</Text>
+                    <LinkActionText title="회원가입" onPress={() => {}}/>
                 </View>
             </View>
         </View>
@@ -99,9 +100,9 @@ const styles = StyleSheet.create({
         borderRadius : 8,
 
     },
-    linkActionText : {
+    contourText : {
         color : Colors.gray2,
-        fontSize : 14,
+        fontSize : 16,
         fontWeight : "semibold"
     }
 })
