@@ -8,7 +8,7 @@ type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Welcome'>;
 export default function WelcomeScreen(navigation: WelcomeScreenProps) {
   return (
     <View>
-      <Text>Welcome Screen</Text>
+      <Text>Welome Screen</Text>
     </View>
   );
 }
