@@ -31,8 +31,8 @@ export default function AuthTextInput(props : AuthTextInputProps){
                 <TouchableOpacity
                 onPressIn={() => {setVisible(!visible)}}>{
                     visible ? 
-                    <InVisibleIcon width={18} height={12} color={Colors.gray2}/>:
-                    <VisibleIcon width={18} height={12} color={Colors.gray2}/>
+                    <VisibleIcon width={24} height={24} color={Colors.gray2}/>:
+                    <InVisibleIcon width={24} height={24} color={Colors.gray2}/>
                     }
                 </TouchableOpacity>
             ) : 
@@ -51,14 +51,16 @@ const styles = StyleSheet.create({
         ...Platform.select({
             ios : {
                 padding : 16,
-                gap : 16
+                gap : 16,
             },
             android : {
-                padding : 8,
+                paddingVertical : 8,
+                paddingHorizontal : 16,
                 gap : 8
             }
         }),
-        justifyContent : "space-between"
+        justifyContent : "space-between",
+        alignItems : "center"
     },
     textInput : {
         flex : 1,
