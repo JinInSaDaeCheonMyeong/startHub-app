@@ -14,6 +14,7 @@ export default function SigninScreen(navigation : SigninScreenProps) {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [visible, setVisible] = useState(false)
 
     return (
         <SafeAreaView style={styles.container}>
@@ -46,7 +47,10 @@ export default function SigninScreen(navigation : SigninScreenProps) {
                     />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Text style={styles.errorText}>이메일 혹은 비밀번호가 일치하지 않습니다</Text>
+                    {visible ? 
+                    <Text style={styles.errorText}>이메일 혹은 비밀번호가 일치하지 않습니다</Text> :
+                    <></>
+                    }
                     <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}}/>
                 </View>
                 <View style={styles.signupContainer}>
