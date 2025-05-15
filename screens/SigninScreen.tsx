@@ -5,6 +5,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { Colors } from "../constants/color";
 import AuthTextInput from "../component/auth/AuthTextInput";
 import BackButton from "../component/BackButton";
+import CommonButton from "../component/CommonButton";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, "Signin">
 
@@ -45,7 +46,7 @@ export default function SigninScreen({navigation} : SigninScreenProps) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <Text style={styles.errorText}>이메일 혹은 비밀번호가 일치하지 않습니다</Text>
-                    <Button title="로그인" onPress={() => {console.log(`${email}`)}}/>
+                    <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}}/>
                 </View>
                 <View style={styles.signupContainer}>
                     <Text style={styles.linkActionText}>이메일 찾기</Text>
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
         gap : 16
     },
     buttonContainer : {
+        width : "100%",
         gap : 8
     },
     signupContainer : {
@@ -87,6 +89,7 @@ const styles = StyleSheet.create({
         gap : 12
     },
     errorText : {
+        textAlign : "center",
         color : Colors.error,
         fontSize : 12,
         fontWeight : "semibold"
