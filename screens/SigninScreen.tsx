@@ -8,9 +8,7 @@ import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
 import LinkActionText from "../component/auth/LinkActionText";
 
-type SigninScreenProps = StackScreenProps<AuthStackParamList, "Signin">
-
-export default function SigninScreen({navigation} : SigninScreenProps) {
+export default function SigninScreen() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -21,7 +19,7 @@ export default function SigninScreen({navigation} : SigninScreenProps) {
             width={18} 
             height={18} 
             color={Colors.black2} 
-            onClick={() => {navigation.navigate("Welcome")}}
+            onClick={() => {}}
             />
             <Text style={styles.titleText}>StartHub 계정 로그인</Text>
             <View style={styles.interactionContainer}>
