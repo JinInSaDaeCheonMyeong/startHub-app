@@ -9,7 +9,7 @@ export type RootStackParamList = {
 
 export default function RootStack() {
     return (
-        <Stack.Navigator initialRouteName={"Auth"}>
+        <Stack.Navigator initialRouteName={"Auth"} screenOptions={{headerShown: false}}>
             <Stack.Screen name="Auth" component={AuthStack} />
         </Stack.Navigator>
     )
