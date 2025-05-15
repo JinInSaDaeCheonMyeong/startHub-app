@@ -13,8 +13,8 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
 
         const [email, setEmail] = useState("")
         const [password, setPassword] = useState("")
-        const [visible, setVisible] = useState(false)
-        const [errorState, setErrorState] = useState(false)
+        const [errorVisible, setErrorVisible] = useState(false)
+        const [errorText, setErrorText] = useState("")
 
     return(
         <SafeAreaView style={styles.container}>
@@ -47,7 +47,7 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
                 />
             </View>
             <View style={styles.buttonContainer}>
-                <Text style={styles.errorText}>{visible ? errorState : ""}</Text>
+                <Text style={styles.errorText}>{errorVisible ? errorText : ""}</Text>
                 <CommonButton title="회원가입" onPress={() => {console.log(`${email}`)}}/>
             </View>
         </View>
