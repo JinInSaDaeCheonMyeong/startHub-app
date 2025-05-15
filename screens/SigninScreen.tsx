@@ -8,7 +8,9 @@ import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
 import LinkActionText from "../component/auth/LinkActionText";
 
-export default function SigninScreen() {
+type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
+
+export default function SigninScreen(navigation : SigninScreenProps) {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -19,9 +21,9 @@ export default function SigninScreen() {
             width={18} 
             height={18} 
             color={Colors.black2} 
-            onClick={() => {}}
+            onClick={() => {navigation.navigation.goBack()}}
             />
-            <Text style={styles.titleText}>StartHub 계정 로그인</Text>
+            <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
             <View style={styles.interactionContainer}>
                 <View style={styles.textInputContainer}>
                     <AuthTextInput 
@@ -62,7 +64,7 @@ export default function SigninScreen() {
 const styles = StyleSheet.create({
     container : {
         flex : 1,
-        padding : 16,
+        margin : 16,
         gap : 68
     },
     titleText : {
@@ -70,6 +72,13 @@ const styles = StyleSheet.create({
         fontSize : 24,
         fontWeight : "bold",
         textAlign : "center"
+    },
+    accentText : {
+        width : "100%",
+        fontSize : 24,
+        fontWeight : "bold",
+        textAlign : "center",
+        color : Colors.primary
     },
     interactionContainer : {
         alignItems : "center",
