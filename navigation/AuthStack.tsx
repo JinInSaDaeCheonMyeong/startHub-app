@@ -10,7 +10,7 @@ export type AuthStackParamList = {
 export default function AuthStack() {
     return (
         <Stack.Navigator initialRouteName={"Welcome"}>
-            <Stack.Screen name="Welcome" component={WelcomeScreen} />
+            <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 };
