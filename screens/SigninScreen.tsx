@@ -68,7 +68,6 @@ export default function SigninScreen(navigation : SigninScreenProps) {
 const styles = StyleSheet.create({
     container : {
         flex : 1,
-        margin : 16,
         gap : 68
     },
     titleText : {
