@@ -19,7 +19,6 @@ export default function AuthStack() {
         screenOptions={{
             cardStyle : {
                 backgroundColor : Colors.white1,
-                paddingHorizontal : 16
             },
             headerShown: false
         }}
