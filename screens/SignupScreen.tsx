@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { Colors } from "../constants/color";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BackButton from "../component/BackButton";
 import AuthTextInput from "../component/auth/AuthTextInput";
 import { useState } from "react";
@@ -13,6 +13,8 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
 
         const [email, setEmail] = useState("")
         const [password, setPassword] = useState("")
+        const [verifyNumber, setVerifyNumber] = useState("")
+        const [checkPassword, setCheckPassword] = useState("")
         const [errorVisible, setErrorVisible] = useState(false)
         const [errorText, setErrorText] = useState("")
 
@@ -26,16 +28,36 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
         />
         <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 만들기</Text>
         <View style={styles.interactionContainer}>
-            <View style={styles.textInputContainer}>
+            <View style={styles.emailContainer}>
+                <Text style={styles.containerText}>이메일</Text>
+                <View style={styles.emailInputContainer}>
+                    <View style={styles.emailInputWrapper}>
+                        <AuthTextInput
+                            value={email}
+                            placeHolder="이메일"
+                            placeHolderTextColor={Colors.gray2}
+                            isPassword={false}
+                            onChange={(text) => {
+                                setEmail(text)
+                            }}
+                        />
+                    </View>
+                    <TouchableOpacity style={styles.verifyButton} onPress={()=>{}}>
+                        <Text style={styles.verifyButtonText}>인증번호 전송</Text>
+                    </TouchableOpacity>
+                </View>
                 <AuthTextInput
-                    value={email}
-                    placeHolder="이메일"
+                    value={verifyNumber}
+                    placeHolder="인증번호"
                     placeHolderTextColor={Colors.gray2}
                     isPassword={false}
                     onChange={(text) => {
-                        setEmail(text)
+                        setVerifyNumber(text)
                     }}
                 />
+            </View>
+            <View style={styles.passwordContainer}>
+            <Text style={styles.containerText}>비밀번호</Text>
                 <AuthTextInput 
                     value={password}
                     placeHolder="비밀번호" 
@@ -43,6 +65,15 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
                     isPassword={true}
                     onChange={(text) => {
                         setPassword(text)
+                    }}
+                />
+                <AuthTextInput 
+                    value={checkPassword}
+                    placeHolder="비밀번호 확인" 
+                    placeHolderTextColor={Colors.gray2}
+                    isPassword={true}
+                    onChange={(text) => {
+                        setCheckPassword(text)
                     }}
                 />
             </View>
@@ -58,6 +89,7 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
 const styles = StyleSheet.create({
     container : {
         flex : 1,
+        margin :16,
         gap : 68
     },
     titleText : {
@@ -77,7 +109,21 @@ const styles = StyleSheet.create({
         alignItems : "center",
         gap : 24
     },
-    textInputContainer : {
+    emailContainer : {
+        width : "100%",
+        gap : 16
+    },
+    emailInputContainer : {
+        flexDirection : "row",
+        width : "100%",
+        justifyContent : "space-between",
+        alignItems : "center",
+        gap : 12
+    },
+    emailInputWrapper : {
+        flex : 1
+    },
+    passwordContainer : {
         gap : 16
     },
     buttonContainer : {
@@ -90,6 +136,10 @@ const styles = StyleSheet.create({
         alignItems : "center",
         gap : 12
     },
+    containerText : {
+        fontSize : 16,
+        fontWeight : "semibold",
+    },
     errorText : {
         textAlign : "center",
         color : Colors.error,
@@ -99,11 +149,30 @@ const styles = StyleSheet.create({
     signinButton : {
         backgroundColor : Colors.primary,
         borderRadius : 8,
-
     },
     contourText : {
         color : Colors.gray2,
         fontSize : 16,
         fontWeight : "semibold"
+    },
+    verifyButton : {
+        backgroundColor : Colors.white1,
+        borderColor : Colors.primary,
+        borderStyle : "solid",
+        borderWidth : 1,
+        padding : 12,
+        ...Platform.select({
+            ios : {
+                padding : 13,
+            },
+            android : {
+                padding : 17
+            }
+        }),
+        borderRadius : 8
+    },
+    verifyButtonText : {
+        fontSize : 14,
+        color : Colors.primary
     }
 })
