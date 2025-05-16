@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { Colors } from "../constants/color";
-import { Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BackButton from "../component/BackButton";
 import AuthTextInput from "../component/auth/AuthTextInput";
 import { useState } from "react";
@@ -19,7 +19,8 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
         const [errorText, setErrorText] = useState("")
 
     return(
-        <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+        <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
         <BackButton 
         width={18} 
         height={18} 
@@ -87,6 +88,9 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
 }
 
 const styles = StyleSheet.create({
+    statusbar : {
+        backgroundColor : Colors.white1
+    },
     container : {
         flex : 1,
         margin :16,
