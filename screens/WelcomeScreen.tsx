@@ -17,7 +17,7 @@ const images = [
 
 type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Welcome'>;
 
-export default function WelcomeScreen(navigation: WelcomeScreenProps) {
+export default function WelcomeScreen({navigation}: WelcomeScreenProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   return (
       <SafeAreaView style={styles.container}>
@@ -73,7 +73,7 @@ export default function WelcomeScreen(navigation: WelcomeScreenProps) {
               </View>
           </View>
           <View style={styles.bottomButton}>
-              <CommonButton title={'StartHub 시작하기'} onPress={console.log}/>
+              <CommonButton title={'StartHub 시작하기'} onPress={() => navigation.navigate('Start')}/>
           </View>
           <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
       </SafeAreaView>
