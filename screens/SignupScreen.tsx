@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { Colors } from "../constants/color";
-import {Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Platform, ScrollView, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import BackButton from "../component/BackButton";
 import AuthTextInput from "../component/auth/AuthTextInput";
 import { useEffect, useState } from "react";
@@ -36,6 +36,7 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
 
     return(
     <SafeAreaView style={styles.container}>
+        <ScrollView>
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
         <BackButton 
         width={18} 
@@ -94,8 +95,8 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
                     }}
                 />
             </View>
-            <View>
-                <View>
+            <View style={styles.selectContainer}>
+                <View style={styles.allSelectBox}>
                     <Checkbox
                         value={allChecked}
                         onChange={() => {console.log(allChecked)}}
@@ -108,9 +109,9 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
                         }}
                         style={allChecked ? styles.selectCheckBox : styles.unSelectCheckBox}
                     />
-                    <Text>전체 선택</Text>
+                    <Text style={styles.allSelectText}>전체 선택</Text>
                 </View>
-                <View/>
+                <View style={styles.line}/>
                 {selectItem.map(item => (
                     <SelectAgreement
                         value={item.value}
@@ -125,6 +126,7 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
                 <CommonButton title="회원가입" onPress={() => {console.log(`${allChecked} ${checked1} ${checked2} ${checked3}`)}}/>
             </View>
         </View>
+        </ScrollView>
     </SafeAreaView>
     )
 }
@@ -135,14 +137,16 @@ const styles = StyleSheet.create({
     },
     container : {
         flex : 1,
-        margin :16,
-        gap : 68
+        marginHorizontal :16,
+        paddingVertical : 16,
+        gap : 68,
     },
     titleText : {
         width : "100%",
         fontSize : 24,
         fontWeight : "bold",
-        textAlign : "center"
+        textAlign : "center",
+        paddingVertical : 68
     },
     accentText : {
         width : "100%",
@@ -236,4 +240,25 @@ const styles = StyleSheet.create({
         borderRadius : 6,
         borderWidth : 1
     },
+    selectContainer : {
+        width : "100%",
+        gap : 12
+    },
+    allSelectBox : {
+        flexDirection : "row",
+        gap : 8,
+        alignItems : "center"
+    },
+    allSelectText : {
+        fontSize : 14,
+        fontWeight : "semibold",
+        color : Colors.black1
+    },
+    line : {
+        width : "100%",
+        height : 0,
+        borderColor : Colors.gray3,
+        borderStyle : "solid",
+        borderWidth : 0.5
+    }
 })
