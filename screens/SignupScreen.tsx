@@ -1,22 +1,38 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { Colors } from "../constants/color";
-import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import BackButton from "../component/BackButton";
 import AuthTextInput from "../component/auth/AuthTextInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommonButton from "../component/CommonButton";
+import Checkbox from "expo-checkbox";
+import SelectAgreement from "../component/auth/SelectAgreement";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signup'>;
 
 export default function SignupScreen({navigation, route} : SigninScreenProps){
 
-        const [email, setEmail] = useState("")
-        const [password, setPassword] = useState("")
-        const [verifyNumber, setVerifyNumber] = useState("")
-        const [checkPassword, setCheckPassword] = useState("")
-        const [errorVisible, setErrorVisible] = useState(false)
-        const [errorText, setErrorText] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [verifyNumber, setVerifyNumber] = useState("")
+    const [checkPassword, setCheckPassword] = useState("")
+    const [errorVisible, setErrorVisible] = useState(false)
+    const [errorText, setErrorText] = useState("")
+    const [allChecked, setAllChecked] = useState(false);
+    const [checked1, setChecked1] = useState(false);
+    const [checked2, setChecked2] = useState(false);
+    const [checked3, setChecked3] = useState(false);
+
+    const selectItem = [
+        {key : 1, value : checked1, title : "[필수] 만 14세 이상입니다", setChecked : setChecked1},
+        {key : 2, value : checked2, title : "[필수] 스타트허브 이용약관 동의", setChecked : setChecked2},
+        {key : 3, value : checked3, title : "[필수] 스타트허브 개인정보 수집 및 이용 동의", setChecked : setChecked3}
+    ]
+
+    useEffect(() => {
+            setAllChecked(checked1 && checked2 && checked3)
+    },[checked1, checked2, checked3])
 
     return(
     <SafeAreaView style={styles.container}>
@@ -78,9 +94,35 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
                     }}
                 />
             </View>
+            <View>
+                <View>
+                    <Checkbox
+                        value={allChecked}
+                        onChange={() => {console.log(allChecked)}}
+                        onValueChange={(value) => {
+                            console.log("allCheck " + value)
+                            setAllChecked(value)
+                            setChecked1(value)
+                            setChecked2(value)
+                            setChecked3(value)
+                        }}
+                        style={allChecked ? styles.selectCheckBox : styles.unSelectCheckBox}
+                    />
+                    <Text>전체 선택</Text>
+                </View>
+                <View/>
+                {selectItem.map(item => (
+                    <SelectAgreement
+                        value={item.value}
+                        title={item.title}
+                        onSelect={(value) => {item.setChecked(value)}}
+                        onClick={() => {}}
+                    />
+                ))}
+            </View>
             <View style={styles.buttonContainer}>
                 <Text style={styles.errorText}>{errorVisible ? errorText : ""}</Text>
-                <CommonButton title="회원가입" onPress={() => {console.log(`${email}`)}}/>
+                <CommonButton title="회원가입" onPress={() => {console.log(`${allChecked} ${checked1} ${checked2} ${checked3}`)}}/>
             </View>
         </View>
     </SafeAreaView>
@@ -178,5 +220,20 @@ const styles = StyleSheet.create({
     verifyButtonText : {
         fontSize : 14,
         color : Colors.primary
-    }
+    },
+    selectCheckBox : {
+        width : 20,
+        height : 20,
+        borderColor : Colors.primary,
+        backgroundColor : Colors.primary,
+        borderRadius : 6,
+        borderWidth : 1
+    },
+    unSelectCheckBox : {
+        width : 20,
+        height : 20,
+        borderColor : Colors.gray3,
+        borderRadius : 6,
+        borderWidth : 1
+    },
 })
