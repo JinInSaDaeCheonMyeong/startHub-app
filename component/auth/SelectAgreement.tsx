@@ -14,7 +14,7 @@ type SelectAgreementProps = {
 export default function SelectAgreement(props : SelectAgreementProps){
 
     return ( 
-        <View>
+        <View style={styles.mainContainer}>
             <Checkbox
                 value={props.value}
                 onValueChange={(value) => {
@@ -22,15 +22,25 @@ export default function SelectAgreement(props : SelectAgreementProps){
                 }}
                 style={props.value ? styles.selectCheckBox : styles.unSelectCheckBox}
             />
-            <TouchableOpacity onPress={props.onClick}>
+            <TouchableOpacity style={styles.clickContainer} onPress={props.onClick}>
                 <Text>{props.title}</Text>
-                <RightArrow width={20} height={20} color={Colors.gray3}/>
+                <RightArrow width={16} height={16} color={Colors.gray3}/>
             </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    mainContainer : {
+        flexDirection : "row",
+        gap : 8
+    },
+    clickContainer : {
+        flex : 1,
+        flexDirection : "row",
+        justifyContent : "space-between",
+        gap : 8
+    },
     selectCheckBox : {
         width : 20,
         height : 20,
@@ -46,4 +56,9 @@ const styles = StyleSheet.create({
         borderRadius : 6,
         borderWidth : 1
     },
+    clickText : {
+        color : Colors.gray2,
+        fontSize : 14,
+        fontWeight : "medium"
+    }
 })
