@@ -23,7 +23,7 @@ export default function SelectAgreement(props : SelectAgreementProps){
                 style={props.value ? styles.selectCheckBox : styles.unSelectCheckBox}
             />
             <TouchableOpacity style={styles.clickContainer} onPress={props.onClick}>
-                <Text>{props.title}</Text>
+                <Text style={styles.clickText}>{props.title}</Text>
                 <RightArrow width={16} height={16} color={Colors.gray3}/>
             </TouchableOpacity>
         </View>
