@@ -8,6 +8,7 @@ const Stack = createStackNavigator<AuthStackParamList>()
 export type AuthStackParamList = {
     Welcome: undefined;
     Signin : undefined;
+    Signup : undefined;
 };
 
 export default function AuthStack() {
