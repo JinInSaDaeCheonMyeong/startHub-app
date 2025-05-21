@@ -3,29 +3,48 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { SignupStackParamList } from "../../navigation/SignupStack";
 import { Colors } from "../../constants/color";
 import CommonButton from "../../component/CommonButton";
+import { useState } from "react";
 
 type ContactScreenProps = StackScreenProps<SignupStackParamList, 'Contact'>
 
 export default function ContactScreen({navigation, route} : ContactScreenProps) {
+
+    const [callNumText, setCallNumText] = useState("")
+
     return(
-        <View>
-            <View>
-                <View>
-                    <View>
-                        <Text>{"회원님의 \n이메일 주소를 입력해주세요!"}</Text>
-                        <Text>이메일로 연락하고 싶어요!</Text>
+        <View style={styles.mainContainer}>
+            <View style={styles.inputContainer}>
+                <View style={styles.inputBox}>
+                    <View style={styles.textBox}>
+                        <Text style={styles.subText}>
+                            {"회원님의 \n이메일 주소를 입력해주세요!"}
+                        </Text>
+                        <Text style={styles.mainText}>
+                            이메일로 연락하고 싶어요!
+                        </Text>
                     </View>
                     <TextInput
+                        style={styles.inputText}
                         placeholder="이메일 주소를 입력해주세요..."
                     />
                 </View>
-                <View>
-                    <View>
-                        <Text>{"회원님의 \n전화번호를 입력해주세요!"}</Text>
-                        <Text>{"(선택)전화번호로 연락하고 싶어요!"}</Text>
+                <View style={styles.inputBox}>
+                    <View style={styles.textBox}>
+                        <Text style={styles.subText}>
+                            {"회원님의 \n전화번호를 입력해주세요!"}
+                        </Text>
+                        <Text style={styles.mainText}>
+                            {"(선택)전화번호로 연락하고 싶어요!"}
+                        </Text>
                     </View>
                     <TextInput
-                        placeholder={"전화번호를 입력해주세요...\nex)01025206780"}
+                        value={callNumText}
+                        onChangeText={(text) => {setCallNumText(text.replace(/\n/g, ""));}}
+                        style={styles.inputText}
+                        placeholder={"전화번호를 입력해주세요... \nex) 010-2520-6780"}
+                        multiline ={true}
+                        numberOfLines={2}
+                        keyboardType="phone-pad"
                     />
                 </View>
             </View>
@@ -61,6 +80,7 @@ const styles = StyleSheet.create({
     inputText : {
         fontSize : 18,
         color : Colors.black2,
-        fontWeight : "medium"
+        fontWeight : "medium",
+        textAlignVertical: "top"
     }
 })
