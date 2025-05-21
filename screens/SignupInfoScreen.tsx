@@ -6,12 +6,13 @@ import { AuthStackParamList } from "../navigation/AuthStack";
 import * as Progress from 'react-native-progress';
 import { useState } from "react";
 import SignupStack from "../navigation/SignupStack";
+import CommonButton from "../component/CommonButton";
 
 type SignupInfoScreenProps = StackScreenProps<AuthStackParamList, 'SignupInfo'>
 
 export default function SignupInfoScreen({navigation, route} : SignupInfoScreenProps) {
     const {width} = useWindowDimensions();
-    const [currentProgress, setCurrentProgress] = useState(5)
+    const [currentProgress, setCurrentProgress] = useState(1)
     const maxProgress = 5;
     return(
     <SafeAreaView style={styles.mainContainer}>
@@ -23,7 +24,7 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
             <Text>{`${currentProgress} of ${maxProgress}`}</Text>
             <Progress.Bar 
                 width={width - 32} 
-                progress={currentProgress / 5} 
+                progress={currentProgress / maxProgress} 
                 color={Colors.primary} 
                 borderColor={Colors.white2}
                 unfilledColor={Colors.white2}
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
     },
     progressBarContainer : {
         width : "100%",
+        marginBottom : 36,
         gap : 8,
         alignItems : "flex-end"
     }
