@@ -10,6 +10,8 @@ type ContactScreenProps = StackScreenProps<SignupStackParamList, 'Contact'>
 export default function ContactScreen({navigation, route} : ContactScreenProps) {
 
     const [callNumText, setCallNumText] = useState("")
+    const [errorText, setErrorText] = useState("안녕")
+    const [errorVisible, setErrorVisible] = useState(true)
 
     return(
         <View style={styles.mainContainer}>
@@ -34,7 +36,7 @@ export default function ContactScreen({navigation, route} : ContactScreenProps) 
                             {"회원님의 \n전화번호를 입력해주세요!"}
                         </Text>
                         <Text style={styles.mainText}>
-                            {"(선택)전화번호로 연락하고 싶어요!"}
+                            {"(선택) 전화번호로 연락하고 싶어요!"}
                         </Text>
                     </View>
                     <TextInput
@@ -48,7 +50,10 @@ export default function ContactScreen({navigation, route} : ContactScreenProps) 
                     />
                 </View>
             </View>
-            <CommonButton title="다음으로" onPress={() => {}}/>
+            <View style={styles.buttonContainer}>
+                {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+                <CommonButton title="다음으로" onPress={() => {}}/>
+            </View>
         </View>
     )
 }
@@ -63,6 +68,10 @@ const styles = StyleSheet.create({
     },
     inputBox : {
         gap : 16
+    },
+    buttonContainer : {
+        paddingTop : 8,
+        gap : 8
     },
     textBox : {
         gap : 4
@@ -82,5 +91,11 @@ const styles = StyleSheet.create({
         color : Colors.black2,
         fontWeight : "medium",
         textAlignVertical: "top"
-    }
+    },
+    errorText : {
+        textAlign : "center",
+        color : Colors.error,
+        fontSize : 12,
+        fontWeight : "semibold"
+    },
 })
