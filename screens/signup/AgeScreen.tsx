@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import { SignupStackParamList } from "../../navigation/SignupStack";
 import CommonButton from "../../component/CommonButton";
 import { useState } from "react";
@@ -13,8 +13,8 @@ type AgeScreenProps = StackScreenProps<SignupStackParamList, "Age">
 
 export default function AgeScreen({navigation, route} : AgeScreenProps) {
     
-    const [errorText, setErrorText] = useState("")
-    const [errorVisible, setErrorVisible] = useState(false)
+    const [errorText, setErrorText] = useState("안녕")
+    const [errorVisible, setErrorVisible] = useState(true)
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState(null)
     const dropdownItems = [
@@ -27,23 +27,41 @@ export default function AgeScreen({navigation, route} : AgeScreenProps) {
     ]
 
     return(
-        <View>
-            <View>
-                <View>
-                    <View>
-                        <Text>{"회원님의 생년월일을 입력해주세요!"}</Text>
-                        <Text>{"생일을 축하를 해드리고 싶어요!"}</Text>
+        <View style={styles.mainContainer}>
+            <View style={styles.inputContainer}>
+                <View style={styles.inputBox}>
+                    <View style={styles.textBox}>
+                        <Text style={styles.subText}>{"회원님의 생년월일을 입력해주세요!"}</Text>
+                        <Text style={styles.mainText}>{"생일을 축하를 해드리고 싶어요!"}</Text>
                     </View>
-                    <View>
-                        <TextInput/>
-                        <TextInput/>
-                        <TextInput/>
+                    <View style={styles.inputBirthBox}>
+                        <TextInput
+                            keyboardType="number-pad"
+                            placeholder="YYYY"
+                            placeholderTextColor={Colors.gray2}
+                            maxLength={4}
+                            style={styles.birthInputText}
+                        />
+                        <TextInput
+                            keyboardType="number-pad"
+                            placeholder="MM"
+                            placeholderTextColor={Colors.gray2}
+                            maxLength={2}
+                            style={styles.birthInputText}
+                        />
+                        <TextInput
+                            keyboardType="number-pad"
+                            placeholder="DD"
+                            placeholderTextColor={Colors.gray2}
+                            maxLength={2}
+                            style={styles.birthInputText}
+                        />
                     </View>
                 </View>
-                <View>
-                    <View>
-                        <Text>{"회원님의\n관심 연령대를 입력해주세요!"}</Text>
-                        <Text>{"(선택) 관심 연령대를 입력해주세요!"}</Text>
+                <View style={styles.inputBox}>
+                    <View style={styles.textBox}>
+                        <Text style={styles.subText}>{"회원님의\n관심 연령대를 입력해주세요!"}</Text>
+                        <Text style={styles.mainText}>{"(선택) 관심 연령대를 입력해주세요!"}</Text>
                     </View>
                     <DropDownPicker
                         open={open}
@@ -112,10 +130,59 @@ export default function AgeScreen({navigation, route} : AgeScreenProps) {
                     />
                 </View>
             </View>
-            <View>
-                {errorVisible && <Text>{errorText}</Text>}
+            <View style={styles.buttonContainer}>
+                {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
                 <CommonButton title="다음으로" onPress={() => {}}/>
             </View>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    mainContainer : {
+        flex : 1,
+        justifyContent : "space-between",
+    },
+    inputContainer : {
+        gap : 56
+    },
+    buttonContainer : {
+        paddingTop : 8,
+        gap : 8
+    },
+    inputBox : {
+        gap : 16
+    },
+    inputBirthBox : {
+        flexDirection : "row",
+        gap : 12
+    },
+    textBox : {
+        gap : 4
+    },
+    subText : {
+        fontSize : 16,
+        fontWeight : "medium",
+        color : Colors.black2
+    },
+    mainText : {
+        fontSize : 20,
+        fontWeight : "bold",
+        color : Colors.black2
+    },
+    errorText : {
+        textAlign : "center",
+        color : Colors.error,
+        fontSize : 12,
+        fontWeight : "semibold"
+    },
+    birthInputText : {
+        flex : 1,
+        backgroundColor : Colors.white2,
+        textAlign : "center",
+        paddingVertical : 12,
+        borderRadius : 8,
+        fontSize : 16,
+        fontWeight : "medium",
+    }
+})
