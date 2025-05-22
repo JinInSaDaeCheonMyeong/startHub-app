@@ -8,15 +8,16 @@ import { Colors } from "../../constants/color";
 import TopButton from "../../assets/icons/top-arrow-back.svg"
 import BottomButton from "../../assets/icons/bottom-arrow-back.svg"
 import CheckMark from "../../assets/icons/checkmark.svg"
+import AuthDropDown from "../../component/auth/AuthDropDown";
 
 type AgeScreenProps = StackScreenProps<SignupStackParamList, "Age">
 
 export default function AgeScreen({navigation, route} : AgeScreenProps) {
     
-    const [errorText, setErrorText] = useState("안녕")
-    const [errorVisible, setErrorVisible] = useState(true)
+    const [errorText, setErrorText] = useState("")
+    const [errorVisible, setErrorVisible] = useState(false)
     const [open, setOpen] = useState(false)
-    const [value, setValue] = useState(null)
+    const [value, setValue] = useState("")
     const dropdownItems = [
         {label : "10대",  value : "10대"}, 
         {label : "20대",  value : "20대"},
@@ -63,70 +64,13 @@ export default function AgeScreen({navigation, route} : AgeScreenProps) {
                         <Text style={styles.subText}>{"회원님의\n관심 연령대를 입력해주세요!"}</Text>
                         <Text style={styles.mainText}>{"(선택) 관심 연령대를 입력해주세요!"}</Text>
                     </View>
-                    <DropDownPicker
-                        open={open}
-                        value={value}
-                        items={dropdownItems}
+                    <AuthDropDown 
+                        open={open} 
+                        value={value} 
+                        items={dropdownItems} 
+                        placeholder="연령대"
                         setOpen={setOpen}
                         setValue={setValue}
-                        placeholder="연령대"
-                        placeholderStyle={{
-                            color : Colors.gray2,
-                            fontSize : 18,
-                            fontWeight : "medium"
-                        }}
-                        style={{
-                            backgroundColor : Colors.white2,
-                            borderWidth : 0,
-                            borderRadius : 8,
-                            padding : 16
-                        }}
-                        dropDownContainerStyle={{
-                            backgroundColor : Colors.white2,
-                            borderWidth : 0,
-                            borderRadius : 8,
-                        }}
-                        textStyle={{
-                            color : Colors.black2,
-                            fontSize : 18,
-                            fontWeight : "medium",
-                            paddingVertical : 8,
-                            paddingHorizontal : 6,
-                        }}
-                        labelStyle={{
-                            color : Colors.black2,
-                            fontSize : 18,
-                            fontWeight : "medium",
-                            paddingVertical : 8,
-                            paddingHorizontal : 6,
-                        }}
-                        ArrowUpIconComponent={
-                            ({style}) => (
-                            <TopButton
-                                width={18} 
-                                height={18} 
-                                color={Colors.gray2} 
-                                style={style}
-                            />
-                        )}
-                        ArrowDownIconComponent={
-                            ({style}) => (
-                            <BottomButton
-                                width={18}
-                                height={18}
-                                color={Colors.gray2}
-                                style={style}
-                            />
-                        )}
-                        TickIconComponent={
-                            ({style}) => (
-                            <CheckMark
-                                width={18}
-                                height={18}
-                                color={Colors.gray2}
-                                style={style}
-                            />
-                        )}
                     />
                 </View>
             </View>
