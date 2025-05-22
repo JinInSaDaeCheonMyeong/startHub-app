@@ -6,13 +6,19 @@ import TopButton from "../../assets/icons/top-arrow-back.svg"
 import BottomButton from "../../assets/icons/bottom-arrow-back.svg"
 import CheckMark from "../../assets/icons/checkmark.svg"
 import { useState } from "react";
+import AuthDropDown from "../../component/auth/AuthDropDown";
+import { StackScreenProps } from "@react-navigation/stack";
+import { SignupStackParamList } from "../../navigation/SignupStack";
 
+type InfoScreenProps = StackScreenProps<SignupStackParamList, "Info">
 
-export default function InfoScreen() {
+export default function InfoScreen({navigation, route} : InfoScreenProps) {
 
     const [open, setOpen] = useState(false)
-    const [value, setValue] = useState(null)
+    const [value, setValue] = useState("")
     const dropdownItems = [{label : "남",  value : "남"}, {label : "여",  value : "여"}]
+    const [errorText, setErrorText] = useState("")
+    const [errorVisible, setErrorVisible] = useState(false)
 
     return(
         <View style={styles.mainContainer}>
@@ -31,76 +37,22 @@ export default function InfoScreen() {
                 <View style={styles.inputBox}>
                     <View style={styles.textBox}>
                         <Text style={styles.subText}>회원님의 성별을 선택해주세요!</Text>
-                        <Text style={styles.mainText}>{"(선택)당신의 성별이 궁금합니다!"}</Text>
+                        <Text style={styles.mainText}>{"(선택) 당신의 성별이 궁금합니다!"}</Text>
                     </View>
-                    <DropDownPicker
+                    <AuthDropDown
                         open={open}
                         value={value}
                         items={dropdownItems}
+                        placeholder="성별"
                         setOpen={setOpen}
                         setValue={setValue}
-                        placeholder="성별"
-                        placeholderStyle={{
-                            color : Colors.gray2,
-                            fontSize : 18,
-                            fontWeight : "medium"
-                        }}
-                        style={{
-                            backgroundColor : Colors.white2,
-                            borderWidth : 0,
-                            borderRadius : 8,
-                            padding : 16
-                        }}
-                        dropDownContainerStyle={{
-                            backgroundColor : Colors.white2,
-                            borderWidth : 0,
-                            borderRadius : 8,
-                        }}
-                        textStyle={{
-                            color : Colors.black2,
-                            fontSize : 18,
-                            fontWeight : "medium",
-                            paddingVertical : 8,
-                            paddingHorizontal : 6,
-                        }}
-                        labelStyle={{
-                            color : Colors.black2,
-                            fontSize : 18,
-                            fontWeight : "medium",
-                            paddingVertical : 8,
-                            paddingHorizontal : 6,
-                        }}
-                        ArrowUpIconComponent={
-                            ({style}) => (
-                            <TopButton 
-                                width={18} 
-                                height={18} 
-                                color={Colors.gray2} 
-                                style={style}
-                            />
-                        )}
-                        ArrowDownIconComponent={
-                            ({style}) => (
-                            <BottomButton
-                                width={18}
-                                height={18}
-                                color={Colors.gray2}
-                                style={style}
-                            />
-                        )}
-                        TickIconComponent={
-                            ({style}) => (
-                            <CheckMark
-                                width={18}
-                                height={18}
-                                color={Colors.gray2}
-                                style={style}
-                            />
-                        )}
                     />
                 </View>
             </View>
-            <CommonButton title="다음으로" onPress={() => {}}/>
+            <View style={styles.buttonContainer}>
+                {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+                <CommonButton title="다음으로" onPress={() => {}}/>
+            </View>
         </View>
     )
 }
@@ -115,6 +67,10 @@ const styles = StyleSheet.create({
     },
     inputBox : {
         gap : 16
+    },
+    buttonContainer : {
+        paddingTop : 8,
+        gap : 8
     },
     textBox : {
         gap : 4
@@ -133,5 +89,11 @@ const styles = StyleSheet.create({
         fontSize : 18,
         color : Colors.black2,
         fontWeight : "medium"
-    }
+    },
+    errorText : {
+        textAlign : "center",
+        color : Colors.error,
+        fontSize : 12,
+        fontWeight : "semibold"
+    },
 })
