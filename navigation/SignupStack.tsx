@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import InfoScreen from "../screens/signup/InfoScreen";
 import { Colors } from "../constants/color";
 import ContactScreen from "../screens/signup/ContactScreen";
+import AgeScreen from "../screens/signup/AgeScreen";
 
 
 const Stack = createStackNavigator<SignupStackParamList>();
@@ -10,6 +11,7 @@ const Stack = createStackNavigator<SignupStackParamList>();
 export type SignupStackParamList = {
     Info : undefined
     Contact : undefined
+    Age : undefined
 }
 
 export default function SignupStack() {
@@ -24,6 +26,7 @@ export default function SignupStack() {
         }}>
             <Stack.Screen name="Info" component={InfoScreen}/>
             <Stack.Screen name="Contact" component={ContactScreen}/>
+            <Stack.Screen name="Age" component={AgeScreen}/>
         </Stack.Navigator>
     )
 }
