@@ -7,10 +7,12 @@ import BottomButton from "../../assets/icons/bottom-arrow-back.svg"
 import CheckMark from "../../assets/icons/checkmark.svg"
 import { useState } from "react";
 import AuthDropDown from "../../component/auth/AuthDropDown";
+import { StackScreenProps } from "@react-navigation/stack";
+import { SignupStackParamList } from "../../navigation/SignupStack";
 
+type InfoScreenProps = StackScreenProps<SignupStackParamList, "Info">
 
-
-export default function InfoScreen() {
+export default function InfoScreen({navigation, route} : InfoScreenProps) {
 
     const [open, setOpen] = useState(false)
     const [value, setValue] = useState("")
