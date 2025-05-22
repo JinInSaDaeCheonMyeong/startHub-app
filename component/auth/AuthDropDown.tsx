@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import DropDownPicker, { ItemType } from "react-native-dropdown-picker";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import TopButton from "../../assets/icons/top-arrow-back.svg"
 import BottomButton from "../../assets/icons/bottom-arrow-back.svg"
 import CheckMark from "../../assets/icons/checkmark.svg"
 import { StyleSheet } from "react-native";
+import { Colors } from "../../constants/color";
 
 type AuthDropDownProps = {
     open : boolean, 
     value : string | null, 
     items: ItemType<any>[],
     placeholder : string,
-    setOpen : () => void,
-    setValue : () => void
+    setOpen : Dispatch<SetStateAction<boolean>>
+    setValue : Dispatch<SetStateAction<string>>
 }
 
 export default function AuthDropDown(props : AuthDropDownProps){
