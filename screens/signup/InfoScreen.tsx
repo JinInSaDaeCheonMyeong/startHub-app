@@ -63,7 +63,9 @@ const styles = StyleSheet.create({
         justifyContent : "space-between",
     },
     inputContainer : {
-        gap : 56
+        flex : 1,
+        gap : 56,
+        overflow : "hidden"
     },
     inputBox : {
         gap : 16
