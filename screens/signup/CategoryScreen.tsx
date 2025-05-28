@@ -24,19 +24,19 @@ export default function CategoryScreen({navigation, route} : CategoryScreenProps
                 </View>
                 <FlatList 
                 data={categorySelectButtons}
-                contentContainerStyle = {{gap : 16}}
+                contentContainerStyle = {styles.listContentContainer}
                 renderItem={({item}) => (
                     <CategorySelectButton
-                        key={item.category}
-                        category={item.category}
+                        key={item.id}
+                        id={item.id}
                         title={item.title}
                         color={item.color}
                         icons={item.icon}
-                        onClick={(categoryKey) => {
-                            if (selectCategoryList.includes(categoryKey)) {
-                                selectCategoryList = selectCategoryList.filter(key => key !== categoryKey);
+                        onClick={(id) => {
+                            if (selectCategoryList.includes(id)) {
+                                selectCategoryList = selectCategoryList.filter(key => key !== id);
                             } else {
-                                selectCategoryList.push(categoryKey);
+                                selectCategoryList.push(id);
                             }
                             console.log(selectCategoryList);
                         }}
@@ -86,5 +86,8 @@ const styles = StyleSheet.create({
         color : Colors.error,
         fontSize : 12,
         fontWeight : "semibold"
+    },
+    listContentContainer : {
+        gap : 16
     }
 })
