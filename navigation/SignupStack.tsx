@@ -4,6 +4,7 @@ import InfoScreen from "../screens/signup/InfoScreen";
 import { Colors } from "../constants/color";
 import ContactScreen from "../screens/signup/ContactScreen";
 import AgeScreen from "../screens/signup/AgeScreen";
+import CategoryScreen from "../screens/signup/CategoryScreen";
 
 
 const Stack = createStackNavigator<SignupStackParamList>();
@@ -11,7 +12,8 @@ const Stack = createStackNavigator<SignupStackParamList>();
 export type SignupStackParamList = {
     Info : undefined
     Contact : undefined
-    Age : undefined
+    Age : undefined,
+    Category : undefined
 }
 
 export default function SignupStack() {
@@ -27,6 +29,7 @@ export default function SignupStack() {
             <Stack.Screen name="Info" component={InfoScreen}/>
             <Stack.Screen name="Contact" component={ContactScreen}/>
             <Stack.Screen name="Age" component={AgeScreen}/>
+            <Stack.Screen name="Category" component={CategoryScreen}/>
         </Stack.Navigator>
     )
 }
