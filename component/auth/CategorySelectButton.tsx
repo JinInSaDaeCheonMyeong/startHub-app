@@ -6,6 +6,7 @@ import { SvgProps } from "react-native-svg";
 
 type CategorySelectButtonProps = {
     key : string,
+    category : string,
     title : string,
     icons : React.FC<SvgProps>,
     color : string,
@@ -20,7 +21,7 @@ export default function CategorySelectButton(props : CategorySelectButtonProps) 
         <TouchableOpacity
             onPress={() => {
                 setIsSelected(!isSelected)
-                props.onClick(props.key)
+                props.onClick(props.category)
             }}
         >
             <View style={{
