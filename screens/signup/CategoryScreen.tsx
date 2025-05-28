@@ -1,5 +1,5 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { SafeAreaView, ScrollView, Text, View } from "react-native";
+import { SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
 import { SignupStackParamList } from "../../navigation/SignupStack";
 import CommonButton from "../../component/CommonButton";
 import CategorySelectButton from "../../component/auth/CategorySelectButton";
@@ -9,6 +9,7 @@ import { categorySelectButtons } from "../../constants/categorySelectButtons";
 type CategoryScreenProps = StackScreenProps<SignupStackParamList, "Category">
 
 export default function CategoryScreen({navigation, route} : CategoryScreenProps){
+    let selectCategoryList : string[] = []
     return(
         <View>
             <View>
@@ -19,11 +20,18 @@ export default function CategoryScreen({navigation, route} : CategoryScreenProps
                 <ScrollView>
                     {categorySelectButtons.map((item) => (
                         <CategorySelectButton
-                            categoryKey={item.category}
+                            key={item.category}
                             title={item.title}
                             color={item.color}
                             icons={item.icon}
-                            onClick={(categoryKey) => {}}
+                            onClick={(categoryKey) => {
+                                if (selectCategoryList.includes(categoryKey)) {
+                                    selectCategoryList = selectCategoryList.filter(key => key !== categoryKey);
+                                } else {
+                                    selectCategoryList.push(categoryKey);
+                                }
+                                console.log(selectCategoryList);
+                            }}
                         />
                     ))}
                 </ScrollView>
