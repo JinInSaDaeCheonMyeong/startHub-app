@@ -9,14 +9,22 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-navigation/stack": "^7.3.2",
     "expo": "~53.0.9",
+    "expo-checkbox": "~4.1.4",
     "expo-status-bar": "~2.2.3",
     "react": "19.0.0",
-    "react-native": "0.79.2"
+    "react-native": "0.79.2",
+    "react-native-dropdown-picker": "^5.4.6",
+    "react-native-progress": "^5.0.1",
+    "react-native-reanimated-carousel": "^4.0.2",
+    "react-native-svg": "^15.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
+    "expo-module-scripts": "^4.1.7",
+    "react-native-svg-transformer": "^1.5.1",
     "typescript": "~5.8.3"
   },
   "private": true
