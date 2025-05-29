@@ -6,7 +6,6 @@ import { AuthStackParamList } from "../navigation/AuthStack";
 import * as Progress from 'react-native-progress';
 import { useState } from "react";
 import InfoScreen from "./signup/InfoScreen";
-import ContactScreen from "./signup/ContactScreen";
 import AgeScreen from "./signup/AgeScreen";
 import CategoryScreen from "./signup/CategoryScreen";
 import CommonButton from "../component/CommonButton";
@@ -15,7 +14,6 @@ type SignupInfoScreenProps = StackScreenProps<AuthStackParamList, 'SignupInfo'>
 
 const InputInfoScreen = [
     InfoScreen,
-    ContactScreen,
     AgeScreen,
     CategoryScreen
 ]
