@@ -1,13 +1,12 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { SignupStackParamList } from "../../navigation/SignupStack";
 import { Colors } from "../../constants/color";
 import CommonButton from "../../component/CommonButton";
 import { useState } from "react";
 
-type ContactScreenProps = StackScreenProps<SignupStackParamList, 'Contact'>
+type ContactScreenProps = {}
 
-export default function ContactScreen({navigation, route} : ContactScreenProps) {
+export default function ContactScreen(props : ContactScreenProps) {
 
     const [callNumText, setCallNumText] = useState("")
     const [errorText, setErrorText] = useState("안녕")

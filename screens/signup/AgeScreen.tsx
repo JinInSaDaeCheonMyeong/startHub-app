@@ -1,18 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { SignupStackParamList } from "../../navigation/SignupStack";
 import CommonButton from "../../component/CommonButton";
 import { useState } from "react";
-import DropDownPicker from "react-native-dropdown-picker";
 import { Colors } from "../../constants/color";
-import TopButton from "../../assets/icons/top-arrow-back.svg"
-import BottomButton from "../../assets/icons/bottom-arrow-back.svg"
-import CheckMark from "../../assets/icons/checkmark.svg"
 import AuthDropDown from "../../component/auth/AuthDropDown";
 
-type AgeScreenProps = StackScreenProps<SignupStackParamList, "Age">
+type AgeScreenProps = {}
 
-export default function AgeScreen({navigation, route} : AgeScreenProps) {
+export default function AgeScreen(props : AgeScreenProps) {
     
     const [errorText, setErrorText] = useState("")
     const [errorVisible, setErrorVisible] = useState(false)

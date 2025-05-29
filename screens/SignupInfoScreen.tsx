@@ -5,8 +5,6 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import * as Progress from 'react-native-progress';
 import { useState } from "react";
-import SignupStack from "../navigation/SignupStack";
-import CommonButton from "../component/CommonButton";
 
 type SignupInfoScreenProps = StackScreenProps<AuthStackParamList, 'SignupInfo'>
 
@@ -18,7 +16,14 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
     <SafeAreaView style={styles.mainContainer}>
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
         <View>
-            <BackButton width={20} height={20} color={Colors.black2} onClick={()=>{setCurrentProgress(currentProgress - 1)}} /> 
+            <BackButton 
+                width={20} 
+                height={20} 
+                color={Colors.black2} 
+                onClick={()=>{
+                    setCurrentProgress(currentProgress - 1)
+                }}
+            /> 
         </View>
         <View style={styles.progressBarContainer}>
             <Text>{`${currentProgress} of ${maxProgress}`}</Text>
@@ -31,7 +36,6 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
                 borderWidth={0}
             />
         </View>
-        <SignupStack/>
     </SafeAreaView>
     )
 }

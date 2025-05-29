@@ -1,15 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View } from "react-native";
-import { SignupStackParamList } from "../../navigation/SignupStack";
 import CommonButton from "../../component/CommonButton";
 import CategorySelectButton from "../../component/auth/CategorySelectButton";
 import { Colors } from "../../constants/color";
 import { categorySelectButtons } from "../../constants/categorySelectButtons";
 import { useState } from "react";
 
-type CategoryScreenProps = StackScreenProps<SignupStackParamList, "Category">
+type CategoryScreenProps = {}
 
-export default function CategoryScreen({navigation, route} : CategoryScreenProps){
+export default function CategoryScreen(props : CategoryScreenProps){
 
     const [errorVisible, setErrorVisible] = useState(false)
     const [errorText, setErrorText] = useState("안녕")
