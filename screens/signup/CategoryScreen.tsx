@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import CategorySelectButton from "../../component/auth/CategorySelectButton";
 import { Colors } from "../../constants/color";
-import { categorySelectButtons } from "../../constants/categorySelectButtons";
+import { interestTypeList } from "../../constants/interestTypeList";
 
 type CategoryScreenProps = {}
 
@@ -16,7 +16,7 @@ export default function CategoryScreen(props : CategoryScreenProps){
                 <Text style={styles.mainText}>어떤 주제에 관심 있으신가요?</Text>
             </View>
             <FlatList 
-            data={categorySelectButtons}
+            data={interestTypeList}
             contentContainerStyle = {styles.listContentContainer}
             renderItem={({item}) => (
                 <CategorySelectButton

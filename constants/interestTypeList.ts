@@ -7,7 +7,7 @@ import DealIcon from "../assets/icons/category/deal-category.svg"
 import EtcIcon from "../assets/icons/category/etc-category.svg"
 import { Colors } from "./color"
 
-export const categorySelectButtons = [
+export const interestTypeList = [
     {id : "media", title : "콘텐츠/미디어", icon : MediaIcon, color : Colors.media},
     {id : "fintech", title : "핀테크", icon : FintechIcon, color : Colors.fintech},
     {id : "health", title : "헬스케어/바이오" , icon : HealthIcon, color : Colors.health},
