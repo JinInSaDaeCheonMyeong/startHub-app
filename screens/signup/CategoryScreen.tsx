@@ -22,7 +22,6 @@ export default function CategoryScreen(props : CategoryScreenProps){
                 <CategorySelectButton
                     key={item.id}
                     id={item.id}
-                    title={item.title}
                     color={item.color}
                     icons={item.icon}
                     onClick={(id) => {
