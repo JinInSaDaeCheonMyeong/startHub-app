@@ -1,7 +1,7 @@
 import {createStackNavigator} from "@react-navigation/stack";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import SigninScreen from "../screens/SigninScreen";
-import { Colors } from "../constants/color";
+import { Colors } from "../constants/Color";
 import StartScreen from "../screens/StartScreen";
 import SignupScreen from "../screens/SignupScreen";
 import SignupInfoScreen from "../screens/SignupInfoScreen";

@@ -4,7 +4,7 @@ import TopButton from "../../assets/icons/top-arrow-back.svg"
 import BottomButton from "../../assets/icons/bottom-arrow-back.svg"
 import CheckMark from "../../assets/icons/checkmark.svg"
 import { StyleSheet } from "react-native";
-import { Colors } from "../../constants/color";
+import { Colors } from "../../constants/Color";
 
 type AuthDropDownProps = {
     open : boolean, 

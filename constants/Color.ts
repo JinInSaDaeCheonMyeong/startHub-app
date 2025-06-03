@@ -19,11 +19,11 @@ export const Colors = {
     error : '#EB5757',
 
     // 카테고리 컬러
-    media: '#ED5555',
+    content_media: '#ED5555',
     fintech : '#FFC015',
-    health : '#67C54A',
-    study : '#5CA1E2',
-    software : '#232EB1',
-    deal : '#E159BA',
+    healthcare_bio : '#67C54A',
+    education_edutech : '#5CA1E2',
+    it_software : '#232EB1',
+    ecommerce : '#E159BA',
     etc : '#9B9B9B',
-}
+} as const

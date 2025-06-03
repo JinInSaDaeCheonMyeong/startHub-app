@@ -1,13 +1,12 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CategoryCheckMark from "../../assets/icons/category/category-check-mark.svg"
-import { Colors } from "../../constants/color";
+import { Colors } from "../../constants/Color";
 import { ReactElement, useState } from "react";
 import { SvgProps } from "react-native-svg";
 
 type CategorySelectButtonProps = {
     key : string,
     id : string,
-    title : string,
     icons : React.FC<SvgProps>,
     color : string,
     onClick : (categoryKey : string) => void
@@ -39,7 +38,7 @@ export default function CategorySelectButton(props : CategorySelectButtonProps) 
                         ...styles.titleText, 
                         color : isSelected ? Colors.white1 : Colors.black2
                     }}>
-                        {props.title}
+                        {props.id}
                     </Text>
                 </View>
                 <CategoryCheckMark color={isSelected ? Colors.white1 : props.color}/>

@@ -1,5 +1,5 @@
 import { SafeAreaView, StatusBar, StyleSheet, Text, useWindowDimensions, View } from "react-native";
-import { Colors } from "../constants/color";
+import { Colors } from "../constants/Color";
 import BackButton from "../component/BackButton";
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";

@@ -1,5 +1,5 @@
 import { Platform, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import { Colors } from "../../constants/color";
+import { Colors } from "../../constants/Color";
 import VisibleIcon from "../../assets/icons/eye.svg"
 import InVisibleIcon from "../../assets/icons/eye.fill.svg"
 import { useState } from "react";

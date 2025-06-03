@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {View, Text, SafeAreaView, StyleSheet, Dimensions, Image, StatusBar} from 'react-native';
 import {StackScreenProps} from "@react-navigation/stack";
 import {AuthStackParamList} from "../navigation/AuthStack";
-import {Colors} from "../constants/color";
+import {Colors} from "../constants/Color";
 import Carousel from "react-native-reanimated-carousel";
 import CommonButton from "../component/CommonButton";
 

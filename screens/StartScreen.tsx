@@ -1,7 +1,7 @@
 import {StackScreenProps} from "@react-navigation/stack";
 import {AuthStackParamList} from "../navigation/AuthStack";
 import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, Image} from "react-native";
-import {Colors} from "../constants/color";
+import {Colors} from "../constants/Color";
 import React from "react";
 import BackButton from "../component/BackButton";
 
