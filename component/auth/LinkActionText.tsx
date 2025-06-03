@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { Colors } from "../../constants/color";
+import { Colors } from "../../constants/Color";
 
 type LinkActionTextProps = {
     title : string,

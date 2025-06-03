@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CategoryCheckMark from "../../assets/icons/category/category-check-mark.svg"
-import { Colors } from "../../constants/color";
+import { Colors } from "../../constants/Color";
 import { ReactElement, useState } from "react";
 import { SvgProps } from "react-native-svg";
 

@@ -1,6 +1,6 @@
 import Checkbox from "expo-checkbox"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
-import { Colors } from "../../constants/color"
+import { Colors } from "../../constants/Color"
 import RightArrow from "../../assets/icons/right-arrow-back.svg"
 
 

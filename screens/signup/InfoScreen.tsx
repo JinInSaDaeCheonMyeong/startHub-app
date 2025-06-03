@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import { Colors } from "../../constants/color";
+import { Colors } from "../../constants/Color";
 import { useState } from "react";
 import AuthDropDown from "../../component/auth/AuthDropDown";
 

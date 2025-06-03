@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { StackScreenProps } from "@react-navigation/stack";
-import { Colors } from "../constants/color";
+import { Colors } from "../constants/Color";
 import AuthTextInput from "../component/auth/AuthTextInput";
 import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
