@@ -3,15 +3,9 @@ import { Colors } from "../../constants/Color";
 import { useState } from "react";
 import AuthDropDown from "../../component/auth/AuthDropDown";
 
-type InfoScreenProps = {
-    onClick : () => void
-}
+type InfoScreenProps = {}
 
 export default function InfoScreen(props : InfoScreenProps) {
-
-    const [open, setOpen] = useState(false)
-    const [value, setValue] = useState("")
-    const dropdownItems = [{label : "남",  value : "남"}, {label : "여",  value : "여"}]
 
     return(
         <View style={styles.mainContainer}>
@@ -31,14 +25,6 @@ export default function InfoScreen(props : InfoScreenProps) {
                     <Text style={styles.subText}>회원님의 성별을 선택해주세요!</Text>
                     <Text style={styles.mainText}>{"(선택) 당신의 성별이 궁금합니다!"}</Text>
                 </View>
-                <AuthDropDown
-                    open={open}
-                    value={value}
-                    items={dropdownItems}
-                    placeholder="성별"
-                    setOpen={setOpen}
-                    setValue={setValue}
-                />
             </View>
         </View>
     )

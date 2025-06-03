@@ -62,9 +62,7 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
                 borderWidth={0}
             />
         </View>
-        <CurrentScreen 
-            onClick={() => {goNext()}}
-        />
+        <CurrentScreen/>
         <View style={styles.buttonContainer}>
             {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
             <CommonButton title={currentProgress == maxProgress ? "다음으로" : "완료"} onPress={() => {goNext()}}/>
