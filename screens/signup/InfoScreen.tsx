@@ -22,8 +22,31 @@ export default function InfoScreen(props : InfoScreenProps) {
             </View>
             <View style={styles.inputBox}>
                 <View style={styles.textBox}>
-                    <Text style={styles.subText}>회원님의 성별을 선택해주세요!</Text>
-                    <Text style={styles.mainText}>{"(선택) 당신의 성별이 궁금합니다!"}</Text>
+                    <Text style={styles.subText}>회원님의 생년월일을 입력해주세요!</Text>
+                    <Text style={styles.mainText}>{"생일축하를 해드리고 싶어요!"}</Text>
+                </View>
+                <View style={styles.birthDateContainer}>
+                    <TextInput
+                        style={styles.birthInput}
+                        placeholder="YYYY"
+                        placeholderTextColor={Colors.gray2}
+                        maxLength={4}
+                        keyboardType="numeric"
+                    />
+                    <TextInput
+                        style={styles.birthInput}
+                        placeholder="MM"
+                        placeholderTextColor={Colors.gray2}
+                        maxLength={2}
+                        keyboardType="numeric"
+                    />
+                    <TextInput
+                        style={styles.birthInput}
+                        placeholder="DD"
+                        placeholderTextColor={Colors.gray2}
+                        maxLength={2}
+                        keyboardType="numeric"
+                    />
                 </View>
             </View>
         </View>
@@ -56,5 +79,21 @@ const styles = StyleSheet.create({
         fontSize : 18,
         color : Colors.black2,
         fontWeight : "medium"
+    },
+    birthDateContainer : {
+        width : "100%",
+        flexDirection : "row",
+        gap : 16
+    },
+    birthInput : {
+        flex : 1,
+        paddingHorizontal : 16,
+        paddingVertical : 12,
+        backgroundColor : Colors.white2,
+        color : Colors.black2,
+        fontSize : 16,
+        fontWeight : "medium",
+        borderRadius : 8,
+        textAlign : "center"
     }
 })
