@@ -8,11 +8,13 @@ import { useState } from "react";
 import InfoScreen from "./signup/InfoScreen";
 import CategoryScreen from "./signup/CategoryScreen";
 import CommonButton from "../component/CommonButton";
+import LocationScreen from "./signup/LocationScreen";
 
 type SignupInfoScreenProps = StackScreenProps<AuthStackParamList, 'SignupInfo'>
 
 const InputInfoScreen = [
     InfoScreen,
+    LocationScreen,
     CategoryScreen
 ]
 
@@ -22,7 +24,7 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
     const [errorVisible, setErrorVisible] = useState(true)
     const [errorText, setErrorText] = useState("error text")
     const CurrentScreen = InputInfoScreen[currentProgress-1]
-    const maxProgress = 4;
+    const maxProgress = 3;
 
     const goBack = () => {
         if(currentProgress < 2) {
@@ -67,7 +69,7 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
         />
         <View style={styles.buttonContainer}>
             {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
-            <CommonButton title={currentProgress == maxProgress ? "다음으로" : "완료"} onPress={() => {goNext()}}/>
+            <CommonButton title={currentProgress == maxProgress ? "완료" : "다음"} onPress={() => {goNext()}}/>
         </View>
     </SafeAreaView>
     )
