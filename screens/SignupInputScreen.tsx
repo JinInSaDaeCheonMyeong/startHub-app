@@ -26,6 +26,13 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
     const CurrentScreen = InputInfoScreen[currentProgress-1]
     const maxProgress = 3;
 
+    const [name, setName] = useState('')
+    const [year, setYear] = useState('')
+    const [month, setMonth] = useState('')
+    const [day, setDay] = useState('')
+    const [location, setLocation] = useState('')
+    const [interestList, setInterestList] = useState<string[]>([])
+
     const goBack = () => {
         if(currentProgress < 2) {
             navigation.goBack()
@@ -36,10 +43,15 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
 
     const goNext = () => {
         if(currentProgress >= maxProgress) {
-            navigation.popTo("Start")
+            navigation.popTo("Signin")
         } else {
             setCurrentProgress(currentProgress + 1)
         }
+    }
+
+    const transformDate = () => {
+        if(year.length == 0 || month.length == 0 || day.length == 0){return "없음"}
+        return new Date(`${year}-${month}-${day}`)
     }
 
     return(
@@ -64,7 +76,20 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
                 borderWidth={0}
             />
         </View>
-        <CurrentScreen/>
+        <CurrentScreen
+            name={name}
+            year={year}
+            month={month}
+            day={day}
+            location={location}
+            interestList={interestList}
+            setName={(s) => {setName(s)}}
+            setYear={(s) => {setYear(s)}}
+            setMonth={(s) => {setMonth(s)}}
+            setDay={(s) => {setDay(s)}}
+            setLocation={(s) => {setLocation(s)}}
+            setInterestList={(list) => setInterestList(list)}
+        />
         <View style={styles.buttonContainer}>
             {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
             <CommonButton title={currentProgress == maxProgress ? "완료" : "다음"} onPress={() => {goNext()}}/>

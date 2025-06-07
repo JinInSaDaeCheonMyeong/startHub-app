@@ -5,18 +5,18 @@ import AuthDropDown from "../../component/auth/AuthDropDown";
 import DateInputText from "../../component/auth/DateInputText";
 import { DayList, MonthList, YearList } from "../../constants/\bDateNumber";
 
-type InfoScreenProps = {}
+type InfoScreenProps = {
+    name : string,
+    year : string,
+    month : string,
+    day : string,
+    setName : (name : string) => void,
+    setYear : (year : string) => void,
+    setMonth : (month : string) => void,
+    setDay : (day : string) => void,
+}
 
 export default function InfoScreen(props : InfoScreenProps) {
-
-    const [year, setYear] = useState('')
-    const [month, setMonth] = useState('')
-    const [day, setDay] = useState('')
-
-    const transformDate = () => {
-        if(year.length == 0 || month.length == 0 || day.length == 0){return "없음"}
-        return new Date(`${year}-${month}-${day}`)
-    }
 
     return(
         <View style={styles.mainContainer}>
@@ -29,6 +29,8 @@ export default function InfoScreen(props : InfoScreenProps) {
                     style={styles.inputText}
                     placeholder="이름을 입력해주세요..."
                     placeholderTextColor={Colors.gray3}
+                    value={props.name}
+                    onChangeText={(s) => {props.setName(s)}}
                 />
             </View>
             <View style={styles.inputBox}>
@@ -40,20 +42,20 @@ export default function InfoScreen(props : InfoScreenProps) {
                     <DateInputText 
                         data={YearList} 
                         placeholder="YYYY"
-                        text={year} 
-                        setText={(s) => {setYear(s)}}
+                        text={props.year} 
+                        setText={(s) => {props.setYear(s)}}
                     />
                     <DateInputText 
                         data={MonthList} 
                         placeholder="MM"
-                        text={month} 
-                        setText={(s) => {setMonth(s)}}
+                        text={props.month} 
+                        setText={(s) => {props.setMonth(s)}}
                     />
                     <DateInputText 
                         data={DayList} 
                         placeholder="DD"
-                        text={day} 
-                        setText={(s) => {setDay(s)}}
+                        text={props.day} 
+                        setText={(s) => {props.setDay(s)}}
                     />
                 </View>
             </View>
