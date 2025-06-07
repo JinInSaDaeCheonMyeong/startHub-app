@@ -114,16 +114,17 @@ export default function SignupScreen({navigation, route} : SigninScreenProps){
                 <View style={styles.line}/>
                 {selectItem.map(item => (
                     <SelectAgreement
+                        key={item.key}
                         value={item.value}
                         title={item.title}
                         onSelect={(value) => {item.setChecked(value)}}
-                        onClick={() => {}}
+                        onClick={() => {}} // 노션 링크 넣을 예정
                     />
                 ))}
             </View>
             <View style={styles.buttonContainer}>
                 <Text style={styles.errorText}>{errorVisible ? errorText : ""}</Text>
-                <CommonButton title="회원가입" onPress={() => {console.log(`${allChecked} ${checked1} ${checked2} ${checked3}`)}}/>
+                <CommonButton title="회원가입" onPress={() => {navigation.navigate("SignupInput")}}/>
             </View>
         </View>
         </ScrollView>

@@ -10,7 +10,7 @@ import LinkActionText from "../component/auth/LinkActionText";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
-export default function SigninScreen(navigation : SigninScreenProps) {
+export default function SigninScreen({navigation} : SigninScreenProps) {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -21,7 +21,7 @@ export default function SigninScreen(navigation : SigninScreenProps) {
             width={18} 
             height={18} 
             color={Colors.black2} 
-            onClick={() => {navigation.navigation.goBack()}}
+            onClick={() => {navigation.goBack()}}
             />
             <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
             <View style={styles.interactionContainer}>
@@ -54,7 +54,7 @@ export default function SigninScreen(navigation : SigninScreenProps) {
                     <Text style={styles.contourText}>⏐</Text>
                     <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
                     <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="회원가입" onPress={() => {}}/>
+                    <LinkActionText title="회원가입" onPress={() => {navigation.navigate('Signup')}}/>
                 </View>
             </View>
         </SafeAreaView>
