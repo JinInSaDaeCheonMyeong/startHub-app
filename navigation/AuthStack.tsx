@@ -4,7 +4,7 @@ import SigninScreen from "../screens/SigninScreen";
 import { Colors } from "../constants/Color";
 import StartScreen from "../screens/StartScreen";
 import SignupScreen from "../screens/SignupScreen";
-import SignupInfoScreen from "../screens/SignupInfoScreen";
+import SignupInputScreen from "../screens/SignupInputScreen";
 
 const Stack = createStackNavigator<AuthStackParamList>()
 
@@ -13,7 +13,7 @@ export type AuthStackParamList = {
     Signin : undefined;
     Signup : undefined;
     Start : undefined;
-    SignupInfo : undefined;
+    SignupInput : undefined;
 };
 
 export default function AuthStack() {
@@ -31,7 +31,7 @@ export default function AuthStack() {
             <Stack.Screen name="Signin" component={SigninScreen} />
             <Stack.Screen name="Start" component={StartScreen} />
             <Stack.Screen name="Signup" component={SignupScreen} />
-            <Stack.Screen name="SignupInfo" component={SignupInfoScreen} />
+            <Stack.Screen name="SignupInput" component={SignupInputScreen} />
         </Stack.Navigator>
     )
 };

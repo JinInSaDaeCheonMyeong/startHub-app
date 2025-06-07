@@ -10,7 +10,7 @@ import CategoryScreen from "./signup/CategoryScreen";
 import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
 
-type SignupInfoScreenProps = StackScreenProps<AuthStackParamList, 'SignupInfo'>
+type SignupInfoScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 
 const InputInfoScreen = [
     InfoScreen,
