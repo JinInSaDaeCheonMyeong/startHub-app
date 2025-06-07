@@ -2,10 +2,21 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/Color";
 import { useState } from "react";
 import AuthDropDown from "../../component/auth/AuthDropDown";
+import DateInputText from "../../component/auth/DateInputText";
+import { DayList, MonthList, YearList } from "../../constants/\bDateNumber";
 
 type InfoScreenProps = {}
 
 export default function InfoScreen(props : InfoScreenProps) {
+
+    const [year, setYear] = useState('')
+    const [month, setMonth] = useState('')
+    const [day, setDay] = useState('')
+
+    const transformDate = () => {
+        if(year.length == 0 || month.length == 0 || day.length == 0){return "없음"}
+        return new Date(`${year}-${month}-${day}`)
+    }
 
     return(
         <View style={styles.mainContainer}>
@@ -26,26 +37,23 @@ export default function InfoScreen(props : InfoScreenProps) {
                     <Text style={styles.mainText}>{"생일축하를 해드리고 싶어요!"}</Text>
                 </View>
                 <View style={styles.birthDateContainer}>
-                    <TextInput
-                        style={styles.birthInput}
+                    <DateInputText 
+                        data={YearList} 
                         placeholder="YYYY"
-                        placeholderTextColor={Colors.gray2}
-                        maxLength={4}
-                        keyboardType="numeric"
+                        text={year} 
+                        setText={(s) => {setYear(s)}}
                     />
-                    <TextInput
-                        style={styles.birthInput}
+                    <DateInputText 
+                        data={MonthList} 
                         placeholder="MM"
-                        placeholderTextColor={Colors.gray2}
-                        maxLength={2}
-                        keyboardType="numeric"
+                        text={month} 
+                        setText={(s) => {setMonth(s)}}
                     />
-                    <TextInput
-                        style={styles.birthInput}
+                    <DateInputText 
+                        data={DayList} 
                         placeholder="DD"
-                        placeholderTextColor={Colors.gray2}
-                        maxLength={2}
-                        keyboardType="numeric"
+                        text={day} 
+                        setText={(s) => {setDay(s)}}
                     />
                 </View>
             </View>
@@ -60,7 +68,8 @@ const styles = StyleSheet.create({
         overflow : "hidden"
     },
     inputBox : {
-        gap : 16
+        gap : 16,
+        zIndex: 1
     },
     textBox : {
         gap : 4
@@ -81,9 +90,9 @@ const styles = StyleSheet.create({
         fontWeight : "medium"
     },
     birthDateContainer : {
-        width : "100%",
+        flex : 1,
         flexDirection : "row",
-        gap : 16
+        gap : 16,
     },
     birthInput : {
         flex : 1,

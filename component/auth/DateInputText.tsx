@@ -3,7 +3,7 @@ import AutocompleteInput from "react-native-autocomplete-input";
 import BottomArrow from "../../assets/icons/bottom-arrow-back.svg"
 import TopArrow from "../../assets/icons/top-arrow-back.svg"
 import { Colors } from "../../constants/Color";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 type DateInputProps = {
     data : string[]
@@ -18,6 +18,19 @@ export default function DateInputText(props : DateInputProps) {
     const [mainWidth, setMainWidth] = useState(0)
     const [mainHeight, setMainHeight] = useState(0)
 
+    const filteredLst = useMemo(() => {
+        if(!props.text || props.text.length === 0) {
+            return props.data
+        }
+        const filtered = props.data.filter(item => item.includes(props.text))
+
+        if(filtered.length === 0){
+            return props.data
+        }
+
+        return filtered
+    }, [props.text])
+
     return (
         <View 
             onLayout={(event) => {
@@ -28,7 +41,7 @@ export default function DateInputText(props : DateInputProps) {
         >
             <AutocompleteInput
                 autoCorrect={false}
-                data={props.data}
+                data={filteredLst}
                 defaultValue={props.text}
                 hideResults={!listVisible}
                 onChangeText={(text) => {props.setText(text)}}
@@ -43,8 +56,8 @@ export default function DateInputText(props : DateInputProps) {
                 flatListProps={{
                     keyboardShouldPersistTaps: 'always',
                     style : {...styles.listConatiner, 
-                        width : mainWidth, 
-                        height : mainHeight,
+                        width : mainWidth,
+                        maxHeight : 64
                     },
                     renderItem: ({ item }) => (
                         <TouchableOpacity 
@@ -96,7 +109,7 @@ const styles = StyleSheet.create({
         borderColor : Colors.white2,
         backgroundColor : Colors.white2,
         borderRadius : 8,
-        paddingHorizontal : 16
+        paddingHorizontal : 16,
     },
     inputContainer : {
         borderColor : Colors.white2,
