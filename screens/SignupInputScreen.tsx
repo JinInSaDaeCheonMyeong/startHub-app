@@ -19,15 +19,15 @@ const SCREENS = [
     CategoryScreen
 ] as const
 
-const MAXPROGRESS = 3;
+const MAXPROGRESS = SCREENS.length;
 
-export default function SignupInputScreen(navigation : SignupInputScreenProps) {
+export default function SignupInputScreen(props : SignupInputScreenProps) {
     const {width} = useWindowDimensions();
     const {
         form,
         ui, 
         nav
-    } = useSignupInputScreen(navigation, MAXPROGRESS)
+    } = useSignupInputScreen(props, MAXPROGRESS)
     const CurrentScreen = SCREENS[ui.currentProgress-1]
 
     return(
@@ -50,11 +50,10 @@ export default function SignupInputScreen(navigation : SignupInputScreenProps) {
                 borderColor={Colors.white2}
                 unfilledColor={Colors.white2}
                 borderWidth={0}
+                height={8}
             />
         </View>
-        <CurrentScreen
-            {...form}
-        />
+        <CurrentScreen {...form} />
         <View style={styles.buttonContainer}>
             {ui.errorVisible && <Text style={styles.errorText}>{ui.errorText}</Text>}
             <CommonButton title={ui.currentProgress == MAXPROGRESS ? "완료" : "다음"} onPress={() => {nav.goNext()}}/>
