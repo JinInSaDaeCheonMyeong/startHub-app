@@ -6,7 +6,7 @@ import { Colors } from "../../constants/Color";
 
 type LocationScreenProps = {
     location : string,
-    setLocation : Dispatch<SetStateAction<string>>
+    setLocation : (value : string) => void
 }
 
 export default function LocationScreen(props : LocationScreenProps) {
@@ -23,7 +23,7 @@ export default function LocationScreen(props : LocationScreenProps) {
                 open={open}
                 value={props.location}
                 setOpen={setOpen}
-                setValue={props.setLocation}
+                setValue={(s) => {props.setLocation(s)}}
                 items={LocationItems}
                 placeholder="지역"
             />

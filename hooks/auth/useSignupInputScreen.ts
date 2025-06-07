@@ -1,4 +1,8 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import { useCallback, useMemo, useState } from "react"
+import { AuthStackParamList } from "../../navigation/AuthStack"
+
+type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 
 interface FormData{
     name : string,
@@ -18,8 +22,11 @@ const INITIAL_FORM_DATA : FormData = {
     interestList : []
 }
 
-export const useSignupInputScreen = () => {
+export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXPROGRESS : number) => {
     const [formData, setFormData] = useState(INITIAL_FORM_DATA)
+    const [currentProgress, setCurrentProgress] = useState(1)
+    const [errorVisible, setErrorVisible] = useState(true)
+    const [errorText, setErrorText] = useState("error text")
 
     const updateFormData = useCallback(<K extends keyof FormData>(key : K, value : FormData[K]) => {
         setFormData(prev => ({...prev, [key] : value}))
@@ -38,14 +45,40 @@ export const useSignupInputScreen = () => {
         return new Date(`${year}-${month}-${day}`)
     }, [])
 
+    const goBack = () => {
+        if(currentProgress < MAXPROGRESS - 1) {
+            navigation.goBack()
+        } else {
+            setCurrentProgress(currentProgress - 1)
+        }
+    }
+
+    const goNext = () => {
+        if(currentProgress >= MAXPROGRESS) {
+            navigation.popTo("Signin")
+        } else {
+            setCurrentProgress(currentProgress + 1)
+        }
+    }
+
     return {
-        formData,
-        setName,
-        setYear,
-        setMonth,
-        setDay,
-        setLocation,
-        setInterestList,
-        transformDate
+        form : {
+            ...formData,
+            setName,
+            setYear,
+            setMonth,
+            setDay,
+            setLocation,
+            setInterestList,
+        },
+        ui : {
+            currentProgress,
+            errorVisible,
+            errorText,
+        },
+        nav : {
+            goBack,
+            goNext
+        },
     }
 }
