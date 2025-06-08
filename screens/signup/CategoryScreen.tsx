@@ -3,11 +3,12 @@ import CategorySelectButton from "../../component/auth/CategorySelectButton";
 import { Colors } from "../../constants/Color";
 import { InterestTypeList } from "../../constants/InterestTypeList";
 
-type CategoryScreenProps = {}
+type CategoryScreenProps = {
+    interestList : string[]
+    setInterestList : (list : string[]) => void
+}
 
 export default function CategoryScreen(props : CategoryScreenProps){
-
-    let selectCategoryList : string[] = []
 
     return(
         <View style={styles.mainContainer}>
@@ -25,12 +26,14 @@ export default function CategoryScreen(props : CategoryScreenProps){
                     color={item.color}
                     icons={item.icon}
                     onClick={(id) => {
-                        if (selectCategoryList.includes(id)) {
-                            selectCategoryList = selectCategoryList.filter(key => key !== id);
+                        if (props.interestList.includes(id)) {
+                            props.setInterestList(props.interestList.filter(key => key !== id))
                         } else {
-                            selectCategoryList.push(id);
+                            const interestList = [...props.interestList]
+                            interestList.push(id)
+                            props.setInterestList(interestList)
                         }
-                        console.log(selectCategoryList);
+                        console.log(props.interestList);
                     }}
                 />
             )}
