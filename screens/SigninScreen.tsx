@@ -52,7 +52,7 @@ export default function SigninScreen(props : SigninScreenProps) {
                 <View style={styles.buttonContainer}>
                     {ui.errorVisible && <Text style={styles.errorText}>{ui.errorText}</Text>}
                     <CommonButton title="로그인" onPress={() => {
-                        nav.requestLogin()
+                        nav.sumitLogin()
                     }}/>
                 </View>
                 <View style={styles.signupContainer}>

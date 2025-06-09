@@ -2,39 +2,59 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 import { useCallback, useState } from "react";
 import { useError } from "../useError";
+import { LoginRequest } from "../../type/login/login.type";
+import { login } from "../../api/auth/login";
+import { AxiosError } from "axios";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
-interface FormData{
+interface LoginData{
     email : string,
     password : string
 }
 
-const INITIAL_FORM_DATA = {
-    email : '',
-    password : ''
-}
-
 export const useSigninScreen = ({navigation} : SigninScreenProps) => {
-    const [formData, setFormData] = useState(INITIAL_FORM_DATA)
+    const [formData, setFormData] = useState({
+        email : 'ojm67800@gmail.com',
+        password : 'toadl2015^^'
+    })
     const {
         value : errorValue,
         handler : errorHandler
     } = useError()
 
-    const updateFormData = useCallback(<K extends keyof FormData>(key : K, value : FormData[K]) => {
+    const updateFormData = useCallback(<K extends keyof LoginData>(key : K, value : LoginData[K]) => {
         setFormData(prev => ({...prev, [key] : value}))
         if(errorValue.errorVisible){
             errorHandler.hideError()
         }
-    }, [])
+    }, [formData, errorValue.errorVisible])
 
     const setEmail = useCallback((value : string) => updateFormData("email", value), [updateFormData])
     const setPassword = useCallback((value : string) => updateFormData("password", value), [updateFormData])
 
-    const requestLogin = useCallback(() => {
-        console.log("로그인 요청")
-    }, [])
+    const sumitLogin = useCallback( async () => {
+        if(!formData.email.trim()){
+            errorHandler.showError("이메일을 입력해주세요")
+            return
+        }
+        if(!formData.password.trim()){
+            errorHandler.showError("비밀번호를 입력해주세요")
+            return
+        }
+        const loginRequest : LoginRequest = {
+            email : formData.email.trim(),
+            password : formData.password.trim()
+        }
+        try {
+            const data = await login(loginRequest)
+            console.log(data)
+        } catch (error) {
+            const errorCode = error as AxiosError
+            console.log(`${errorCode.code}`)
+            errorHandler.showError(`${errorCode.code}`)
+        }
+    }, [formData.email, formData.password])
 
     const goSignupScreen = useCallback(() => {
         navigation.navigate("Signup")
@@ -51,7 +71,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             setPassword
         },
         nav : {
-            requestLogin,
+            sumitLogin,
             goSignupScreen,
             goBack
         },
