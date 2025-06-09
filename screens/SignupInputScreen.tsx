@@ -56,7 +56,11 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
         <CurrentScreen {...form} />
         <View style={styles.buttonContainer}>
             {ui.errorVisible && <Text style={styles.errorText}>{ui.errorText}</Text>}
-            <CommonButton title={ui.currentProgress == MAXPROGRESS ? "완료" : "다음"} onPress={() => {nav.goNext()}}/>
+            <CommonButton 
+                title={ui.currentProgress == MAXPROGRESS ? "완료" : "다음"} 
+                onPress={() => {nav.goNext()}}
+                disabled={true}
+            />
         </View>
     </SafeAreaView>
     )

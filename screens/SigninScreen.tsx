@@ -15,7 +15,7 @@ export default function SigninScreen(props : SigninScreenProps) {
 
     const {
         form,
-        nav,
+        actions,
         ui
     } = useSigninScreen(props)
 
@@ -25,7 +25,7 @@ export default function SigninScreen(props : SigninScreenProps) {
             width={18} 
             height={18} 
             color={Colors.black2} 
-            onClick={() => {nav.goBack()}}
+            onClick={() => {actions.goBack()}}
             />
             <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
             <View style={styles.interactionContainer}>
@@ -51,16 +51,16 @@ export default function SigninScreen(props : SigninScreenProps) {
                 </View>
                 <View style={styles.buttonContainer}>
                     {ui.errorVisible && <Text style={styles.errorText}>{ui.errorText}</Text>}
-                    <CommonButton title="로그인" onPress={() => {
-                        nav.sumitLogin()
+                    <CommonButton title="로그인" disabled={ui.disabled} onPress={() => {
+                        actions.handleLogin()
                     }}/>
                 </View>
                 <View style={styles.signupContainer}>
-                    <LinkActionText title="이메일 찾기" onPress={() => {}}/>
+                    <LinkActionText title="이메일 찾기" onPress={() => {}} disabled={ui.disabled}/>
                     <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
+                    <LinkActionText title="비밀번호 찾기" onPress={() => {}} disabled={ui.disabled}/>
                     <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="회원가입" onPress={() => {nav.goSignupScreen()}}/>
+                    <LinkActionText title="회원가입" onPress={() => {actions.goSignupScreen()}} disabled={ui.disabled}/>
                 </View>
             </View>
         </SafeAreaView>
