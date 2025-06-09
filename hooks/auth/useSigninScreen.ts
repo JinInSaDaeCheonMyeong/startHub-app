@@ -1,11 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { useFocusEffect } from "@react-navigation/native";
 import { AuthStackParamList } from "../../navigation/AuthStack";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useError } from "../useError";
 import { LoginRequest } from "../../type/login/login.type";
 import { login } from "../../api/auth/login";
-import { AxiosError } from "axios";
 import { AuthStorageKey } from "../../constants/storage/AuthStorageKey";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -17,37 +16,43 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
         password : ''
     })
     const {
-        value : errorValue,
-        handler : errorHandler
+        value : {
+            errorText,
+            errorVisible
+        },
+        handler : {
+            showError,
+            hideError,
+            handleAxiosError
+        }
     } = useError()
     const [disabled, setDisabled] = useState(false)
 
     const disableBtn = useCallback(() => setDisabled(true), []);
     const ableBtn = useCallback(() => setDisabled(false), []);
 
-    useFocusEffect(
-        useCallback(() => {
-            ableBtn()
-        }, [])
-    )
+    useEffect(() => {
+    const controller = new AbortController()
+    return () => controller.abort()
+    }, [])
 
     const updateFormData = useCallback(<K extends keyof LoginRequest>(key : K, value : LoginRequest[K]) => {
         setFormData(prev => ({...prev, [key] : value}))
-        if(errorValue.errorVisible){
-            errorHandler.hideError()
+        if(errorVisible){
+            hideError()
         }
-    }, [formData, errorValue.errorVisible])
+    }, [errorVisible])
 
     const setEmail = useCallback((value : string) => updateFormData("email", value), [updateFormData])
     const setPassword = useCallback((value : string) => updateFormData("password", value), [updateFormData])
 
     const varidateForm = (email : string, password : string) => {
         if(!email){
-            errorHandler.showError("이메일을 입력해주세요")
+            showError("이메일을 입력해주세요")
             return false
         }
         if(!password){
-            errorHandler.showError("비밀번호를 입력해주세요")
+            showError("비밀번호를 입력해주세요")
             return false
         }
         return true
@@ -73,13 +78,13 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             await AsyncStorage.setItem(AuthStorageKey.REFRESH_TOKEN, data.refresh)
             successLogin()
         } catch (error) {
-            const errorCode = error as AxiosError
-            console.log(`${errorCode.code}`)
-            errorHandler.showError(`${errorCode.code}`)
+            handleAxiosError(error, {
+                401 : "이메일 혹은 비밀번호가 일치하지 않습니다"
+            })
         } finally {
             ableBtn()
         }
-    }, [formData.email, formData.password, disabled, errorHandler])
+    }, [formData.email, formData.password, disabled])
 
     const goSignupScreen = () => {
         disableBtn()
@@ -87,7 +92,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     }
 
     const successLogin = () => {
-        // Home 화면 이동
+        console.log("success")
     }
 
     const goBack = () => {
@@ -108,8 +113,8 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
         },
         ui : {
             disabled,
-            errorVisible : errorValue.errorVisible,
-            errorText : errorValue.errorText
+            errorVisible,
+            errorText
         }
     }
 }
