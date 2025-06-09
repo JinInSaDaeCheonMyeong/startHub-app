@@ -6,13 +6,15 @@ import { useError } from "../useError";
 import { LoginRequest } from "../../type/login/login.type";
 import { login } from "../../api/auth/login";
 import { AxiosError } from "axios";
+import { AuthStorageKey } from "../../constants/storage/AuthStorageKey";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
 export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const [formData, setFormData] = useState({
-        email : 'ojm67800@gmail.com',
-        password : 'toadl2015^^'
+        email : '',
+        password : ''
     })
     const {
         value : errorValue,
@@ -66,8 +68,10 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             password
         }
         try {
-            const data = await login(loginRequest)
-            console.log(data)
+            const { data } = await login(loginRequest)
+            await AsyncStorage.setItem(AuthStorageKey.ACCESS_TOKEN, data.access)
+            await AsyncStorage.setItem(AuthStorageKey.REFRESH_TOKEN, data.refresh)
+            successLogin()
         } catch (error) {
             const errorCode = error as AxiosError
             console.log(`${errorCode.code}`)
@@ -80,6 +84,10 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const goSignupScreen = () => {
         disableBtn()
         navigation.navigate("Signup")
+    }
+
+    const successLogin = () => {
+        // Home 화면 이동
     }
 
     const goBack = () => {
