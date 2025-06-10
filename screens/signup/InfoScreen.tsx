@@ -2,16 +2,21 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/Color";
 import { useState } from "react";
 import AuthDropDown from "../../component/auth/AuthDropDown";
+import DateInputText from "../../component/auth/DateInputText";
+import { DayList, MonthList, YearList } from "../../constants/\bDateNumber";
 
 type InfoScreenProps = {
-    onClick : () => void
+    name : string,
+    year : string,
+    month : string,
+    day : string,
+    setName : (name : string) => void,
+    setYear : (year : string) => void,
+    setMonth : (month : string) => void,
+    setDay : (day : string) => void,
 }
 
 export default function InfoScreen(props : InfoScreenProps) {
-
-    const [open, setOpen] = useState(false)
-    const [value, setValue] = useState("")
-    const dropdownItems = [{label : "남",  value : "남"}, {label : "여",  value : "여"}]
 
     return(
         <View style={styles.mainContainer}>
@@ -24,21 +29,35 @@ export default function InfoScreen(props : InfoScreenProps) {
                     style={styles.inputText}
                     placeholder="이름을 입력해주세요..."
                     placeholderTextColor={Colors.gray3}
+                    value={props.name}
+                    onChangeText={(s) => {props.setName(s)}}
                 />
             </View>
             <View style={styles.inputBox}>
                 <View style={styles.textBox}>
-                    <Text style={styles.subText}>회원님의 성별을 선택해주세요!</Text>
-                    <Text style={styles.mainText}>{"(선택) 당신의 성별이 궁금합니다!"}</Text>
+                    <Text style={styles.subText}>회원님의 생년월일을 입력해주세요!</Text>
+                    <Text style={styles.mainText}>{"생일축하를 해드리고 싶어요!"}</Text>
                 </View>
-                <AuthDropDown
-                    open={open}
-                    value={value}
-                    items={dropdownItems}
-                    placeholder="성별"
-                    setOpen={setOpen}
-                    setValue={setValue}
-                />
+                <View style={styles.birthDateContainer}>
+                    <DateInputText 
+                        data={YearList} 
+                        placeholder="YYYY"
+                        text={props.year} 
+                        setText={(s) => {props.setYear(s)}}
+                    />
+                    <DateInputText 
+                        data={MonthList} 
+                        placeholder="MM"
+                        text={props.month} 
+                        setText={(s) => {props.setMonth(s)}}
+                    />
+                    <DateInputText 
+                        data={DayList} 
+                        placeholder="DD"
+                        text={props.day} 
+                        setText={(s) => {props.setDay(s)}}
+                    />
+                </View>
             </View>
         </View>
     )
@@ -51,7 +70,8 @@ const styles = StyleSheet.create({
         overflow : "hidden"
     },
     inputBox : {
-        gap : 16
+        gap : 16,
+        zIndex: 1
     },
     textBox : {
         gap : 4
@@ -70,5 +90,21 @@ const styles = StyleSheet.create({
         fontSize : 18,
         color : Colors.black2,
         fontWeight : "medium"
+    },
+    birthDateContainer : {
+        flex : 1,
+        flexDirection : "row",
+        gap : 16,
+    },
+    birthInput : {
+        flex : 1,
+        paddingHorizontal : 16,
+        paddingVertical : 12,
+        backgroundColor : Colors.white2,
+        color : Colors.black2,
+        fontSize : 16,
+        fontWeight : "medium",
+        borderRadius : 8,
+        textAlign : "center"
     }
 })

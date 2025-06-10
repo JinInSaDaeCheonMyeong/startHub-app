@@ -9,38 +9,26 @@ import InfoScreen from "./signup/InfoScreen";
 import CategoryScreen from "./signup/CategoryScreen";
 import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
+import { useSignupInputScreen } from "../hooks/auth/useSignupInputScreen";
 
-type SignupInfoScreenProps = StackScreenProps<AuthStackParamList, 'SignupInfo'>
+type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 
-const InputInfoScreen = [
+const SCREENS = [
     InfoScreen,
     LocationScreen,
     CategoryScreen
-]
+] as const
 
-export default function SignupInfoScreen({navigation, route} : SignupInfoScreenProps) {
+const MAXPROGRESS = SCREENS.length;
+
+export default function SignupInputScreen(props : SignupInputScreenProps) {
     const {width} = useWindowDimensions();
-    const [currentProgress, setCurrentProgress] = useState(1)
-    const [errorVisible, setErrorVisible] = useState(true)
-    const [errorText, setErrorText] = useState("error text")
-    const CurrentScreen = InputInfoScreen[currentProgress-1]
-    const maxProgress = 3;
-
-    const goBack = () => {
-        if(currentProgress < 2) {
-            navigation.goBack()
-        } else {
-            setCurrentProgress(currentProgress - 1)
-        }
-    }
-
-    const goNext = () => {
-        if(currentProgress >= maxProgress) {
-            navigation.popTo("Start")
-        } else {
-            setCurrentProgress(currentProgress + 1)
-        }
-    }
+    const {
+        form,
+        ui, 
+        nav
+    } = useSignupInputScreen(props, MAXPROGRESS)
+    const CurrentScreen = SCREENS[ui.currentProgress-1]
 
     return(
     <SafeAreaView style={styles.mainContainer}>
@@ -50,26 +38,29 @@ export default function SignupInfoScreen({navigation, route} : SignupInfoScreenP
             height={20} 
             color={Colors.black2} 
             onClick={()=>{
-                goBack()
+                nav.goBack()
             }}
         /> 
         <View style={styles.progressBarContainer}>
-            <Text>{`${currentProgress} of ${maxProgress}`}</Text>
+            <Text>{`${ui.currentProgress} of ${MAXPROGRESS}`}</Text>
             <Progress.Bar 
                 width={width - 32} 
-                progress={currentProgress / maxProgress}
+                progress={ui.currentProgress / MAXPROGRESS}
                 color={Colors.primary} 
                 borderColor={Colors.white2}
                 unfilledColor={Colors.white2}
                 borderWidth={0}
+                height={8}
             />
         </View>
-        <CurrentScreen 
-            onClick={() => {goNext()}}
-        />
+        <CurrentScreen {...form} />
         <View style={styles.buttonContainer}>
-            {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
-            <CommonButton title={currentProgress == maxProgress ? "완료" : "다음"} onPress={() => {goNext()}}/>
+            {ui.errorVisible && <Text style={styles.errorText}>{ui.errorText}</Text>}
+            <CommonButton 
+                title={ui.currentProgress == MAXPROGRESS ? "완료" : "다음"} 
+                onPress={() => {nav.goNext()}}
+                disabled={true}
+            />
         </View>
     </SafeAreaView>
     )
