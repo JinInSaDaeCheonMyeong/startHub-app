@@ -2,6 +2,8 @@ import * as WebBrowser from 'expo-web-browser';
 import {makeRedirectUri, useAuthRequest, ResponseType} from 'expo-auth-session';
 import { useEffect } from 'react';
 import {Platform} from "react-native";
+import {googleLogin} from "../api/oauth";
+import {ShowToast, ToastType} from "../util/ShowToast";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -27,9 +29,13 @@ export default function useGoogleLogin() {
 
     useEffect(() => {
         if (response?.type === 'success' && response.params?.code) {
-            console.log('Successfully logged in', response.params.code);
+            googleLogin(response.params.code)
         } else if (response?.type === 'error') {
-            console.log('Error logged in', response);
+            ShowToast(
+                "문제가 발생하였습니다.",
+                response.params.error,
+                ToastType.ERROR,
+            )
         }
     }, [response]);
 
