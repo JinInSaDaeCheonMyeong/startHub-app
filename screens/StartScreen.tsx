@@ -9,30 +9,39 @@ import useGoogleLogin from "../hooks/useGoogleLogin";
 type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Start'>;
 
 export default function StartScreen({navigation}: WelcomeScreenProps) {
-    const { request, promptAsync } = useGoogleLogin();
+    const { request, promptAsync } = useGoogleLogin( isFirst => {
+            if (isFirst){
+                //정보입력창 이동
+            }
+            else {
+                //메인이동
+            }
+        }
+    );
 
     const authItems = [
         {
             title: 'StartHub',
             icon: require('../assets/logos/starthub_logo.png'),
-            onPress: () => {}
+            onPress: async () => {}
         },
         {
             title: 'Google',
             icon: require('../assets/logos/google_logo.png'),
-            onPress: () => {
-                promptAsync();
-            }
+            onPress: async () => {
+                await promptAsync();
+            },
+            request: request
         },
         {
             title: 'Naver',
             icon: require('../assets/logos/naver_logo.png'),
-            onPress: () => {}
+            onPress: async () => {}
         },
         {
             title: 'Apple',
             icon: require('../assets/logos/apple_logo.png'),
-            onPress: () => {}
+            onPress: async () => {}
         }
     ];
     return (
@@ -52,7 +61,7 @@ export default function StartScreen({navigation}: WelcomeScreenProps) {
             <View style={styles.itemContainer}>
                 {
                     authItems.map((item, index) => (
-                        <TouchableOpacity style={styles.authItem} key={index} onPress={item.onPress}>
+                        <TouchableOpacity style={styles.authItem} key={index} onPress={item.onPress} disabled={!item.request}>
                             <Image source={item.icon} style={styles.itemIcon}/>
                             <Text style={styles.itemText}>{item.title}로 시작</Text>
                         </TouchableOpacity>
