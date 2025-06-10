@@ -20,7 +20,9 @@ export default function StartScreen({navigation}: WelcomeScreenProps) {
         {
             title: 'Google',
             icon: require('../assets/logos/google_logo.png'),
-            onPress: () => {promptAsync()}
+            onPress: () => {
+                promptAsync();
+            }
         },
         {
             title: 'Naver',
