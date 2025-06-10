@@ -1,5 +1,6 @@
 {
   "expo": {
+    "scheme" : "startHub-app",
     "name": "startHub-app",
     "slug": "startHub-app",
     "version": "1.0.0",
@@ -14,7 +15,7 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.iszero.startHubapp"
+      "bundleIdentifier": "com.jininsa.startHubapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +23,7 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.iszero.startHubapp"
+      "package": "com.jininsa.startHubapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,6 +33,9 @@
         "projectId": "b64a97ca-fb5f-4166-8b92-d7ac35534cad"
       }
     },
-    "owner": "iszero"
+    "owner": "iszero",
+    "plugins": [
+      "expo-web-browser"
+    ]
   }
 }
