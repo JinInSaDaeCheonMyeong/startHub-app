@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LoginRequest, LoginResponse } from "../../type/login/login.type";
+import { LoginRequest, LoginResponse } from "../../type/user/login/login.type";
 
 export const login = async (loginData : LoginRequest) : Promise<LoginResponse> => {
     console.log(process.env.EXPO_PUBLIC_SERVER_API_BASE_URL)

@@ -3,7 +3,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 import { useCallback, useEffect, useState } from "react";
 import { useError } from "../useError";
-import { LoginRequest } from "../../type/login/login.type";
+import { LoginRequest } from "../../type/user/login/login.type";
 import { login } from "../../api/auth/login";
 import { AuthStorageKey } from "../../constants/storage/AuthStorageKey";
 import AsyncStorage from "@react-native-async-storage/async-storage";
