@@ -7,17 +7,13 @@ import AuthTextInput from "../component/auth/AuthTextInput";
 import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
 import LinkActionText from "../component/auth/LinkActionText";
-import { useSigninScreen } from "../hooks/auth/useSigninScreen";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
-export default function SigninScreen(props : SigninScreenProps) {
+export default function SigninScreen({navigation} : SigninScreenProps) {
 
-    const {
-        form,
-        actions,
-        ui
-    } = useSigninScreen(props)
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
 
     return (
         <SafeAreaView style={styles.container}>
@@ -25,42 +21,40 @@ export default function SigninScreen(props : SigninScreenProps) {
             width={18} 
             height={18} 
             color={Colors.black2} 
-            onClick={() => {actions.goBack()}}
+            onClick={() => {navigation.goBack()}}
             />
             <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
             <View style={styles.interactionContainer}>
                 <View style={styles.textInputContainer}>
                     <AuthTextInput 
-                        value={form.email}
+                        value={email}
                         placeHolder="이메일"
                         placeHolderTextColor={Colors.gray2}
                         isPassword={false}
                         onChange={(text) => {
-                            form.setEmail(text)
+                            setEmail(text)
                         }}
                     />
                     <AuthTextInput 
-                        value={form.password}
+                        value={password}
                         placeHolder="비밀번호" 
                         placeHolderTextColor={Colors.gray2}
                         isPassword={true}
                         onChange={(text) => {
-                            form.setPassword(text)
+                            setPassword(text)
                         }}
                     />
                 </View>
                 <View style={styles.buttonContainer}>
-                    {ui.errorVisible && <Text style={styles.errorText}>{ui.errorText}</Text>}
-                    <CommonButton title="로그인" disabled={ui.disabled} onPress={() => {
-                        actions.handleLogin()
-                    }}/>
+                    <Text style={styles.errorText}>이메일 혹은 비밀번호가 일치하지 않습니다</Text>
+                    <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}}/>
                 </View>
                 <View style={styles.signupContainer}>
-                    <LinkActionText title="이메일 찾기" onPress={() => {}} disabled={ui.disabled}/>
+                    <LinkActionText title="이메일 찾기" onPress={() => {}}/>
                     <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="비밀번호 찾기" onPress={() => {}} disabled={ui.disabled}/>
+                    <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
                     <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="회원가입" onPress={() => {actions.goSignupScreen()}} disabled={ui.disabled}/>
+                    <LinkActionText title="회원가입" onPress={() => {navigation.navigate('Signup')}}/>
                 </View>
             </View>
         </SafeAreaView>
