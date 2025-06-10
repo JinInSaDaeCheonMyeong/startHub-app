@@ -3,12 +3,17 @@ import { Colors } from "../constants/Color";
 
 type CommonButtonProps = {
     title : string,
+    disabled : boolean,
     onPress : () => void,
 }
 
 export default function CommonButton(props : CommonButtonProps) {
     return(
-        <TouchableOpacity style={styles.container} onPress={props.onPress}>
+        <TouchableOpacity 
+            style={styles.container} 
+            onPress={props.onPress}
+            disabled={props.disabled}
+        >
             <Text style={styles.text}>{props.title}</Text>
         </TouchableOpacity>
     )

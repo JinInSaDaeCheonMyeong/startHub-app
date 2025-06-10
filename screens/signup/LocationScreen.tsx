@@ -1,14 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 import AuthDropDown from "../../component/auth/AuthDropDown";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { LocationItems } from "../../constants/LocationItems";
 import { Colors } from "../../constants/Color";
 
+type LocationScreenProps = {
+    location : string,
+    setLocation : (value : string) => void
+}
 
-export default function LocationScreen() {
+export default function LocationScreen(props : LocationScreenProps) {
 
     const [open, setOpen] = useState(false)
-    const [value, setValue] = useState("")
 
     return(
         <View style={styles.mainContainer}>
@@ -18,9 +21,9 @@ export default function LocationScreen() {
             </View>
             <AuthDropDown
                 open={open}
-                value={value}
+                value={props.location}
                 setOpen={setOpen}
-                setValue={setValue}
+                setValue={(s) => {props.setLocation(s)}}
                 items={LocationItems}
                 placeholder="지역"
             />

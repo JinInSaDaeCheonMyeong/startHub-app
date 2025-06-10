@@ -12,7 +12,7 @@ type AuthDropDownProps = {
     items: ItemType<any>[],
     placeholder : string,
     setOpen : Dispatch<SetStateAction<boolean>>
-    setValue : Dispatch<SetStateAction<string>>
+    setValue : (value : string) => void
 }
 
 export default function AuthDropDown(props : AuthDropDownProps){
@@ -23,7 +23,16 @@ export default function AuthDropDown(props : AuthDropDownProps){
         value={props.value}
         items={props.items}
         setOpen={props.setOpen}
-        setValue={props.setValue}
+        multiple = {false}
+        setValue={(callback) => {
+        const newValue =
+            typeof callback === "function"
+            ? callback(props.value)
+            : callback;
+        if (newValue !== null) {
+            props.setValue(newValue);
+        }
+        }}
         placeholder={props.placeholder}
         placeholderStyle={styles.placeholderStyle}
         style={styles.mainStyle}
