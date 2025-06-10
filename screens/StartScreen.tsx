@@ -1,36 +1,38 @@
 import {StackScreenProps} from "@react-navigation/stack";
 import {AuthStackParamList} from "../navigation/AuthStack";
-import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, Image} from "react-native";
+import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, Image, TouchableOpacity} from "react-native";
 import {Colors} from "../constants/Color";
 import React from "react";
 import BackButton from "../component/BackButton";
+import useGoogleLogin from "../hooks/useGoogleLogin";
 
 type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Start'>;
 
-const authItems = [
-    {
-        title: 'StartHub',
-        icon: require('../assets/logos/starthub_logo.png'),
-        onPress: () => {}
-    },
-    {
-        title: 'Google',
-        icon: require('../assets/logos/google_logo.png'),
-        onPress: () => {}
-    },
-    {
-        title: 'Naver',
-        icon: require('../assets/logos/naver_logo.png'),
-        onPress: () => {}
-    },
-    {
-        title: 'Apple',
-        icon: require('../assets/logos/apple_logo.png'),
-        onPress: () => {}
-    }
-];
-
 export default function StartScreen({navigation}: WelcomeScreenProps) {
+    const { request, promptAsync } = useGoogleLogin();
+
+    const authItems = [
+        {
+            title: 'StartHub',
+            icon: require('../assets/logos/starthub_logo.png'),
+            onPress: () => {}
+        },
+        {
+            title: 'Google',
+            icon: require('../assets/logos/google_logo.png'),
+            onPress: () => {promptAsync()}
+        },
+        {
+            title: 'Naver',
+            icon: require('../assets/logos/naver_logo.png'),
+            onPress: () => {}
+        },
+        {
+            title: 'Apple',
+            icon: require('../assets/logos/apple_logo.png'),
+            onPress: () => {}
+        }
+    ];
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -48,10 +50,10 @@ export default function StartScreen({navigation}: WelcomeScreenProps) {
             <View style={styles.itemContainer}>
                 {
                     authItems.map((item, index) => (
-                        <View style={styles.authItem} key={index}>
+                        <TouchableOpacity style={styles.authItem} key={index} onPress={item.onPress}>
                             <Image source={item.icon} style={styles.itemIcon}/>
                             <Text style={styles.itemText}>{item.title}로 시작</Text>
-                        </View>
+                        </TouchableOpacity>
                     ))
                 }
             </View>
