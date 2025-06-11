@@ -1,11 +1,11 @@
 import { Response } from "../../util/response.type"
 
-export interface LoginRequest{
+export interface SigninRequest{
     email : string,
     password : string
 }
 
-export interface LoginResponse extends Response{
+export interface SigninResponse extends Response{
     data : {
         access : string,
         refresh : string

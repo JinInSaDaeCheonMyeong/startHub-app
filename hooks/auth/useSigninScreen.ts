@@ -3,8 +3,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 import { useCallback, useEffect, useState } from "react";
 import { useError } from "../useError";
-import { LoginRequest } from "../../type/user/login/login.type";
-import { login } from "../../api/auth/login";
+import { SigninRequest } from "../../type/user/signin/signin.type";
+import { signin } from "../../api/user/signin";
 import { AuthStorageKey } from "../../constants/storage/AuthStorageKey";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -36,7 +36,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     return () => controller.abort()
     }, [])
 
-    const updateFormData = useCallback(<K extends keyof LoginRequest>(key : K, value : LoginRequest[K]) => {
+    const updateFormData = useCallback(<K extends keyof SigninRequest>(key : K, value : SigninRequest[K]) => {
         setFormData(prev => ({...prev, [key] : value}))
         if(errorVisible){
             hideError()
@@ -68,12 +68,12 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             ableBtn()
             return
         }
-        const loginRequest : LoginRequest = {
+        const loginRequest : SigninRequest = {
             email,
             password
         }
         try {
-            const { data } = await login(loginRequest)
+            const { data } = await signin(loginRequest)
             await AsyncStorage.setItem(AuthStorageKey.ACCESS_TOKEN, data.access)
             await AsyncStorage.setItem(AuthStorageKey.REFRESH_TOKEN, data.refresh)
             successLogin()
