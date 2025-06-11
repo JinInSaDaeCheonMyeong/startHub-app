@@ -1,4 +1,4 @@
-import { Response } from "../../util/response.type";
+import { Response } from "../util/response.type";
 
 export interface SignupRequest{
     email : string,
@@ -6,7 +6,7 @@ export interface SignupRequest{
 }
 
 export interface SignupFormData extends SignupRequest {
-    verifyNumber : string
+    verifyCode : string
     checkPassword : string
     checked : {
         ONE : boolean
