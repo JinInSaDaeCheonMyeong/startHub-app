@@ -24,3 +24,8 @@ export const DefaultErrorMessage : ErrorType = {
     default : '알 수 없는 오류가 발생했습니다',
     network : '네트워크 연결을 확인해주세요'
 }
+
+export type VaildError = {
+    value : boolean,
+    message? : string
+}
