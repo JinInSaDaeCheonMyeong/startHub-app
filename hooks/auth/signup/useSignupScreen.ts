@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
-import { SignupScreenProps } from "../../screens/SignupScreen"
-import { useError } from "../useError"
-import { CheckedKeyType, SignupFormData } from "../../type/user/signup/signup.type"
-import { all } from "axios"
+import { SignupScreenProps } from "../../../screens/SignupScreen"
+import { useError } from "../../util/useError"
+import { SignupFormData } from "../../../type/user/signup/signup.type"
+import { useSignupValid } from "./useSignupValid"
 
 export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     const [formData, setFormData] = useState<SignupFormData>({
@@ -11,9 +11,9 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         password : '',
         checkPassword : '',
         checked : {
-            ONE : false,
-            SECOND : false,
-            THIRD : false
+            ONE : false, //필수
+            SECOND : false, //필수
+            THIRD : false //필수
         },
         allChecked : false
     })
@@ -28,8 +28,12 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             handleAxiosError
         },
     } = useError()
-
+    const {
+        validSigninForm
+    } = useSignupValid()
     const [disabled, setDisabled] = useState(false)
+    const disabledBtn = useCallback(() => {setDisabled(true)}, [])
+    const abledBtn = useCallback(() => {setDisabled(false)}, [])
 
     const updateFormData = useCallback(<K extends keyof SignupFormData>(key : K, value : SignupFormData[K]) => {
         setFormData(prev => ({...prev, [key] : value}))
@@ -63,7 +67,15 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         navigation.goBack()
     }
 
-    const goNext = () => {
+    const handleSignup = () => {
+        disabledBtn()
+        const vaildResult = validSigninForm(formData)
+        if(!vaildResult.value) {
+            abledBtn()
+            showError(vaildResult.message)
+            return 
+        }
+        abledBtn()
         navigation.navigate('SignupInput')
     }
 
@@ -79,7 +91,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         },
         actions : {
             goBack,
-            goNext,
+            handleSignup,
         },
         ui : {
             errorText,
