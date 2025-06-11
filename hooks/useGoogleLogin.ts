@@ -31,8 +31,8 @@ export default function useGoogleLogin(
 
     useEffect(() => {
         const handleResponse = async () => {
-            if (response?.type === 'success' && response.params?.code) {
-                const isFirst = await googleLogin(response.params.code);
+            if (response?.type === 'success' && response.params?.code && request?.codeVerifier) {
+                const isFirst = await googleLogin(response.params.code, request?.codeVerifier);
                 if (onSuccess && typeof isFirst !== 'undefined') {
                     onSuccess(isFirst);
                 }
