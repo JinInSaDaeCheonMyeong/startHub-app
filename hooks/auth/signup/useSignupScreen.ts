@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react"
 import { SignupScreenProps } from "../../../screens/SignupScreen"
 import { useError } from "../../util/useError"
-import { SignupFormData } from "../../../type/user/signup/signup.type"
+import { SignupFormData } from "../../../type/user/signup.type"
 import { useSignupValid } from "./useSignupValid"
 
 export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     const [formData, setFormData] = useState<SignupFormData>({
         email : '',
-        verifyNumber : '',
+        verifyCode : '',
         password : '',
         checkPassword : '',
         checked : {
@@ -43,7 +43,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     }, [errorVisible])
 
     const setEmail = useCallback((value : string) => updateFormData('email', value), [updateFormData])
-    const setVerifyNumber = useCallback((value : string) => updateFormData('verifyNumber', value), [updateFormData])
+    const setVerifyNumber = useCallback((value : string) => updateFormData('verifyCode', value), [updateFormData])
     const setPassword = useCallback((value : string) => updateFormData('password', value), [updateFormData])
     const setCheckPassword = useCallback((value : string) => updateFormData('checkPassword', value), [updateFormData])
     const setChecked = useCallback((key : string, value : boolean) => {
@@ -64,7 +64,9 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     }, [updateFormData])
 
     const goBack = () => {
+        disabledBtn()
         navigation.goBack()
+        abledBtn()
     }
 
     const handleSignup = () => {
