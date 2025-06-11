@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {saveAccToken, saveRefToken} from "../util/token";
+import {getAccToken, saveAccToken, saveRefToken} from "../util/token";
 import {ShowToast, ToastType} from "../util/ShowToast";
 
 
@@ -19,9 +19,8 @@ export async function getState() {
     }
 }
 
-export async function googleLogin(code: String) {
+export async function googleLogin(code: String, codeVerifier : String) {
     const state = await getState();
-    console.log(state);
     if (!state) {
         ShowToast(
             "문제가 발생하였습니다.",
@@ -31,20 +30,21 @@ export async function googleLogin(code: String) {
         return;
     }
     try {
-        const response = await axios.post(url + '/oauth/google',{},{
+        const response = await axios.get(url + '/oauth/google',{
             params : {
                 code : code,
-                state : state
+                state : state,
+                codeVerifier : codeVerifier,
             }
         });
-        console.log(code);
         await saveAccToken(response.data.data.access);
         await saveRefToken(response.data.data.refresh);
+        console.log("Acc" + await getAccToken());
         return response.data.data.isFirstLogin;
     } catch (error: any) {
         ShowToast(
             '문제가 발생하였습니다.',
-            error.message,
+            error.response.data.message,
             ToastType.ERROR,
         );
     }
