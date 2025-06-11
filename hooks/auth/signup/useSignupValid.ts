@@ -33,6 +33,7 @@ export const useSignupValid = () => {
     }
 
     return {
-        validSigninForm
+        validSigninForm,
+        isVaildEmail
     }
 }

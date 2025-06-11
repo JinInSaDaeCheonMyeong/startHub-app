@@ -3,6 +3,9 @@ import { SignupScreenProps } from "../../../screens/SignupScreen"
 import { useError } from "../../util/useError"
 import { SignupFormData } from "../../../type/user/signup.type"
 import { useSignupValid } from "./useSignupValid"
+import { SendcodeRequest } from "../../../type/email/sendcode.type"
+import { sendcode } from "../../../api/email/sendcode"
+import { DefaultErrorMessage } from "../../../type/error/error.type"
 
 export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     const [formData, setFormData] = useState<SignupFormData>({
@@ -29,7 +32,8 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         },
     } = useError()
     const {
-        validSigninForm
+        validSigninForm,
+        isVaildEmail
     } = useSignupValid()
     const [disabled, setDisabled] = useState(false)
     const disabledBtn = useCallback(() => {setDisabled(true)}, [])
@@ -81,6 +85,30 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         navigation.navigate('SignupInput')
     }
 
+    const requestSendcode = useCallback( async () => {
+        disabledBtn()
+        const {email} = formData
+        const emailValid = isVaildEmail(email.trim())
+        if(!emailValid.value) {
+            abledBtn()
+            showError(emailValid.message)
+        }
+        const sendcodeData : SendcodeRequest = {
+            email : email
+        }
+        try {
+            await sendcode(sendcodeData)
+            console.log("send-code : 성공")
+        } catch (error) {
+            console.log("send-code : 실패")
+            handleAxiosError(error, {
+                ...DefaultErrorMessage
+            })
+            abledBtn()
+        }
+        abledBtn()
+    }, [])
+
     return {
         form : {
             ...formData,
@@ -94,6 +122,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         actions : {
             goBack,
             handleSignup,
+            requestSendcode
         },
         ui : {
             errorText,
