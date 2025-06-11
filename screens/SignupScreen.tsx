@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import CommonButton from "../component/CommonButton";
 import Checkbox from "expo-checkbox";
 import SelectAgreement from "../component/auth/SelectAgreement";
-import { useSignupScreen } from "../hooks/auth/useSignupScreen";
+import { useSignupScreen } from "../hooks/auth/signup/useSignupScreen";
 
 export type SignupScreenProps = StackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -16,7 +16,7 @@ export default function SignupScreen(props : SignupScreenProps){
     const {
         form : {
             email,
-            verifyNumber,
+            verifyCode,
             password,
             checkPassword,
             checked,
@@ -30,7 +30,7 @@ export default function SignupScreen(props : SignupScreenProps){
         },
         actions : {
             goBack,
-            goNext,
+            handleSignup,
         },
         ui : {
             errorText,
@@ -76,7 +76,7 @@ export default function SignupScreen(props : SignupScreenProps){
                     </TouchableOpacity>
                 </View>
                 <AuthTextInput
-                    value={verifyNumber}
+                    value={verifyCode}
                     placeHolder="인증번호"
                     placeHolderTextColor={Colors.gray2}
                     isPassword={false}
@@ -133,7 +133,7 @@ export default function SignupScreen(props : SignupScreenProps){
                 <Text style={styles.errorText}>{errorVisible ? errorText : ""}</Text>
                 <CommonButton 
                     title="회원가입" 
-                    onPress={() => {goNext()}}
+                    onPress={() => {handleSignup()}}
                     disabled={disabled}
                 />
             </View>
