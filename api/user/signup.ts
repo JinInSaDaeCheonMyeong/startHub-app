@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SignupRequest, SignupResponse } from "../../type/user/signup.type";
+import { SignupRequest, SignupResponse } from "../../type/user/signupType";
 
 export const signup = async (signupData : SignupRequest) : Promise<SignupResponse> => {
     console.log("signup : request signup")

@@ -1,5 +1,5 @@
-import { VaildError } from "../../../type/error/error.type"
-import { SignupFormData } from "../../../type/user/signup.type"
+import { VaildError } from "../../../type/error/errorType"
+import { SignupFormData } from "../../../type/user/signupType"
 import { useAuthValid } from "../../util/auth/useAuthValid"
 
 export const useSignupValid = () => {

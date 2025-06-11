@@ -1,13 +1,11 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { useFocusEffect } from "@react-navigation/native";
 import { AuthStackParamList } from "../../navigation/AuthStack";
 import { useCallback, useEffect, useState } from "react";
 import { useError } from "../util/useError";
-import { SigninRequest } from "../../type/user/signin.type";
 import { signin } from "../../api/user/signin";
-import { AuthStorageKey } from "../../constants/storage/AuthStorageKey";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DefaultErrorMessage } from "../../type/error/error.type";
+import { SigninRequest } from "../../type/user/signin.type";
+import { saveAccToken, saveRefToken } from "../../util/token";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
@@ -75,8 +73,8 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
         }
         try {
             const { data } = await signin(loginRequest)
-            await AsyncStorage.setItem(AuthStorageKey.ACCESS_TOKEN, data.access)
-            await AsyncStorage.setItem(AuthStorageKey.REFRESH_TOKEN, data.refresh)
+            await saveAccToken(data.access)
+            await saveRefToken(data.refresh)
             successLogin()
         } catch (error) {
             handleAxiosError(error, {

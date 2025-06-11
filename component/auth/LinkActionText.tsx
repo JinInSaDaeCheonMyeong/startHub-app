@@ -3,13 +3,12 @@ import { Colors } from "../../constants/Color";
 
 type LinkActionTextProps = {
     title : string,
-    onPress : () => void,
-    disabled : boolean
+    onPress : () => void
 }
 
 export default function LinkActionText(props : LinkActionTextProps) {
     return ( 
-        <TouchableOpacity onPress={props.onPress} disabled={props.disabled}>
+        <TouchableOpacity onPress={props.onPress}>
             <Text style={styles.linkActionText}>
                 {props.title}
             </Text>

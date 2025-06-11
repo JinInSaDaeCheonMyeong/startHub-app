@@ -1,3 +1,4 @@
+import { Response } from "../util/response.type";
 
 export interface VerifyRequest{
     email : string,

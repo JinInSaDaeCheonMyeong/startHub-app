@@ -1,6 +1,6 @@
 import { isAxiosError } from "axios"
 import { useState } from "react"
-import { DefaultErrorMessage, ErrorType } from "../../type/error/error.type"
+import { DefaultErrorMessage, ErrorType } from "../../type/error/errorType"
 
 export const useError = () => {
     const [errorVisible, setErrorVisible] = useState(false)
