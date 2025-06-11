@@ -7,6 +7,7 @@ import { SigninRequest } from "../../type/user/signin.type";
 import { signin } from "../../api/user/signin";
 import { AuthStorageKey } from "../../constants/storage/AuthStorageKey";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DefaultErrorMessage } from "../../type/error/error.type";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
@@ -79,7 +80,9 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             successLogin()
         } catch (error) {
             handleAxiosError(error, {
-                401 : "이메일 혹은 비밀번호가 일치하지 않습니다"
+                ...DefaultErrorMessage,
+                401 : "이메일 혹은 비밀번호가 일치하지 않습니다",
+                409 : "이미 존재하는 이메일입니다"
             })
         } finally {
             ableBtn()

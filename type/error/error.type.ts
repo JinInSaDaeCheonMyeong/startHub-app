@@ -3,6 +3,7 @@ export interface ErrorType{
     400 ?: string;
     403 ?: string;
     404 ?: string;
+    409 ?: string;
     422 ?: string;
     500 ?: string;
     502 ?: string;
@@ -17,6 +18,7 @@ export const DefaultErrorMessage : ErrorType = {
     401 : '인증이 필요합니다',
     403 : '접근 권한이 없습니다',
     404 : '요청을 찾을 수 없습니다',
+    409 : '이미 있는 정보입니다',
     422 : '입력 데이터를 확인해주세요',
     500 : '서버 오류가 발생했습니다',
     502 : '서버 연결에 문제가 있습니다',

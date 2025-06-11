@@ -72,7 +72,7 @@ export default function SignupScreen(props : SignupScreenProps){
                             }}
                         />
                     </View>
-                    <TouchableOpacity style={styles.verifyButton} onPress={()=>{requestSendcode()}}>
+                    <TouchableOpacity disabled={disabled} style={styles.verifyButton} onPress={()=>{requestSendcode()}}>
                         <Text style={styles.verifyButtonText}>인증번호 전송</Text>
                     </TouchableOpacity>
                 </View>
