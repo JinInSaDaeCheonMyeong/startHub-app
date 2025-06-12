@@ -106,8 +106,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             return
         }
         try {
-            const {message} = await signup(signupData)
-            console.log(`signup : ${message}`)
+            await signup(signupData)
         } catch (error) {
             handleAxiosError(error, {
                 ...DefaultErrorMessage,

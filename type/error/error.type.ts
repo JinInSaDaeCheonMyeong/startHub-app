@@ -1,3 +1,4 @@
+
 export interface ErrorType{
     401 ?: string;
     400 ?: string;
