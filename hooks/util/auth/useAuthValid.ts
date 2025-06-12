@@ -1,4 +1,4 @@
-import { VaildError } from "../../../type/error/errorType";
+import { VaildError } from "../../../type/error/error.type";
 
 export const useAuthValid = () => {
     const isVaildEmail = (email : string) : VaildError => {

@@ -47,7 +47,7 @@ export default function SigninScreen({navigation} : SigninScreenProps) {
                 </View>
                 <View style={styles.buttonContainer}>
                     <Text style={styles.errorText}>이메일 혹은 비밀번호가 일치하지 않습니다</Text>
-                    <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}}/>
+                    <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}} disabled={false}/>
                 </View>
                 <View style={styles.signupContainer}>
                     <LinkActionText title="이메일 찾기" onPress={() => {}}/>
