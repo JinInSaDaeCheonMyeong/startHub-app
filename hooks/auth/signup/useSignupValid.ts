@@ -1,11 +1,13 @@
-import { VaildError } from "../../../type/error/error.type"
+import { ValidError } from "../../../type/error/error.type"
 import { SignupFormData } from "../../../type/user/signup.type"
 import { useAuthValid } from "../../util/auth/useAuthValid"
 
 export const useSignupValid = () => {
     const {
-        isVaildEmail,
-        isVaildPassword
+        isValidEmail,
+        isValidPassword,
+        isValidVerifyCode,
+        isValidChecked
     } = useAuthValid()
 
     const validSignupForm = (
@@ -16,29 +18,31 @@ export const useSignupValid = () => {
         ONE : boolean, 
         SECOND : boolean,
         THIRD : boolean
-        ) : VaildError => {
+        ) : ValidError => {
         if(!email && !verifyCode && !password && !checkPassword && !ONE && !SECOND && !THIRD){
             return {value : false, message : '입력을 확인해주세요'}
         }
-        const emailValid = isVaildEmail(email)
+        const emailValid = isValidEmail(email)
         if(!emailValid.value){
             return emailValid
         }
-        if(!verifyCode){
-            return {value : false, message : '인증코드를 입력해주세요'}
+        const verifyCodeValid = isValidVerifyCode(verifyCode)
+        if(!verifyCodeValid){
+            return verifyCodeValid
         }
-        const vaildPassword = isVaildPassword(password, checkPassword)
-        if(!vaildPassword.value){
-            return vaildPassword
+        const passwordValid = isValidPassword(password, checkPassword)
+        if(!passwordValid.value){
+            return passwordValid
         }
-        if(!ONE && !SECOND && !THIRD){
-            return {value : false, message : "필수 항목에 동의해주세요"}
+        const checkedValid = isValidChecked(ONE, SECOND, THIRD)
+        if(!checkedValid){
+            return checkedValid
         }
         return {value : true}
     }
 
     return {
         validSignupForm,
-        isVaildEmail
+        isValidEmail
     }
 }

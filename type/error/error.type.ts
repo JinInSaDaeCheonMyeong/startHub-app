@@ -28,7 +28,7 @@ export const DefaultErrorMessage : ErrorType = {
     network : '네트워크 연결을 확인해주세요'
 }
 
-export type VaildError = {
+export type ValidError = {
     value : boolean,
     message? : string
 }

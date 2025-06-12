@@ -37,7 +37,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     
     const {
         validSignupForm,
-        isVaildEmail
+        isValidEmail
     } = useSignupValid()
     const [disabled, setDisabled] = useState(false)
     const disabledBtn = useCallback(() => {setDisabled(true)}, [])
@@ -79,8 +79,14 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
 
     const handleSignup = useCallback( async () => {
         disabledBtn()
-        const {email, verifyCode, password, checkPassword, checked : {ONE, SECOND, THIRD}} = formData
-        const vaildResult = validSignupForm(
+
+        const email = formData.email.trim()
+        const verifyCode = formData.verifyCode.trim()
+        const password = formData.password.trim()
+        const checkPassword = formData.checkPassword.trim()
+        const {checked : {ONE, SECOND, THIRD}} = formData
+
+        const validResult = validSignupForm(
             email.trim(),
             verifyCode.trim(),
             password.trim(),
@@ -89,18 +95,18 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             SECOND,
             THIRD
         )
-        if(!vaildResult.value) {
+        if(!validResult.value) {
             abledBtn()
-            showError(vaildResult.message)
+            showError(validResult.message)
             return 
         }
         const verifyData : VerifyRequest = {
-            email : email.trim(),
-            code : verifyCode.trim()
+            email : email,
+            code : verifyCode
         }
         const signupData : SignupRequest = {
-            email : email.trim(),
-            password : password.trim()
+            email : email,
+            password : password
         }
         try {
             await verify(verifyData) 
@@ -130,11 +136,11 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
 
     const requestSendcode = useCallback( async () => {
         disabledBtn()
-        const {email} = formData
-        const emailValid = isVaildEmail(email.trim())
-        if(!emailValid.value) {
+        const email = formData.email.trim()
+        const validResult = isValidEmail(email)
+        if(!validResult.value) {
             abledBtn()
-            showError(emailValid.message)
+            showError(validResult.message)
             return
         }
         const sendcodeData : SendcodeRequest = {
@@ -142,9 +148,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         }
         try {
             await sendcode(sendcodeData)
-            console.log("send-code : 성공")
         } catch (error) {
-            console.log("send-code : 실패")
             handleAxiosError(error, {
                 ...DefaultErrorMessage
             })
@@ -152,7 +156,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             return
         }
         abledBtn()
-    }, [formData, isVaildEmail, showError])
+    }, [formData, isValidEmail, showError])
 
     return {
         form : {
@@ -176,5 +180,3 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         }
     }
 }
-
-// 5분

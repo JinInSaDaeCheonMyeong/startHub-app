@@ -1,14 +1,14 @@
-import { VaildError } from "../../../type/error/error.type"
-import { SigninFormData, SigninRequest } from "../../../type/user/signin.type"
+import { ValidError } from "../../../type/error/error.type"
+import { SigninFormData } from "../../../type/user/signin.type"
 import { useAuthValid } from "../../util/auth/useAuthValid"
 
 export const useSigninValid = () => {
     const {
-        isVaildEmail,
-        isVaildPassword
+        isValidEmail,
+        isValidPassword
     } = useAuthValid()
 
-    const validSigninForm = (formData : SigninFormData) : VaildError => {
+    const validSigninForm = (formData : SigninFormData) : ValidError => {
         const {
             email, 
             password
@@ -16,11 +16,11 @@ export const useSigninValid = () => {
         if(!email && !password){
             return { value : false, message : "입력을 확인해주세요"}
         }
-        const emailValid = isVaildEmail(email)
+        const emailValid = isValidEmail(email)
         if(!emailValid.value){
             return emailValid
         }
-        const passwordValid = isVaildEmail(password)
+        const passwordValid = isValidPassword(password)
         if(!passwordValid.value){
             return passwordValid
         }

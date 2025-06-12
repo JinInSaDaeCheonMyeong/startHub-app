@@ -50,14 +50,12 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const setPassword = useCallback((value : string) => updateFormData("password", value), [updateFormData])
 
     const handleSignin = useCallback( async () => {
-        if(disabled) return
         disableBtn()
-        console.log("로그인 호출")
         const email = formData.email.trim()
         const password = formData.password.trim()
-        const signinValid = validSigninForm({...formData, email : email, password : password})
-        if(!signinValid.value){
-            showError(signinValid.message)
+        const validResult = validSigninForm({...formData, email : email, password : password})
+        if(!validResult.value){
+            showError(validResult.message)
             ableBtn()
             return
         }

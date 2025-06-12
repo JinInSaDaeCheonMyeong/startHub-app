@@ -1,7 +1,7 @@
-import { VaildError } from "../../../type/error/error.type";
+import { ValidError } from "../../../type/error/error.type";
 
 export const useAuthValid = () => {
-    const isVaildEmail = (email : string) : VaildError => {
+    const isValidEmail = (email : string) : ValidError => {
         if(!email){
             return {value : false, message : "이메일을 입력해주세요"}
         }
@@ -11,7 +11,7 @@ export const useAuthValid = () => {
         }
         return {value : true}
     }
-    const isVaildPassword = (password : string, checkPassword ?: string) : VaildError => {
+    const isValidPassword = (password : string, checkPassword ?: string) : ValidError => {
         if(!password){
             return {value : false, message : "비밀번호를 입력해주세요"}
         }
@@ -30,8 +30,24 @@ export const useAuthValid = () => {
         return {value : true}
     }
 
+    const isValidVerifyCode = (verifyCode : string) : ValidError => {
+        if(!verifyCode) {
+            return {value : false, message : "인증번호를 입력해주세요"}
+        }
+        return {value : true}
+    }
+
+    const isValidChecked = (one : boolean, second : boolean, third : boolean) : ValidError => {
+        if(!one && !second && !third){
+            return {value : false, message : "필수 항목에 체크해 주세요"}
+        }
+        return {value : true}
+    }
+
     return {
-        isVaildEmail,
-        isVaildPassword
+        isValidEmail,
+        isValidPassword,
+        isValidVerifyCode,
+        isValidChecked
     }
 }
