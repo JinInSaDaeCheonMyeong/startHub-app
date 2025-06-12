@@ -19,12 +19,12 @@ export default function CategoryScreen(props : CategoryScreenProps){
             <FlatList 
             data={InterestTypeList}
             contentContainerStyle = {styles.listContentContainer}
-            renderItem={({item}) => (
+            renderItem={({item : {id, color, icon}}) => (
                 <CategorySelectButton
-                    key={item.id}
-                    id={item.id}
-                    color={item.color}
-                    icons={item.icon}
+                    key={id}
+                    id={id}
+                    color={color}
+                    icons={icon}
                     onClick={(id) => {
                         if (props.interestList.includes(id)) {
                             props.setInterestList(props.interestList.filter(key => key !== id))

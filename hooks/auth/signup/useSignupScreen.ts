@@ -34,8 +34,9 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             handleAxiosError
         },
     } = useError()
+    
     const {
-        validSigninForm,
+        validSignupForm,
         isVaildEmail
     } = useSignupValid()
     const [disabled, setDisabled] = useState(false)
@@ -78,20 +79,28 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
 
     const handleSignup = useCallback( async () => {
         disabledBtn()
-        const vaildResult = validSigninForm(formData)
-        const {email, verifyCode, password} = formData
+        const {email, verifyCode, password, checkPassword, checked : {ONE, SECOND, THIRD}} = formData
+        const vaildResult = validSignupForm(
+            email.trim(),
+            verifyCode.trim(),
+            password.trim(),
+            checkPassword.trim(),
+            ONE,
+            SECOND,
+            THIRD
+        )
         if(!vaildResult.value) {
             abledBtn()
             showError(vaildResult.message)
             return 
         }
         const verifyData : VerifyRequest = {
-            email : email,
-            code : verifyCode
+            email : email.trim(),
+            code : verifyCode.trim()
         }
         const signupData : SignupRequest = {
-            email : email,
-            password : password
+            email : email.trim(),
+            password : password.trim()
         }
         try {
             await verify(verifyData) 

@@ -1,16 +1,17 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { AuthStackParamList } from "../../navigation/AuthStack";
+import { AuthStackParamList } from "../../../navigation/AuthStack";
 import { useCallback, useEffect, useState } from "react";
-import { useError } from "../util/useError";
-import { signin } from "../../api/user/signin";
-import { DefaultErrorMessage } from "../../type/error/error.type";
-import { SigninRequest } from "../../type/user/signin.type";
-import { saveAccToken, saveRefToken } from "../../util/token";
+import { useError } from "../../util/useError";
+import { signin } from "../../../api/user/signin";
+import { DefaultErrorMessage } from "../../../type/error/error.type";
+import { SigninFormData, SigninRequest } from "../../../type/user/signin.type";
+import { saveAccToken, saveRefToken } from "../../../util/token";
+import { useSigninValid } from "./useSigninValid";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
 export const useSigninScreen = ({navigation} : SigninScreenProps) => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<SigninFormData>({
         email : '',
         password : ''
     })
@@ -26,6 +27,9 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
         }
     } = useError()
     const [disabled, setDisabled] = useState(false)
+    const {
+        validSigninForm
+    } = useSigninValid()
 
     const disableBtn = useCallback(() => setDisabled(true), []);
     const ableBtn = useCallback(() => setDisabled(false), []);
@@ -45,25 +49,15 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const setEmail = useCallback((value : string) => updateFormData("email", value), [updateFormData])
     const setPassword = useCallback((value : string) => updateFormData("password", value), [updateFormData])
 
-    const varidateForm = (email : string, password : string) => {
-        if(!email){
-            showError("이메일을 입력해주세요")
-            return false
-        }
-        if(!password){
-            showError("비밀번호를 입력해주세요")
-            return false
-        }
-        return true
-    }
-
     const handleSignin = useCallback( async () => {
         if(disabled) return
         disableBtn()
         console.log("로그인 호출")
         const email = formData.email.trim()
         const password = formData.password.trim()
-        if(!varidateForm(email, password)){
+        const signinValid = validSigninForm({...formData, email : email, password : password})
+        if(!signinValid.value){
+            showError(signinValid.message)
             ableBtn()
             return
         }

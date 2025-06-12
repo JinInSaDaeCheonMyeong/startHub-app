@@ -7,7 +7,7 @@ import AuthTextInput from "../component/auth/AuthTextInput";
 import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
 import LinkActionText from "../component/auth/LinkActionText";
-import { useSigninScreen } from "../hooks/auth/useSigninScreen";
+import { useSigninScreen } from "../hooks/auth/signin/useSigninScreen";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 

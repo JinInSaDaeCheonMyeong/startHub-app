@@ -8,21 +8,26 @@ export const useSignupValid = () => {
         isVaildPassword
     } = useAuthValid()
 
-    const validSigninForm = (formData : SignupFormData) : VaildError => {
-        const {
-            email, verifyCode, password, checkPassword, checked : {ONE, SECOND, THIRD}
-        } = formData
+    const validSignupForm = (
+        email : string,
+        verifyCode : string, 
+        password : string, 
+        checkPassword : string, 
+        ONE : boolean, 
+        SECOND : boolean,
+        THIRD : boolean
+        ) : VaildError => {
         if(!email && !verifyCode && !password && !checkPassword && !ONE && !SECOND && !THIRD){
             return {value : false, message : '입력을 확인해주세요'}
         }
-        const emailValid = isVaildEmail(email.trim())
+        const emailValid = isVaildEmail(email)
         if(!emailValid.value){
             return emailValid
         }
-        if(!verifyCode.trim()){
+        if(!verifyCode){
             return {value : false, message : '인증코드를 입력해주세요'}
         }
-        const vaildPassword = isVaildPassword(password.trim(), checkPassword.trim())
+        const vaildPassword = isVaildPassword(password, checkPassword)
         if(!vaildPassword.value){
             return vaildPassword
         }
@@ -33,7 +38,7 @@ export const useSignupValid = () => {
     }
 
     return {
-        validSigninForm,
+        validSignupForm,
         isVaildEmail
     }
 }

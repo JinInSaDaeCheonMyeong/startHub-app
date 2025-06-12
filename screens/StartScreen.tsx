@@ -23,7 +23,9 @@ export default function StartScreen({navigation}: WelcomeScreenProps) {
         {
             title: 'StartHub',
             icon: require('../assets/logos/starthub_logo.png'),
-            onPress: async () => {}
+            onPress: async () => {
+                await navigation.navigate("Signin")
+            }
         },
         {
             title: 'Google',
