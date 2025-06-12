@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {getAccToken, saveAccToken, saveRefToken} from "../util/token";
 import {ShowToast, ToastType} from "../util/ShowToast";
+import {Platform} from "react-native";
 
 
 const url = process.env.EXPO_PUBLIC_API_URL
@@ -21,6 +22,10 @@ export async function getState() {
 
 export async function googleLogin(code: String, codeVerifier : String) {
     const state = await getState();
+    const platform = Platform.select({
+        ios: 'ios',
+        android: 'android'
+    })
     if (!state) {
         ShowToast(
             "문제가 발생하였습니다.",
@@ -34,17 +39,17 @@ export async function googleLogin(code: String, codeVerifier : String) {
             params : {
                 code : code,
                 state : state,
+                platform: platform,
                 codeVerifier : codeVerifier,
             }
         });
         await saveAccToken(response.data.data.access);
         await saveRefToken(response.data.data.refresh);
-        console.log("Acc" + await getAccToken());
         return response.data.data.isFirstLogin;
     } catch (error: any) {
         ShowToast(
             '문제가 발생하였습니다.',
-            error.response.data.message,
+            error.message,
             ToastType.ERROR,
         );
     }
