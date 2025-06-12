@@ -57,7 +57,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
         return true
     }
 
-    const handleLogin = useCallback( async () => {
+    const handleSignin = useCallback( async () => {
         if(disabled) return
         disableBtn()
         console.log("로그인 호출")
@@ -108,7 +108,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             setPassword
         },
         actions : {
-            handleLogin,
+            handleSignin,
             goSignupScreen,
             goBack
         },

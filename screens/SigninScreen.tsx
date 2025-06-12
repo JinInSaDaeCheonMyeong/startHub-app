@@ -7,13 +7,30 @@ import AuthTextInput from "../component/auth/AuthTextInput";
 import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
 import LinkActionText from "../component/auth/LinkActionText";
+import { useSigninScreen } from "../hooks/auth/useSigninScreen";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
-export default function SigninScreen({navigation} : SigninScreenProps) {
+export default function SigninScreen(props: SigninScreenProps) {
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const {
+        form : {
+            email,
+            password,
+            setEmail,
+            setPassword
+        },
+        actions : {
+            handleSignin,
+            goSignupScreen,
+            goBack
+        },
+        ui : {
+            disabled,
+            errorVisible,
+            errorText
+        }
+    } = useSigninScreen(props)
 
     return (
         <SafeAreaView style={styles.container}>
@@ -21,7 +38,7 @@ export default function SigninScreen({navigation} : SigninScreenProps) {
             width={18} 
             height={18} 
             color={Colors.black2} 
-            onClick={() => {navigation.goBack()}}
+            onClick={() => {goBack()}}
             />
             <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
             <View style={styles.interactionContainer}>
@@ -46,15 +63,19 @@ export default function SigninScreen({navigation} : SigninScreenProps) {
                     />
                 </View>
                 <View style={styles.buttonContainer}>
-                    <Text style={styles.errorText}>이메일 혹은 비밀번호가 일치하지 않습니다</Text>
-                    <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}} disabled={false}/>
+                    {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+                    <CommonButton 
+                        title="로그인" 
+                        onPress={() => {handleSignin()}} 
+                        disabled={disabled}
+                    />
                 </View>
                 <View style={styles.signupContainer}>
                     <LinkActionText title="이메일 찾기" onPress={() => {}}/>
                     <Text style={styles.contourText}>⏐</Text>
                     <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
                     <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="회원가입" onPress={() => {navigation.navigate('Signup')}}/>
+                    <LinkActionText title="회원가입" onPress={() => {goSignupScreen()}}/>
                 </View>
             </View>
         </SafeAreaView>
