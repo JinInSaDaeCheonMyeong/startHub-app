@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Colors } from "../constants/Color";
@@ -34,12 +34,15 @@ export default function SigninScreen(props: SigninScreenProps) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <BackButton 
-            width={18} 
-            height={18} 
-            color={Colors.black2} 
-            onClick={() => {goBack()}}
-            />
+            <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
+            <View style={styles.backButton}>
+                <BackButton 
+                width={20} 
+                height={20} 
+                color={Colors.black2} 
+                onClick={() => {goBack()}}
+                />
+            </View>
             <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
             <View style={styles.interactionContainer}>
                 <View style={styles.textInputContainer}>
@@ -87,6 +90,9 @@ const styles = StyleSheet.create({
         flex : 1,
         margin : 16,
         gap : 68
+    },
+    backButton : {
+        marginTop : 22
     },
     titleText : {
         width : "100%",

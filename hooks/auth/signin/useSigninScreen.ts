@@ -12,8 +12,8 @@ type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
 export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const [formData, setFormData] = useState<SigninFormData>({
-        email : '',
-        password : ''
+        email : 'ouran67800@gmail.com',
+        password : 'Toadl2015!!'
     })
     const {
         value : {

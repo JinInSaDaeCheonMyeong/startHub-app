@@ -33,14 +33,16 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
     return(
     <SafeAreaView style={styles.mainContainer}>
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
-        <BackButton 
-            width={20} 
-            height={20} 
-            color={Colors.black2} 
-            onClick={()=>{
-                nav.goBack()
-            }}
-        /> 
+        <View style={styles.backButton}>
+            <BackButton 
+                width={20} 
+                height={20} 
+                color={Colors.black2} 
+                onClick={()=>{
+                    nav.goBack()
+                }}
+            /> 
+        </View>
         <View style={styles.progressBarContainer}>
             <Text>{`${ui.currentProgress} of ${MAXPROGRESS}`}</Text>
             <Progress.Bar 
@@ -86,5 +88,8 @@ const styles = StyleSheet.create({
         color : Colors.error,
         fontSize : 12,
         fontWeight : "semibold"
+    },
+    backButton: {
+        marginTop: 22,
     },
 })

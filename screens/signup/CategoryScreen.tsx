@@ -18,6 +18,7 @@ export default function CategoryScreen(props : CategoryScreenProps){
             </View>
             <FlatList 
             data={InterestTypeList}
+            showsVerticalScrollIndicator={false}
             contentContainerStyle = {styles.listContentContainer}
             renderItem={({item : {id, color, icon}}) => (
                 <CategorySelectButton

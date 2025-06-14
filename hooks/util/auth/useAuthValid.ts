@@ -15,7 +15,7 @@ export const useAuthValid = () => {
         if(!password){
             return {value : false, message : "비밀번호를 입력해주세요"}
         }
-        if(checkPassword !== null){
+        if(checkPassword !== null && checkPassword !== undefined){
             if(!checkPassword){
                 return {value : false, message : "비밀번호 확인을 입력해주세요"}
             }
