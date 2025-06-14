@@ -7,6 +7,7 @@ import { DefaultErrorMessage } from "../../../type/error/error.type";
 import { SigninFormData, SigninRequest } from "../../../type/user/signin.type";
 import { saveAccToken, saveRefToken } from "../../../util/token";
 import { useSigninValid } from "./useSigninValid";
+import { useDisabled } from "../../util/useDisabled";
 
 type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
@@ -26,13 +27,14 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             handleAxiosError
         }
     } = useError()
-    const [disabled, setDisabled] = useState(false)
     const {
         validSigninForm
     } = useSigninValid()
-
-    const disableBtn = useCallback(() => setDisabled(true), []);
-    const ableBtn = useCallback(() => setDisabled(false), []);
+    const {
+        disabled,
+        disabledBtn,
+        enabledBtn
+    } = useDisabled()
 
     useEffect(() => {
     const controller = new AbortController()
@@ -50,13 +52,13 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const setPassword = useCallback((value : string) => updateFormData("password", value), [updateFormData])
 
     const handleSignin = useCallback( async () => {
-        disableBtn()
+        disabledBtn()
         const email = formData.email.trim()
         const password = formData.password.trim()
         const validResult = validSigninForm({...formData, email : email, password : password})
         if(!validResult.value){
             showError(validResult.message)
-            ableBtn()
+            enabledBtn()
             return
         }
         const loginRequest : SigninRequest = {
@@ -73,14 +75,16 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
                 ...DefaultErrorMessage,
                 401 : "이메일 혹은 비밀번호가 일치하지 않습니다",
                 409 : "이미 존재하는 이메일입니다"
+            }, (value) => {
+                showError(value)
             })
         } finally {
-            ableBtn()
+            enabledBtn()
         }
     }, [formData.email, formData.password, disabled])
 
     const goSignupScreen = () => {
-        disableBtn()
+        disabledBtn()
         navigation.navigate("Signup")
     }
 
@@ -89,7 +93,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     }
 
     const goBack = () => {
-        disableBtn()
+        disabledBtn()
         navigation.goBack()
     }
 

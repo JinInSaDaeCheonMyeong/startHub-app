@@ -1,30 +1,21 @@
-import { StackScreenProps } from "@react-navigation/stack"
 import { useCallback, useMemo, useState } from "react"
-import { AuthStackParamList } from "../../../navigation/AuthStack"
 import { useError } from "../../util/useError"
-import { InterestInfo, LocationInfo, UserInfo, useSignupInputValid } from "./useSignupInputValid"
+import { useSignupInputValid } from "./useSignupInputValid"
 import { SignupInputScreenProps } from "../../../screens/SignupInputScreen"
-
-interface FormData{
-    name : string,
-    year : string,
-    month : string,
-    day : string,
-    location : string,
-    interestList : string[],
-}
-
-const INITIAL_FORM_DATA : FormData = {
-    name : '',
-    year : '',
-    month : '',
-    day : '',
-    location : '',
-    interestList : []
-}
+import { InterestInfo, LocationInfo, SignupInputFormData, UserInfo } from "../../../type/user/signupInput.type"
+import { useDisabled } from "../../util/useDisabled"
 
 export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXPROGRESS : number) => {
-    const [formData, setFormData] = useState(INITIAL_FORM_DATA)
+    const [formData, setFormData] = useState<SignupInputFormData>({
+        name : '',
+        year : '',
+        month : '',
+        day : '',
+        location : '',
+        interestList : [],
+        date : new Date()
+    })
+
     const [currentProgress, setCurrentProgress] = useState(1)
     const {
         value : {
@@ -39,8 +30,13 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
     const {
         validSignupInputForm
     } = useSignupInputValid()
+    const {
+        disabled,
+        disabledBtn,
+        enabledBtn
+    } = useDisabled()
 
-    const updateFormData = useCallback(<K extends keyof FormData>(key : K, value : FormData[K]) => {
+    const updateFormData = useCallback(<K extends keyof SignupInputFormData>(key : K, value : SignupInputFormData[K]) => {
         setFormData(prev => ({...prev, [key] : value}))
         if(errorVisible){
             hideError()
@@ -63,14 +59,14 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
         return date
     }, [formData.year, formData.month, formData.day])
 
-    const goBack = useCallback(() => {
+    const goBack = () => {
         hideError()
         if(currentProgress <= 1) {
             navigation.goBack()
         } else {
             setCurrentProgress(prev => prev - 1)
         }
-    }, [currentProgress, navigation])
+    }
 
     const getValidData = () : UserInfo | LocationInfo | InterestInfo | undefined => {
         const {name, year, month, day, location, interestList} = formData
@@ -95,7 +91,8 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
         }
     }
 
-    const goNext = useCallback(() => {
+    const goNext = () => {
+        disabledBtn()
         const validData = getValidData()
         if(!validData) return
         const validResult = validSignupInputForm(currentProgress, validData)
@@ -104,12 +101,13 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
             return
         }
         hideError()
+        enabledBtn()
         if(currentProgress >= MAXPROGRESS) {
             navigation.popTo("Signin")
         } else {
             setCurrentProgress(prev => prev + 1)
         }
-    }, [currentProgress, navigation, formData])
+    }
 
     return {
         form : {
@@ -125,8 +123,9 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
             currentProgress,
             errorVisible,
             errorText,
+            disabled
         },
-        nav : {
+        actions : {
             goBack,
             goNext
         },

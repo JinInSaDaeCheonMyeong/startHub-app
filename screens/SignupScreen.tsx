@@ -30,7 +30,7 @@ export default function SignupScreen(props : SignupScreenProps){
         },
         actions : {
             goBack,
-            handleSignup,
+            requestSignup,
             requestSendcode
         },
         ui : {
@@ -136,7 +136,7 @@ export default function SignupScreen(props : SignupScreenProps){
                     <Text style={styles.errorText}>{errorVisible ? errorText : ""}</Text>
                     <CommonButton 
                         title="회원가입" 
-                        onPress={() => {handleSignup()}}
+                        onPress={() => {requestSignup()}}
                         disabled={disabled}
                     />
                 </View>

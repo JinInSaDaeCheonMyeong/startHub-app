@@ -25,10 +25,18 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
     const {width} = useWindowDimensions();
     const {
         form,
-        ui, 
-        nav
+        ui : {
+            currentProgress,
+            errorText,
+            errorVisible,
+            disabled
+        }, 
+        actions : {
+            goBack,
+            goNext
+        }
     } = useSignupInputScreen(props, MAXPROGRESS)
-    const CurrentScreen = SCREENS[ui.currentProgress-1]
+    const CurrentScreen = SCREENS[currentProgress-1]
 
     return(
     <SafeAreaView style={styles.mainContainer}>
@@ -39,15 +47,15 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
                 height={20} 
                 color={Colors.black2} 
                 onClick={()=>{
-                    nav.goBack()
+                    goBack()
                 }}
             /> 
         </View>
         <View style={styles.progressBarContainer}>
-            <Text>{`${ui.currentProgress} of ${MAXPROGRESS}`}</Text>
+            <Text>{`${currentProgress} of ${MAXPROGRESS}`}</Text>
             <Progress.Bar 
                 width={width - 32} 
-                progress={ui.currentProgress / MAXPROGRESS}
+                progress={currentProgress / MAXPROGRESS}
                 color={Colors.primary} 
                 borderColor={Colors.white2}
                 unfilledColor={Colors.white2}
@@ -57,11 +65,11 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
         </View>
         <CurrentScreen {...form} />
         <View style={styles.buttonContainer}>
-            {ui.errorVisible && <Text style={styles.errorText}>{ui.errorText}</Text>}
+            {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
             <CommonButton
-                title={ui.currentProgress == MAXPROGRESS ? "완료" : "다음"}
-                onPress={() => {nav.goNext()}}
-                disabled={false}
+                title={currentProgress == MAXPROGRESS ? "완료" : "다음"}
+                onPress={() => {goNext()}}
+                disabled={disabled}
             />
         </View>
     </SafeAreaView>
