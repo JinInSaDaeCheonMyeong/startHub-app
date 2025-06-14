@@ -3,12 +3,12 @@ import CategorySelectButton from "../../component/auth/CategorySelectButton";
 import { Colors } from "../../constants/Color";
 import { InterestTypeList } from "../../constants/InterestTypeList";
 
-type CategoryScreenProps = {
+type InterestScreenProps = {
     interestList : string[]
     setInterestList : (list : string[]) => void
 }
 
-export default function CategoryScreen(props : CategoryScreenProps){
+export default function InterestScreen(props : InterestScreenProps){
 
     return(
         <View style={styles.mainContainer}>

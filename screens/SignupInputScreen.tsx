@@ -6,17 +6,17 @@ import { AuthStackParamList } from "../navigation/AuthStack";
 import * as Progress from 'react-native-progress';
 import { useState } from "react";
 import InfoScreen from "./signup/InfoScreen";
-import CategoryScreen from "./signup/CategoryScreen";
+import InterestScreen from "./signup/InterestScreen";
 import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
-import { useSignupInputScreen } from "../hooks/auth/useSignupInputScreen";
+import { useSignupInputScreen } from "../hooks/auth/input/useSignupInputScreen";
 
-type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
+export type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 
 const SCREENS = [
     InfoScreen,
     LocationScreen,
-    CategoryScreen
+    InterestScreen
 ] as const
 
 const MAXPROGRESS = SCREENS.length;

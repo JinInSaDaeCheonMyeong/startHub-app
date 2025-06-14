@@ -1,6 +1,8 @@
 import { ValidError } from "../../../type/error/error.type";
+import { InterestInfo, LocationInfo, UserInfo } from "../../auth/input/useSignupInputValid";
 
 export const useAuthValid = () => {
+
     const isValidEmail = (email : string) : ValidError => {
         if(!email){
             return {value : false, message : "이메일을 입력해주세요"}
@@ -11,11 +13,12 @@ export const useAuthValid = () => {
         }
         return {value : true}
     }
+
     const isValidPassword = (password : string, checkPassword ?: string) : ValidError => {
         if(!password){
             return {value : false, message : "비밀번호를 입력해주세요"}
         }
-        if(checkPassword !== null && checkPassword !== undefined){
+        if(checkPassword !== undefined){
             if(!checkPassword){
                 return {value : false, message : "비밀번호 확인을 입력해주세요"}
             }
@@ -44,10 +47,46 @@ export const useAuthValid = () => {
         return {value : true}
     }
 
+    const isValidInfo = (
+        data : UserInfo
+    ) : ValidError => {
+        const {name, year, month, day} = data
+        if(!name){
+            return {value : false, message : "이름을 입력해주세요!"}
+        }
+        if(!year || !month || !day){
+            return {value : false, message : "생년월일을 입력해주세요!"}
+        }
+        const date = new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2,"0")}`)
+        if(isNaN(date.getTime())){
+            return {value : false, message : "올바른 생년월일을 입력해주세요!"}
+        }
+        return {value : true}
+    }
+
+    const isValidLocation = (data : LocationInfo) : ValidError => {
+        const {location} = data
+        if(!location){
+            return {value : false, message : "지역을 선택해주세요!"}
+        }
+        return {value : true}
+    }
+
+    const isValidInterest = (data : InterestInfo) : ValidError => {
+        const { interestList } = data
+        if(interestList.length === 0){
+            return {value : false, message : "주제를 최소 한개 선택해주세요!"}
+        }
+        return {value : true}
+    }
+
     return {
         isValidEmail,
         isValidPassword,
         isValidVerifyCode,
-        isValidChecked
+        isValidChecked,
+        isValidInfo,
+        isValidLocation,
+        isValidInterest
     }
 }
