@@ -9,7 +9,6 @@ import InterestScreen from "./signup/InterestScreen";
 import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
 import { useSignupInputScreen } from "../hooks/auth/signup/input/useSignupInputScreen";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 
@@ -63,13 +62,7 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
                 height={8}
             />
         </View>
-        <KeyboardAwareScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-        >
-            <CurrentScreen {...form} />
-        </KeyboardAwareScrollView>
+        <CurrentScreen {...form} />
         <View style={styles.buttonContainer}>
             {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
             <CommonButton

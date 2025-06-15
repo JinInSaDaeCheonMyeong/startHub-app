@@ -1,12 +1,12 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import AutocompleteInput from "react-native-autocomplete-input";
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BottomArrow from "../../assets/icons/bottom-arrow-back.svg"
 import TopArrow from "../../assets/icons/top-arrow-back.svg"
 import { Colors } from "../../constants/Color";
 import { useMemo, useState } from "react";
+import DropDownPicker from "react-native-dropdown-picker";
 
 type DateInputProps = {
-    data : string[]
+    items : string[]
     placeholder : string
     text : string
     setText : (s : string) => void
@@ -14,112 +14,138 @@ type DateInputProps = {
 
 export default function DateInputText(props : DateInputProps) {
 
-    const [listVisible, setListVisible] = useState(false)
-    const [mainWidth, setMainWidth] = useState(0)
-    const [mainHeight, setMainHeight] = useState(0)
-
-    const filteredLst = useMemo(() => {
-        if(!props.text || props.text.length === 0) {
-            return props.data
-        }
-        const filtered = props.data.filter(item => item.includes(props.text))
-
-        if(filtered.length === 0){
-            return props.data
-        }
-
-        return filtered
-    }, [props.text])
+    const items = props.items.map(item => ({ label: item, value: item }))
+    const [open, setOpen] = useState(false)
 
     return (
-        <View 
-            onLayout={(event) => {
-                setMainWidth(event.nativeEvent.layout.width)
-                setMainHeight(event.nativeEvent.layout.height)
-            }}
-            style={styles.mainContainer}
-        >
-            <AutocompleteInput
-                autoCorrect={false}
-                data={filteredLst}
-                defaultValue={props.text}
-                hideResults={!listVisible}
-                onChangeText={(text) => {props.setText(text)}}
-                placeholder={props.placeholder}
-                placeholderTextColor={Colors.gray2}
-                containerStyle = {styles.container}
-                listContainerStyle = {styles.listConatiner}
-                inputContainerStyle = {styles.inputContainer}
-                style = {styles.dateInputTextContainer}
-                maxLength={props.placeholder.length}
-                keyboardType="numeric"
-                flatListProps={{
-                    keyboardShouldPersistTaps: 'always',
-                    style : {...styles.listConatiner, 
-                        width : mainWidth,
-                        maxHeight : 64
-                    },
-                    renderItem: ({ item }) => (
-                        <TouchableOpacity 
-                            style={styles.itemContainer}
-                            onPress={() => {
-                            props.setText(item)
-                            setListVisible(!listVisible)
-                        }}
-                        >
-                            <Text style={styles.itemText}>{item}</Text>
-                        </TouchableOpacity>
-                    ),
+        <View style={styles.mainContainer}>
+            <DropDownPicker<string>
+                open={open}
+                value={props.text}
+                setOpen={setOpen}
+                setValue={(callback) => {
+                    const newValue =
+                        typeof callback === "function"
+                        ? callback(props.text)
+                        : callback;
+                    if (newValue !== null) {
+                        props.setText(newValue);
+                    }
                 }}
+                items={items}
+                placeholder={props.placeholder}
+                listMode="SCROLLVIEW"
+                searchable={true}
+                searchPlaceholder=""
+                disableLocalSearch={false}
+                scrollViewProps={{
+                    nestedScrollEnabled : true,
+                    showsVerticalScrollIndicator : true
+                }}
+                searchTextInputProps={{
+                    placeholder: props.placeholder,
+                    placeholderTextColor: Colors.gray2,
+                }}
+                style={styles.picker}
+                containerStyle={styles.pickerContainer}
+                dropDownContainerStyle={styles.dropDownContainer}
+                textStyle={styles.pickerText}
+                placeholderStyle={styles.placeholderStyle}
+                searchContainerStyle={styles.hiddenSearchContainer}
+                searchTextInputStyle={styles.searchInput}
+                listItemContainerStyle={styles.listItem}
+                listItemLabelStyle={styles.listItemText}
+                ArrowUpIconComponent={({style}) => (
+                    <TopArrow
+                        width={14} 
+                        height={14} 
+                        color={Colors.gray2} 
+                        style={[style, styles.arrow]}
+                    />
+                )}
+                ArrowDownIconComponent={({style}) => (
+                    <BottomArrow
+                        width={14}
+                        height={14}
+                        color={Colors.gray2}
+                        style={[style, styles.arrow]}
+                    />
+                )}
+                searchPlaceholderTextColor={Colors.gray2}
             />
-            <TouchableOpacity onPress={() => setListVisible(!listVisible)}>
-                {listVisible ? 
-                    <TopArrow color={Colors.gray2} width={14} height={14}/> : 
-                    <BottomArrow color={Colors.gray2} width={14} height={14}/> 
-                }
-            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    mainContainer : {
-        minHeight: 48, 
-        position: 'relative', 
-        zIndex: 1000, 
-        borderRadius : 8,
-        backgroundColor : Colors.white2,
-        paddingEnd : 12,
-        flex : 1,
-        flexDirection : "row",
-        justifyContent : "center",
-        alignItems : "center",
+    mainContainer: {
+        flex: 1,
+        minHeight: 48,
+        position: 'relative',
     },
-    container : {
-        flex : 1,
-        borderColor : Colors.white2,
-        borderRadius : 8,
+    pickerContainer: {
+        flex: 1,
     },
-    dateInputTextContainer : {
-        borderColor : Colors.white2,
-        backgroundColor : Colors.white2,
-        paddingLeft : 16,
+    picker: {
+        backgroundColor: Colors.white2,
+        borderColor: Colors.white2,
+        borderWidth: 0,
+        borderRadius: 8,
+        minHeight: 48,
+        paddingHorizontal: 16,
+        paddingVertical: 0,
+        elevation: 0,
+        shadowOpacity: 0,
     },
-    listConatiner : {
-        borderColor : Colors.white2,
-        backgroundColor : Colors.white2,
-        borderRadius : 8,
-        paddingHorizontal : 16,
+    dropDownContainer: {
+        backgroundColor: Colors.white2,
+        borderColor: Colors.white2,
+        borderWidth: 1,
+        borderRadius: 8,
+        marginTop: 2,
     },
-    inputContainer : {
-        borderColor : Colors.white2,
-        backgroundColor : Colors.white2,
-        borderRadius : 8,
+    pickerText: {
+        color: Colors.black2,
+        fontSize: 16,
+        fontWeight: '400',
     },
-    itemContainer : {
-        marginBottom : 6
+    placeholderStyle: {
+        color: Colors.gray2,
+        fontSize: 16,
+        fontWeight: '400',
     },
-    itemText : {
-        color : Colors.black2
+    hiddenSearchContainer: {
+        height: 0,
+        opacity: 0,
+        display: 'none',
+    },
+    searchInput: {
+        backgroundColor: Colors.white2,
+        borderColor: Colors.white2,
+        color: Colors.black2,
+        fontSize: 16,
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderRadius: 8,
+    },
+    listItem: {
+        paddingVertical: 12,
+        paddingHorizontal: 16,
+        minHeight: 44,
+    },
+    listItemText: {
+        color: Colors.black2,
+        fontSize: 16,
+        fontWeight: '400',
+    },
+    selectedItem: {
+        backgroundColor: Colors.white2,
+    },
+    selectedItemText: {
+        color: Colors.primary || Colors.black2,
+        fontWeight: '500',
+    },
+    arrow : {
+        marginEnd : -4
     }
 })

@@ -38,19 +38,19 @@ export default function InfoScreen(props : InfoScreenProps) {
                 </View>
                 <View style={styles.birthDateContainer}>
                     <DateInputText 
-                        data={YearList} 
+                        items={YearList} 
                         placeholder="YYYY"
                         text={props.year} 
                         setText={(s) => {props.setYear(s)}}
                     />
                     <DateInputText 
-                        data={MonthList} 
+                        items={MonthList} 
                         placeholder="MM"
                         text={props.month} 
                         setText={(s) => {props.setMonth(s)}}
                     />
                     <DateInputText 
-                        data={DayList} 
+                        items={DayList} 
                         placeholder="DD"
                         text={props.day} 
                         setText={(s) => {props.setDay(s)}}
