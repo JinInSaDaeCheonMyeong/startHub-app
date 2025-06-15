@@ -52,7 +52,7 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
 
     const transformDate = (year : string, month : string, day : string) : Date | null=> {
         if(!year || !month || !day) return null
-        
+
         const dateString = `${year}-${month.padStart(2, "0")}-${day.padStart(2,"0")}`
         const date = new Date(dateString)
 
@@ -95,10 +95,14 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
     const goNext = () => {
         disabledBtn()
         const validData = getValidData()
-        if(!validData) return
+        if(!validData) {
+            enabledBtn()
+            return
+        }
         const validResult = validSignupInputForm(currentProgress, validData)
         if(!validResult.isValid){
             showError(validResult.message)
+            enabledBtn()
             return
         }
         hideError()

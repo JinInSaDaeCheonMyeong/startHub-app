@@ -6,9 +6,9 @@ import React from "react";
 import BackButton from "../component/BackButton";
 import useGoogleLogin from "../hooks/useGoogleLogin";
 
-type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Start'>;
+type StartScreenProps = StackScreenProps<AuthStackParamList, 'Start'>;
 
-export default function StartScreen({navigation}: WelcomeScreenProps) {
+export default function StartScreen({navigation} : StartScreenProps) {
     const { request, promptAsync } = useGoogleLogin( isFirst => {
             if (isFirst){
                 //정보입력창 이동

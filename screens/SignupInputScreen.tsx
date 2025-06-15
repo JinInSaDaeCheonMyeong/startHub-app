@@ -1,4 +1,4 @@
-import { SafeAreaView, StatusBar, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { KeyboardAvoidingView, Platform, SafeAreaView, StatusBar, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { Colors } from "../constants/Color";
 import BackButton from "../component/BackButton";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -48,7 +48,7 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
                 onClick={()=>{
                     goBack()
                 }}
-            /> 
+        /> 
         </View>
         <View style={styles.progressBarContainer}>
             <Text>{`${currentProgress} of ${MAXPROGRESS}`}</Text>
@@ -62,15 +62,21 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
                 height={8}
             />
         </View>
-        <CurrentScreen {...form} />
-        <View style={styles.buttonContainer}>
-            {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
-            <CommonButton
-                title={currentProgress == MAXPROGRESS ? "완료" : "다음"}
-                onPress={() => {goNext()}}
-                disabled={disabled}
-            />
-        </View>
+        <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{flex : 1}}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 64}
+        >
+            <CurrentScreen {...form} />
+            <View style={styles.buttonContainer}>
+                {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+                <CommonButton
+                    title={currentProgress == MAXPROGRESS ? "완료" : "다음"}
+                    onPress={() => {goNext()}}
+                    disabled={disabled}
+                />
+            </View>
+        </KeyboardAvoidingView>
     </SafeAreaView>
     )
 }

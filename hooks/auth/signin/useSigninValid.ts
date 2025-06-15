@@ -14,17 +14,17 @@ export const useSigninValid = () => {
             password
         } = formData
         if(!email && !password){
-            return { value : false, message : "입력을 확인해주세요"}
+            return { isValid : false, message : "입력을 확인해주세요"}
         }
         const emailValid = isValidEmail(email)
-        if(!emailValid.value){
+        if(!emailValid.isValid){
             return emailValid
         }
         const passwordValid = isValidPassword(password)
-        if(!passwordValid.value){
+        if(!passwordValid.isValid){
             return passwordValid
         }
-        return { value : true }
+        return { isValid : true }
     }
 
     return {
