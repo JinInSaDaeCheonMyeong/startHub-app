@@ -8,8 +8,9 @@ import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
 import LinkActionText from "../component/auth/LinkActionText";
 import { useSigninScreen } from "../hooks/auth/signin/useSigninScreen";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
+export type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
 export default function SigninScreen(props: SigninScreenProps) {
 
@@ -35,52 +36,58 @@ export default function SigninScreen(props: SigninScreenProps) {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
-            <View style={styles.backButton}>
-                <BackButton 
-                width={20} 
-                height={20} 
-                color={Colors.black2} 
-                onClick={() => {goBack()}}
-                />
-            </View>
-            <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
-            <View style={styles.interactionContainer}>
-                <View style={styles.textInputContainer}>
-                    <AuthTextInput 
-                        value={email}
-                        placeHolder="이메일"
-                        placeHolderTextColor={Colors.gray2}
-                        isPassword={false}
-                        onChange={(text) => {
-                            setEmail(text)
-                        }}
-                    />
-                    <AuthTextInput 
-                        value={password}
-                        placeHolder="비밀번호" 
-                        placeHolderTextColor={Colors.gray2}
-                        isPassword={true}
-                        onChange={(text) => {
-                            setPassword(text)
-                        }}
+            <KeyboardAwareScrollView
+                contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.backButton}>
+                    <BackButton 
+                    width={20} 
+                    height={20} 
+                    color={Colors.black2} 
+                    onClick={() => {goBack()}}
                     />
                 </View>
-                <View style={styles.buttonContainer}>
-                    {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
-                    <CommonButton 
-                        title="로그인" 
-                        onPress={() => {handleSignin()}} 
-                        disabled={disabled}
-                    />
+                <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
+                <View style={styles.interactionContainer}>
+                    <View style={styles.textInputContainer}>
+                        <AuthTextInput 
+                            value={email}
+                            placeHolder="이메일"
+                            placeHolderTextColor={Colors.gray2}
+                            isPassword={false}
+                            onChange={(text) => {
+                                setEmail(text)
+                            }}
+                        />
+                        <AuthTextInput 
+                            value={password}
+                            placeHolder="비밀번호" 
+                            placeHolderTextColor={Colors.gray2}
+                            isPassword={true}
+                            onChange={(text) => {
+                                setPassword(text)
+                            }}
+                        />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+                        <CommonButton 
+                            title="로그인" 
+                            onPress={() => {handleSignin()}} 
+                            disabled={disabled}
+                        />
+                    </View>
+                    <View style={styles.signupContainer}>
+                        <LinkActionText title="이메일 찾기" onPress={() => {}}/>
+                        <Text style={styles.contourText}>⏐</Text>
+                        <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
+                        <Text style={styles.contourText}>⏐</Text>
+                        <LinkActionText title="회원가입" onPress={() => {goSignupScreen()}}/>
+                    </View>
                 </View>
-                <View style={styles.signupContainer}>
-                    <LinkActionText title="이메일 찾기" onPress={() => {}}/>
-                    <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
-                    <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="회원가입" onPress={() => {goSignupScreen()}}/>
-                </View>
-            </View>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     )
 }
@@ -92,7 +99,8 @@ const styles = StyleSheet.create({
         gap : 68
     },
     backButton : {
-        marginTop : 22
+        marginTop : 22,
+        marginBottom : 68
     },
     titleText : {
         width : "100%",
@@ -108,6 +116,7 @@ const styles = StyleSheet.create({
         color : Colors.primary
     },
     interactionContainer : {
+        top : 68,
         alignItems : "center",
         gap : 24
     },

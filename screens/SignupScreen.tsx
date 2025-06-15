@@ -1,13 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { Colors } from "../constants/Color";
-import {Platform, ScrollView, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView} from "react-native";
+import {Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BackButton from "../component/BackButton";
 import AuthTextInput from "../component/auth/AuthTextInput";
 import CommonButton from "../component/CommonButton";
 import Checkbox from "expo-checkbox";
 import SelectAgreement from "../component/auth/SelectAgreement";
 import { useSignupScreen } from "../hooks/auth/signup/useSignupScreen";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export type SignupScreenProps = StackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -48,15 +49,10 @@ export default function SignupScreen(props : SignupScreenProps){
     return(
     <SafeAreaView style={styles.container}>
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
-        <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "padding"}
-        style={{flex : 1}}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 64}
-        >
-            <ScrollView 
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{flexGrow:1, overflow : "visible"}}
+            <KeyboardAwareScrollView
+                contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
             >
                 <View style={styles.backButton}>
                     <BackButton 
@@ -142,16 +138,15 @@ export default function SignupScreen(props : SignupScreenProps){
                         ))}
                     </View>
                 </View>
-            </ScrollView>
-            <View style={styles.buttonContainer}>
-                {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
-                <CommonButton 
-                    title="회원가입" 
-                    onPress={() => {requestSignup()}}
-                    disabled={disabled}
-                />
-            </View>
-        </KeyboardAvoidingView>
+            </KeyboardAwareScrollView>
+        <View style={styles.buttonContainer}>
+            {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+            <CommonButton 
+                title="회원가입" 
+                onPress={() => {requestSignup()}}
+                disabled={disabled}
+            />
+        </View>
     </SafeAreaView>
     )
 }
@@ -164,7 +159,6 @@ const styles = StyleSheet.create({
         flex : 1,
         marginHorizontal :16,
         paddingVertical : 16,
-        // gap : 68,
     },
     backButton: {
         marginTop: 22,

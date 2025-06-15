@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, Platform, SafeAreaView, StatusBar, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { SafeAreaView, StatusBar, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { Colors } from "../constants/Color";
 import BackButton from "../component/BackButton";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -9,6 +9,7 @@ import InterestScreen from "./signup/InterestScreen";
 import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
 import { useSignupInputScreen } from "../hooks/auth/signup/input/useSignupInputScreen";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 
@@ -62,21 +63,21 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
                 height={8}
             />
         </View>
-        <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{flex : 1}}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 64}
+        <KeyboardAwareScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
         >
             <CurrentScreen {...form} />
-            <View style={styles.buttonContainer}>
-                {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
-                <CommonButton
-                    title={currentProgress == MAXPROGRESS ? "완료" : "다음"}
-                    onPress={() => {goNext()}}
-                    disabled={disabled}
-                />
-            </View>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
+        <View style={styles.buttonContainer}>
+            {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+            <CommonButton
+                title={currentProgress == MAXPROGRESS ? "완료" : "다음"}
+                onPress={() => {goNext()}}
+                disabled={disabled}
+            />
+        </View>
     </SafeAreaView>
     )
 }
