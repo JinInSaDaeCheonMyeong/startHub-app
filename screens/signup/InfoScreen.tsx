@@ -2,6 +2,7 @@ import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/Color";
 import DateInputText from "../../component/auth/DateInputText";
 import { DayList, MonthList, YearList } from "../../constants/DateNumber";
+import { useState } from "react";
 
 type InfoScreenProps = {
     name : string,
@@ -15,6 +16,8 @@ type InfoScreenProps = {
 }
 
 export default function InfoScreen(props : InfoScreenProps) {
+
+    const [open, setOpen] = useState(false)
 
     return(
         <View style={styles.mainContainer}>
@@ -40,20 +43,20 @@ export default function InfoScreen(props : InfoScreenProps) {
                     <DateInputText 
                         items={YearList} 
                         placeholder="YYYY"
-                        text={props.year} 
-                        setText={(s) => {props.setYear(s)}}
+                        value={props.year} 
+                        setValue={(s) => {props.setYear(s)}}
                     />
                     <DateInputText 
                         items={MonthList} 
                         placeholder="MM"
-                        text={props.month} 
-                        setText={(s) => {props.setMonth(s)}}
+                        value={props.month} 
+                        setValue={(s) => {props.setMonth(s)}}
                     />
                     <DateInputText 
                         items={DayList} 
                         placeholder="DD"
-                        text={props.day} 
-                        setText={(s) => {props.setDay(s)}}
+                        value={props.day} 
+                        setValue={(s) => {props.setDay(s)}}
                     />
                 </View>
             </View>
@@ -69,7 +72,6 @@ const styles = StyleSheet.create({
     },
     inputBox : {
         gap : 16,
-        zIndex: 1
     },
     textBox : {
         gap : 4
@@ -92,6 +94,7 @@ const styles = StyleSheet.create({
     birthDateContainer : {
         flex : 1,
         flexDirection : "row",
+        justifyContent : "space-between",
         gap : 16,
     },
     birthInput : {

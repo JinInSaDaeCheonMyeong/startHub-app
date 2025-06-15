@@ -43,16 +43,16 @@ const styles = StyleSheet.create({
         gap : 8
     },
     selectCheckBox : {
-        width : 20,
-        height : 20,
+        width : 24,
+        height : 24,
         borderColor : Colors.primary,
         backgroundColor : Colors.primary,
         borderRadius : 6,
         borderWidth : 1
     },
     unSelectCheckBox : {
-        width : 20,
-        height : 20,
+        width : 24,
+        height : 24,
         borderColor : Colors.gray3,
         borderRadius : 6,
         borderWidth : 1

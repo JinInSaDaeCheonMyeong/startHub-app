@@ -18,55 +18,55 @@ type AuthDropDownProps = {
 export default function AuthDropDown(props : AuthDropDownProps){
 
     return (
-    <DropDownPicker
-        open={props.open}
-        value={props.value}
-        items={props.items}
-        setOpen={props.setOpen}
-        multiple = {false}
-        setValue={(callback) => {
-        const newValue =
-            typeof callback === "function"
-            ? callback(props.value)
-            : callback;
-        if (newValue !== null) {
-            props.setValue(newValue);
-        }
-        }}
-        placeholder={props.placeholder}
-        placeholderStyle={styles.placeholderStyle}
-        style={styles.mainStyle}
-        dropDownContainerStyle={styles.dropdownContainerStyle}
-        textStyle={styles.textStyle}
-        labelStyle={styles.lableStyle}
-        ArrowUpIconComponent={
-            ({style}) => (
-            <TopButton
-                width={18} 
-                height={18} 
-                color={Colors.gray2} 
-                style={style}
-            />
-        )}
-        ArrowDownIconComponent={
-            ({style}) => (
-            <BottomButton
-                width={18}
-                height={18}
-                color={Colors.gray2}
-                style={style}
-            />
-        )}
-        TickIconComponent={
-            ({style}) => (
-            <CheckMark
-                width={18}
-                height={18}
-                color={Colors.gray2}
-                style={style}
-            />
-        )}
-    />
+        <DropDownPicker
+            open={props.open}
+            value={props.value}
+            items={props.items}
+            setOpen={props.setOpen}
+            multiple = {false}
+            setValue={(callback) => {
+            const newValue =
+                typeof callback === "function"
+                ? callback(props.value)
+                : callback;
+            if (newValue !== null) {
+                props.setValue(newValue);
+            }}}
+            placeholder={props.placeholder}
+            placeholderStyle={styles.placeholderStyle}
+            style={styles.mainStyle}
+            dropDownContainerStyle={styles.dropdownContainerStyle}
+            textStyle={styles.textStyle}
+            labelStyle={styles.lableStyle}
+            containerStyle={{height : 48}}
+            ArrowUpIconComponent={
+                ({style}) => (
+                <TopButton
+                    width={18} 
+                    height={18} 
+                    color={Colors.gray2} 
+                    style={style}
+                />
+            )}
+            ArrowDownIconComponent={
+                ({style}) => (
+                <BottomButton
+                    width={18}
+                    height={18}
+                    color={Colors.gray2}
+                    style={style}
+                />
+            )}
+            TickIconComponent={
+                ({style}) => (
+                <CheckMark
+                    width={18}
+                    height={18}
+                    color={Colors.gray2}
+                    style={style}
+                />
+            )}
+        />
     )
 }
 
