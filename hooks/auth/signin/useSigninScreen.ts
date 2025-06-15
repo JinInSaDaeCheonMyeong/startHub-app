@@ -8,8 +8,7 @@ import { saveAccToken, saveRefToken } from "../../../util/token";
 import { useSigninValid } from "./useSigninValid";
 import { useDisabled } from "../../util/useDisabled";
 import { signin } from "../../../api/user";
-
-type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
+import { SigninScreenProps } from "../../../screens/SigninScreen";
 
 export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const [formData, setFormData] = useState<SigninFormData>({
@@ -41,7 +40,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     return () => controller.abort()
     }, [])
 
-    const updateFormData = useCallback(<K extends keyof SigninRequest>(key : K, value : SigninRequest[K]) => {
+    const updateFormData = useCallback(<K extends keyof SigninFormData>(key : K, value : SigninFormData[K]) => {
         setFormData(prev => ({...prev, [key] : value}))
         if(errorVisible){
             hideError()
@@ -51,7 +50,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const setEmail = useCallback((value : string) => updateFormData("email", value), [updateFormData])
     const setPassword = useCallback((value : string) => updateFormData("password", value), [updateFormData])
 
-    const handleSignin = useCallback( async () => {
+    const handleSignin = async () => {
         disabledBtn()
         const email = formData.email.trim()
         const password = formData.password.trim()
@@ -81,7 +80,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
         } finally {
             enabledBtn()
         }
-    }, [formData.email, formData.password, disabled])
+    }
 
     const goSignupScreen = () => {
         disabledBtn()

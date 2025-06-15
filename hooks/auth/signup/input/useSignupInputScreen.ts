@@ -12,8 +12,7 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
         month : '',
         day : '',
         location : '',
-        interestList : [],
-        date : new Date()
+        interestList : []
     })
 
     const [currentProgress, setCurrentProgress] = useState(1)

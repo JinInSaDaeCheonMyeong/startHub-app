@@ -9,6 +9,7 @@ import { VerifyRequest } from "../../../type/email/verify.type"
 import { useDisabled } from "../../util/useDisabled"
 import { sendcode, verify } from "../../../api/email"
 import { signup } from "../../../api/user"
+import { ShowToast, ToastType } from "../../../util/ShowToast"
 
 export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     const [formData, setFormData] = useState<SignupFormData>({
@@ -68,10 +69,10 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         })
     }, [updateFormData])
 
-    const setAllChecked = useCallback((value : boolean) => {
+    const setAllChecked = (value : boolean) => {
         updateFormData('allChecked', value)
         updateFormData('checked', {ONE : value, SECOND : value, THIRD : value})
-    }, [updateFormData])
+    }
 
     const goBack = () => {
         disabledBtn()
@@ -79,7 +80,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         enabledBtn()
     }
 
-    const requestSignup = useCallback( async () => {
+    const requestSignup = async () => {
         disabledBtn()
 
         const email = formData.email.trim()
@@ -113,6 +114,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         try {
             await verify(verifyData) 
             await signup(signupData)
+            navigation.navigate('SignupInput')
         } catch (error) {
             handleAxiosError(error, {
                 ...DefaultErrorMessage,
@@ -121,13 +123,12 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             }, (value) => {
                 showError(value)
             })
+        } finally {
             enabledBtn()
-            return
         }
-        navigation.navigate('SignupInput')
-    }, [formData])
+    }
 
-    const requestSendcode = useCallback( async () => {
+    const requestSendcode = async () => {
         disabledBtn()
         const email = formData.email.trim()
         const validResult = isValidEmail(email)
@@ -141,6 +142,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         }
         try {
             await sendcode(sendcodeData)
+            ShowToast("요청 성공", "인증번호의 유효 시간은 5분입니다", ToastType.SUCCESS)
         } catch (error) {
             handleAxiosError(error, {
                 ...DefaultErrorMessage
@@ -151,7 +153,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             return
         }
         enabledBtn()
-    }, [formData, isValidEmail, showError])
+    }
 
     return {
         form : {

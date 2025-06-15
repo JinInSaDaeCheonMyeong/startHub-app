@@ -19,8 +19,4 @@ export interface SignupInputRequest{
     interestList : string[]
 }
 
-export interface SignupInputFormData extends SignupInputRequest {
-    year : string,
-    month : string,
-    day : string
-}
+export interface SignupInputFormData extends UserInfo, LocationInfo, InterestInfo {}
