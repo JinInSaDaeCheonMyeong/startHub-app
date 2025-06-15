@@ -4,12 +4,11 @@ import { useError } from "../../util/useError"
 import { SignupFormData, SignupRequest } from "../../../type/user/signup.type"
 import { useSignupValid } from "./useSignupValid"
 import { SendcodeRequest } from "../../../type/email/sendcode.type"
-import { sendcode } from "../../../api/email/sendcode"
 import { DefaultErrorMessage } from "../../../type/error/error.type"
 import { VerifyRequest } from "../../../type/email/verify.type"
-import { verify } from "../../../api/email/verify"
-import { signup } from "../../../api/user/signup"
 import { useDisabled } from "../../util/useDisabled"
+import { sendcode, verify } from "../../../api/email"
+import { signup } from "../../../api/user"
 
 export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     const [formData, setFormData] = useState<SignupFormData>({
