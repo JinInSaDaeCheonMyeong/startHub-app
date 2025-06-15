@@ -1,5 +1,4 @@
 import { ValidError } from "../../../type/error/error.type"
-import { SignupFormData } from "../../../type/user/signup.type"
 import { useAuthValid } from "../../util/auth/useAuthValid"
 
 export const useSignupValid = () => {
@@ -20,10 +19,10 @@ export const useSignupValid = () => {
         THIRD : boolean
         ) : ValidError => {
         if(!email && !verifyCode && !password && !checkPassword && !ONE && !SECOND && !THIRD){
-            return {value : false, message : '입력을 확인해주세요'}
+            return {isValid : false, message : '입력을 확인해주세요'}
         }
         const emailValid = isValidEmail(email)
-        if(!emailValid.value){
+        if(!emailValid.isValid){
             return emailValid
         }
         const verifyCodeValid = isValidVerifyCode(verifyCode)
@@ -31,14 +30,14 @@ export const useSignupValid = () => {
             return verifyCodeValid
         }
         const passwordValid = isValidPassword(password, checkPassword)
-        if(!passwordValid.value){
+        if(!passwordValid.isValid){
             return passwordValid
         }
         const checkedValid = isValidChecked(ONE, SECOND, THIRD)
         if(!checkedValid){
             return checkedValid
         }
-        return {value : true}
+        return {isValid : true}
     }
 
     return {

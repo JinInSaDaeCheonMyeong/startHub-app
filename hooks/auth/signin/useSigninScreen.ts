@@ -13,8 +13,8 @@ type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
 export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const [formData, setFormData] = useState<SigninFormData>({
-        email : 'ouran67800@gmail.com',
-        password : 'Toadl2015!!'
+        email : '',
+        password : ''
     })
     const {
         value : {
@@ -56,7 +56,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
         const email = formData.email.trim()
         const password = formData.password.trim()
         const validResult = validSigninForm({...formData, email : email, password : password})
-        if(!validResult.value){
+        if(!validResult.isValid){
             showError(validResult.message)
             enabledBtn()
             return

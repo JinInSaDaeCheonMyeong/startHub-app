@@ -1,9 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/Color";
-import { useState } from "react";
-import AuthDropDown from "../../component/auth/AuthDropDown";
 import DateInputText from "../../component/auth/DateInputText";
-import { DayList, MonthList, YearList } from "../../constants/\bDateNumber";
+import { DayList, MonthList, YearList } from "../../constants/DateNumber";
 
 type InfoScreenProps = {
     name : string,

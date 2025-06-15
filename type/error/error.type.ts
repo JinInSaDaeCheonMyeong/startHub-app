@@ -29,6 +29,6 @@ export const DefaultErrorMessage : ErrorType = {
 }
 
 export type ValidError = {
-    value : boolean,
+    isValid : boolean,
     message? : string
 }

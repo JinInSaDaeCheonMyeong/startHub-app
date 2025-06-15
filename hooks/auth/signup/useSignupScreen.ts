@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { SignupScreenProps } from "../../../screens/SignupScreen"
 import { useError } from "../../util/useError"
 import { SignupFormData, SignupRequest } from "../../../type/user/signup.type"
@@ -90,15 +90,15 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         const {checked : {ONE, SECOND, THIRD}} = formData
 
         const validResult = validSignupForm(
-            email.trim(),
-            verifyCode.trim(),
-            password.trim(),
-            checkPassword.trim(),
+            email,
+            verifyCode,
+            password,
+            checkPassword,
             ONE,
             SECOND,
             THIRD
         )
-        if(!validResult.value) {
+        if(!validResult.isValid) {
             enabledBtn()
             showError(validResult.message)
             return 
@@ -113,19 +113,6 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         }
         try {
             await verify(verifyData) 
-            console.log("verify : 성공")
-        } catch (error) {
-            handleAxiosError(error, {
-                ...DefaultErrorMessage,
-                401 : "잘못된 인증번호 입니다",
-                409 : "이미 가입된 이메일입니다"
-            }, (value) => {
-                showError(value)
-            })
-            enabledBtn()
-            return
-        }
-        try {
             await signup(signupData)
         } catch (error) {
             handleAxiosError(error, {
@@ -145,7 +132,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         disabledBtn()
         const email = formData.email.trim()
         const validResult = isValidEmail(email)
-        if(!validResult.value) {
+        if(!validResult.isValid) {
             enabledBtn()
             showError(validResult.message)
             return

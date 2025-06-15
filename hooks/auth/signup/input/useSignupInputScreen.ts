@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useState } from "react"
-import { useError } from "../../util/useError"
+import { useError } from "../../../util/useError"
 import { useSignupInputValid } from "./useSignupInputValid"
-import { SignupInputScreenProps } from "../../../screens/SignupInputScreen"
-import { InterestInfo, LocationInfo, SignupInputFormData, UserInfo } from "../../../type/user/signupInput.type"
-import { useDisabled } from "../../util/useDisabled"
+import { SignupInputScreenProps } from "../../../../screens/SignupInputScreen"
+import { InterestInfo, LocationInfo, SignupInputFormData, UserInfo } from "../../../../type/user/signupInput.type"
+import { useDisabled } from "../../../util/useDisabled"
 
 export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXPROGRESS : number) => {
     const [formData, setFormData] = useState<SignupInputFormData>({
@@ -50,14 +50,15 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
     const setLocation = useCallback((value : string) => updateFormData("location", value), [updateFormData])
     const setInterestList = useCallback((value : string[]) => updateFormData("interestList", value), [updateFormData])
 
-    const transformDate = useMemo(() => {
-        const {year, month, day} = formData
+    const transformDate = (year : string, month : string, day : string) : Date | null=> {
         if(!year || !month || !day) return null
+        
         const dateString = `${year}-${month.padStart(2, "0")}-${day.padStart(2,"0")}`
         const date = new Date(dateString)
+
         if(isNaN(date.getTime())) return null
         return date
-    }, [formData.year, formData.month, formData.day])
+    }
 
     const goBack = () => {
         hideError()
@@ -96,13 +97,14 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
         const validData = getValidData()
         if(!validData) return
         const validResult = validSignupInputForm(currentProgress, validData)
-        if(!validResult.value){
+        if(!validResult.isValid){
             showError(validResult.message)
             return
         }
         hideError()
         enabledBtn()
         if(currentProgress >= MAXPROGRESS) {
+            // 프로필 세팅 나중에 구현 할 예정
             navigation.popTo("Signin")
         } else {
             setCurrentProgress(prev => prev + 1)

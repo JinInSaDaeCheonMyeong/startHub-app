@@ -3,7 +3,7 @@ import { VerifyRequest } from "../../type/email/verify.type";
 
 export const verify = async (verifyData : VerifyRequest) => {
     await axios.post(
-        `${process.env.EXPO_PUBLIC_API_URL}/email/verify`,
+        `${process.env.EXPO_PUBLIC_API_URL}email/verify`,
         verifyData
     )
 }

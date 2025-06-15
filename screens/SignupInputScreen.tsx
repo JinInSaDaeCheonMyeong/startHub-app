@@ -4,12 +4,11 @@ import BackButton from "../component/BackButton";
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import * as Progress from 'react-native-progress';
-import { useState } from "react";
 import InfoScreen from "./signup/InfoScreen";
 import InterestScreen from "./signup/InterestScreen";
 import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
-import { useSignupInputScreen } from "../hooks/auth/input/useSignupInputScreen";
+import { useSignupInputScreen } from "../hooks/auth/signup/input/useSignupInputScreen";
 
 export type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 

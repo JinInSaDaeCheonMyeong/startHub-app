@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import AuthDropDown from "../../component/auth/AuthDropDown";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { LocationItems } from "../../constants/LocationItems";
 import { Colors } from "../../constants/Color";
 

@@ -1,18 +1,6 @@
-import { ValidError } from "../../../type/error/error.type"
-import { useAuthValid } from "../../util/auth/useAuthValid"
-
-export type UserInfo =  {
-    name : string,
-    year : string,
-    month : string,
-    day : string,
-} 
-export type LocationInfo =  {
-    location : string
-} 
-export type InterestInfo = {
-    interestList : string[]
-}
+import { ValidError } from "../../../../type/error/error.type"
+import { InterestInfo, LocationInfo, UserInfo } from "../../../../type/user/signupInput.type"
+import { useAuthValid } from "../../../util/auth/useAuthValid"
 
 export const useSignupInputValid = () => {
     const {
@@ -36,7 +24,7 @@ export const useSignupInputValid = () => {
                 const validInterestListResult = isValidInterest(data as InterestInfo)
                 return validInterestListResult
             default :
-                return {value : false, message : "알 수 없는 오류가 발생했습니다."}
+                return {isValid : false, message : "알 수 없는 오류가 발생했습니다."}
         }
     }
 

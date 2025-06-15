@@ -34,7 +34,6 @@ export default function InterestScreen(props : InterestScreenProps){
                             interestList.push(id)
                             props.setInterestList(interestList)
                         }
-                        console.log(props.interestList);
                     }}
                 />
             )}

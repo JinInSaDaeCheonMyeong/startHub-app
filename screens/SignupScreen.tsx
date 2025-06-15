@@ -4,7 +4,6 @@ import { Colors } from "../constants/Color";
 import {Platform, ScrollView, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import BackButton from "../component/BackButton";
 import AuthTextInput from "../component/auth/AuthTextInput";
-import { useEffect, useState } from "react";
 import CommonButton from "../component/CommonButton";
 import Checkbox from "expo-checkbox";
 import SelectAgreement from "../component/auth/SelectAgreement";
