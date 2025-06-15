@@ -21,6 +21,7 @@ export default function SelectAgreement(props : SelectAgreementProps){
                     props.onSelect(value)
                 }}
                 style={props.value ? styles.selectCheckBox : styles.unSelectCheckBox}
+                color={props.value ? Colors.primary : undefined}
             />
             <TouchableOpacity style={styles.clickContainer} onPress={props.onClick}>
                 <Text style={styles.clickText}>{props.title}</Text>

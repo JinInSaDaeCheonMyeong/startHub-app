@@ -1,14 +1,15 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { SignupScreenProps } from "../../../screens/SignupScreen"
 import { useError } from "../../util/useError"
 import { SignupFormData, SignupRequest } from "../../../type/user/signup.type"
 import { useSignupValid } from "./useSignupValid"
 import { SendcodeRequest } from "../../../type/email/sendcode.type"
-import { sendcode } from "../../../api/email/sendcode"
 import { DefaultErrorMessage } from "../../../type/error/error.type"
 import { VerifyRequest } from "../../../type/email/verify.type"
-import { verify } from "../../../api/email/verify"
-import { signup } from "../../../api/user/signup"
+import { useDisabled } from "../../util/useDisabled"
+import { sendcode, verify } from "../../../api/email"
+import { signup } from "../../../api/user"
+import { ShowToast, ToastType } from "../../../util/ShowToast"
 
 export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
     const [formData, setFormData] = useState<SignupFormData>({
@@ -34,13 +35,16 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             handleAxiosError
         },
     } = useError()
+    
     const {
-        validSigninForm,
-        isVaildEmail
+        validSignupForm,
+        isValidEmail
     } = useSignupValid()
-    const [disabled, setDisabled] = useState(false)
-    const disabledBtn = useCallback(() => {setDisabled(true)}, [])
-    const abledBtn = useCallback(() => {setDisabled(false)}, [])
+    const {
+        disabled,
+        disabledBtn,
+        enabledBtn
+    } = useDisabled()
 
     const updateFormData = useCallback(<K extends keyof SignupFormData>(key : K, value : SignupFormData[K]) => {
         setFormData(prev => ({...prev, [key] : value}))
@@ -65,24 +69,38 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         })
     }, [updateFormData])
 
-    const setAllChecked = useCallback((value : boolean) => {
+    const setAllChecked = (value : boolean) => {
         updateFormData('allChecked', value)
         updateFormData('checked', {ONE : value, SECOND : value, THIRD : value})
-    }, [updateFormData])
+    }
 
     const goBack = () => {
         disabledBtn()
         navigation.goBack()
-        abledBtn()
+        enabledBtn()
     }
 
-    const handleSignup = useCallback( async () => {
+    const requestSignup = async () => {
         disabledBtn()
-        const vaildResult = validSigninForm(formData)
-        const {email, verifyCode, password} = formData
-        if(!vaildResult.value) {
-            abledBtn()
-            showError(vaildResult.message)
+
+        const email = formData.email.trim()
+        const verifyCode = formData.verifyCode.trim()
+        const password = formData.password.trim()
+        const checkPassword = formData.checkPassword.trim()
+        const {checked : {ONE, SECOND, THIRD}} = formData
+
+        const validResult = validSignupForm(
+            email,
+            verifyCode,
+            password,
+            checkPassword,
+            ONE,
+            SECOND,
+            THIRD
+        )
+        if(!validResult.isValid) {
+            enabledBtn()
+            showError(validResult.message)
             return 
         }
         const verifyData : VerifyRequest = {
@@ -95,38 +113,28 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         }
         try {
             await verify(verifyData) 
-            console.log("verify : 성공")
+            await signup(signupData)
+            navigation.navigate('SignupInput')
         } catch (error) {
             handleAxiosError(error, {
                 ...DefaultErrorMessage,
                 401 : "잘못된 인증번호 입니다",
                 409 : "이미 가입된 이메일입니다"
+            }, (value) => {
+                showError(value)
             })
-            abledBtn()
-            return
+        } finally {
+            enabledBtn()
         }
-        try {
-            const {message} = await signup(signupData)
-            console.log(`signup : ${message}`)
-        } catch (error) {
-            handleAxiosError(error, {
-                ...DefaultErrorMessage,
-                401 : "잘못된 인증번호 입니다",
-                409 : "이미 가입된 이메일입니다"
-            })
-            abledBtn()
-            return
-        }
-        navigation.navigate('SignupInput')
-    }, [formData])
+    }
 
-    const requestSendcode = useCallback( async () => {
+    const requestSendcode = async () => {
         disabledBtn()
-        const {email} = formData
-        const emailValid = isVaildEmail(email.trim())
-        if(!emailValid.value) {
-            abledBtn()
-            showError(emailValid.message)
+        const email = formData.email.trim()
+        const validResult = isValidEmail(email)
+        if(!validResult.isValid) {
+            enabledBtn()
+            showError(validResult.message)
             return
         }
         const sendcodeData : SendcodeRequest = {
@@ -134,17 +142,18 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         }
         try {
             await sendcode(sendcodeData)
-            console.log("send-code : 성공")
+            ShowToast("요청 성공", "인증번호의 유효 시간은 5분입니다", ToastType.SUCCESS)
         } catch (error) {
-            console.log("send-code : 실패")
             handleAxiosError(error, {
                 ...DefaultErrorMessage
+            }, (value) => {
+                showError(value)
             })
-            abledBtn()
+            enabledBtn()
             return
         }
-        abledBtn()
-    }, [formData, isVaildEmail, showError])
+        enabledBtn()
+    }
 
     return {
         form : {
@@ -158,7 +167,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         },
         actions : {
             goBack,
-            handleSignup,
+            requestSignup,
             requestSendcode
         },
         ui : {
@@ -168,5 +177,3 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         }
     }
 }
-
-// 5분

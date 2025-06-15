@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Colors } from "../constants/Color";
@@ -7,56 +7,87 @@ import AuthTextInput from "../component/auth/AuthTextInput";
 import BackButton from "../component/BackButton";
 import CommonButton from "../component/CommonButton";
 import LinkActionText from "../component/auth/LinkActionText";
+import { useSigninScreen } from "../hooks/auth/signin/useSigninScreen";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
+export type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
-export default function SigninScreen({navigation} : SigninScreenProps) {
+export default function SigninScreen(props: SigninScreenProps) {
 
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+    const {
+        form : {
+            email,
+            password,
+            setEmail,
+            setPassword
+        },
+        actions : {
+            handleSignin,
+            goSignupScreen,
+            goBack
+        },
+        ui : {
+            disabled,
+            errorVisible,
+            errorText
+        }
+    } = useSigninScreen(props)
 
     return (
         <SafeAreaView style={styles.container}>
-            <BackButton 
-            width={18} 
-            height={18} 
-            color={Colors.black2} 
-            onClick={() => {navigation.goBack()}}
-            />
-            <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
-            <View style={styles.interactionContainer}>
-                <View style={styles.textInputContainer}>
-                    <AuthTextInput 
-                        value={email}
-                        placeHolder="이메일"
-                        placeHolderTextColor={Colors.gray2}
-                        isPassword={false}
-                        onChange={(text) => {
-                            setEmail(text)
-                        }}
-                    />
-                    <AuthTextInput 
-                        value={password}
-                        placeHolder="비밀번호" 
-                        placeHolderTextColor={Colors.gray2}
-                        isPassword={true}
-                        onChange={(text) => {
-                            setPassword(text)
-                        }}
+            <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
+            <KeyboardAwareScrollView
+                contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.backButton}>
+                    <BackButton 
+                    width={20} 
+                    height={20} 
+                    color={Colors.black2} 
+                    onClick={() => {goBack()}}
                     />
                 </View>
-                <View style={styles.buttonContainer}>
-                    <Text style={styles.errorText}>이메일 혹은 비밀번호가 일치하지 않습니다</Text>
-                    <CommonButton title="로그인" onPress={() => {console.log(`${email}`)}} disabled={false}/>
+                <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 로그인</Text>
+                <View style={styles.interactionContainer}>
+                    <View style={styles.textInputContainer}>
+                        <AuthTextInput 
+                            value={email}
+                            placeHolder="이메일"
+                            placeHolderTextColor={Colors.gray2}
+                            isPassword={false}
+                            onChange={(text) => {
+                                setEmail(text)
+                            }}
+                        />
+                        <AuthTextInput 
+                            value={password}
+                            placeHolder="비밀번호" 
+                            placeHolderTextColor={Colors.gray2}
+                            isPassword={true}
+                            onChange={(text) => {
+                                setPassword(text)
+                            }}
+                        />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+                        <CommonButton 
+                            title="로그인" 
+                            onPress={() => {handleSignin()}} 
+                            disabled={disabled}
+                        />
+                    </View>
+                    <View style={styles.signupContainer}>
+                        <LinkActionText title="이메일 찾기" onPress={() => {}}/>
+                        <Text style={styles.contourText}>⏐</Text>
+                        <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
+                        <Text style={styles.contourText}>⏐</Text>
+                        <LinkActionText title="회원가입" onPress={() => {goSignupScreen()}}/>
+                    </View>
                 </View>
-                <View style={styles.signupContainer}>
-                    <LinkActionText title="이메일 찾기" onPress={() => {}}/>
-                    <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="비밀번호 찾기" onPress={() => {}}/>
-                    <Text style={styles.contourText}>⏐</Text>
-                    <LinkActionText title="회원가입" onPress={() => {navigation.navigate('Signup')}}/>
-                </View>
-            </View>
+            </KeyboardAwareScrollView>
         </SafeAreaView>
     )
 }
@@ -66,6 +97,10 @@ const styles = StyleSheet.create({
         flex : 1,
         margin : 16,
         gap : 68
+    },
+    backButton : {
+        marginTop : 22,
+        marginBottom : 68
     },
     titleText : {
         width : "100%",
@@ -81,6 +116,7 @@ const styles = StyleSheet.create({
         color : Colors.primary
     },
     interactionContainer : {
+        top : 68,
         alignItems : "center",
         gap : 24
     },

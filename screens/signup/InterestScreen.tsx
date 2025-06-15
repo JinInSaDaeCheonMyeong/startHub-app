@@ -3,12 +3,12 @@ import CategorySelectButton from "../../component/auth/CategorySelectButton";
 import { Colors } from "../../constants/Color";
 import { InterestTypeList } from "../../constants/InterestTypeList";
 
-type CategoryScreenProps = {
+type InterestScreenProps = {
     interestList : string[]
     setInterestList : (list : string[]) => void
 }
 
-export default function CategoryScreen(props : CategoryScreenProps){
+export default function InterestScreen(props : InterestScreenProps){
 
     return(
         <View style={styles.mainContainer}>
@@ -18,13 +18,14 @@ export default function CategoryScreen(props : CategoryScreenProps){
             </View>
             <FlatList 
             data={InterestTypeList}
+            showsVerticalScrollIndicator={false}
             contentContainerStyle = {styles.listContentContainer}
-            renderItem={({item}) => (
+            renderItem={({item : {id, color, icon}}) => (
                 <CategorySelectButton
-                    key={item.id}
-                    id={item.id}
-                    color={item.color}
-                    icons={item.icon}
+                    key={id}
+                    id={id}
+                    color={color}
+                    icons={icon}
                     onClick={(id) => {
                         if (props.interestList.includes(id)) {
                             props.setInterestList(props.interestList.filter(key => key !== id))
@@ -33,7 +34,6 @@ export default function CategoryScreen(props : CategoryScreenProps){
                             interestList.push(id)
                             props.setInterestList(interestList)
                         }
-                        console.log(props.interestList);
                     }}
                 />
             )}

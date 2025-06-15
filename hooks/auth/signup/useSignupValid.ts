@@ -1,39 +1,47 @@
-import { VaildError } from "../../../type/error/error.type"
-import { SignupFormData } from "../../../type/user/signup.type"
+import { ValidError } from "../../../type/error/error.type"
 import { useAuthValid } from "../../util/auth/useAuthValid"
 
 export const useSignupValid = () => {
     const {
-        isVaildEmail,
-        isVaildPassword
+        isValidEmail,
+        isValidPassword,
+        isValidVerifyCode,
+        isValidChecked
     } = useAuthValid()
 
-    const validSigninForm = (formData : SignupFormData) : VaildError => {
-        const {
-            email, verifyCode, password, checkPassword, checked : {ONE, SECOND, THIRD}
-        } = formData
+    const validSignupForm = (
+        email : string,
+        verifyCode : string, 
+        password : string, 
+        checkPassword : string, 
+        ONE : boolean, 
+        SECOND : boolean,
+        THIRD : boolean
+        ) : ValidError => {
         if(!email && !verifyCode && !password && !checkPassword && !ONE && !SECOND && !THIRD){
-            return {value : false, message : '입력을 확인해주세요'}
+            return {isValid : false, message : '입력을 확인해주세요'}
         }
-        const emailValid = isVaildEmail(email.trim())
-        if(!emailValid.value){
+        const emailValid = isValidEmail(email)
+        if(!emailValid.isValid){
             return emailValid
         }
-        if(!verifyCode.trim()){
-            return {value : false, message : '인증코드를 입력해주세요'}
+        const verifyCodeValid = isValidVerifyCode(verifyCode)
+        if(!verifyCodeValid){
+            return verifyCodeValid
         }
-        const vaildPassword = isVaildPassword(password.trim(), checkPassword.trim())
-        if(!vaildPassword.value){
-            return vaildPassword
+        const passwordValid = isValidPassword(password, checkPassword)
+        if(!passwordValid.isValid){
+            return passwordValid
         }
-        if(!ONE && !SECOND && !THIRD){
-            return {value : false, message : "필수 항목에 동의해주세요"}
+        const checkedValid = isValidChecked(ONE, SECOND, THIRD)
+        if(!checkedValid){
+            return checkedValid
         }
-        return {value : true}
+        return {isValid : true}
     }
 
     return {
-        validSigninForm,
-        isVaildEmail
+        validSignupForm,
+        isValidEmail
     }
 }

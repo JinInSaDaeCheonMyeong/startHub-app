@@ -1,9 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/Color";
-import { useState } from "react";
-import AuthDropDown from "../../component/auth/AuthDropDown";
 import DateInputText from "../../component/auth/DateInputText";
-import { DayList, MonthList, YearList } from "../../constants/\bDateNumber";
+import { DayList, MonthList, YearList } from "../../constants/DateNumber";
 
 type InfoScreenProps = {
     name : string,
@@ -40,19 +38,19 @@ export default function InfoScreen(props : InfoScreenProps) {
                 </View>
                 <View style={styles.birthDateContainer}>
                     <DateInputText 
-                        data={YearList} 
+                        items={YearList} 
                         placeholder="YYYY"
                         text={props.year} 
                         setText={(s) => {props.setYear(s)}}
                     />
                     <DateInputText 
-                        data={MonthList} 
+                        items={MonthList} 
                         placeholder="MM"
                         text={props.month} 
                         setText={(s) => {props.setMonth(s)}}
                     />
                     <DateInputText 
-                        data={DayList} 
+                        items={DayList} 
                         placeholder="DD"
                         text={props.day} 
                         setText={(s) => {props.setDay(s)}}

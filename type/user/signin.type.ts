@@ -5,6 +5,8 @@ export interface SigninRequest{
     password : string
 }
 
+export interface SigninFormData extends SigninRequest {}
+
 export interface SigninResponse extends Response{
     data : {
         access : string,
