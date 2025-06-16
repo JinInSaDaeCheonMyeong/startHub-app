@@ -3,6 +3,7 @@ import { Colors } from "../../constants/Color";
 import VisibleIcon from "../../assets/icons/eye.svg"
 import InVisibleIcon from "../../assets/icons/eye.fill.svg"
 import { useState } from "react";
+import { Fonts } from "../../constants/Fonts";
 
 type AuthTextInputProps = {
     placeHolder : string,
@@ -66,5 +67,6 @@ const styles = StyleSheet.create({
         flex : 1,
         fontSize : 14,
         color : Colors.black2,
+        fontFamily : Fonts.medium
     }
 })

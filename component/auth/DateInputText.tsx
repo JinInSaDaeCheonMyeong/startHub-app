@@ -5,6 +5,7 @@ import { Colors } from "../../constants/Color";
 import { Dispatch, SetStateAction, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import CheckMark from "../../assets/icons/checkmark.svg"
+import { Fonts } from "../../constants/Fonts";
 
 type DateInputProps = {
     value : string | null, 
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     placeholderStyle : {
         color : Colors.gray2,
         fontSize : 18,
-        fontWeight : "medium"
+        fontFamily : Fonts.medium,
     },
     dropdownContainerStyle : {
         backgroundColor : Colors.white2,
@@ -98,14 +99,14 @@ const styles = StyleSheet.create({
     textStyle : {
         color : Colors.black2,
         fontSize : 18,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         paddingVertical : 8,
         paddingHorizontal : 6,
     },
     lableStyle : {
         color : Colors.black2,
         fontSize : 18,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         paddingVertical : 8,
         paddingHorizontal : 6,
     }

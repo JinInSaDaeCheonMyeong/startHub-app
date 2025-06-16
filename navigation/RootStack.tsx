@@ -1,5 +1,6 @@
 import {createStackNavigator} from "@react-navigation/stack";
 import AuthStack from "./AuthStack";
+import { Colors } from "../constants/Color";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -9,7 +10,15 @@ export type RootStackParamList = {
 
 export default function RootStack() {
     return (
-        <Stack.Navigator initialRouteName={"Auth"} screenOptions={{headerShown: false}}>
+        <Stack.Navigator 
+            initialRouteName={"Auth"} 
+            screenOptions={{
+                cardStyle : {
+                    backgroundColor : Colors.white1
+                },
+                headerShown: false
+            }}
+        >
             <Stack.Screen name="Auth" component={AuthStack} />
         </Stack.Navigator>
     )

@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Colors } from "../constants/Color";
+import { Fonts } from "../constants/Fonts";
 
 type CommonButtonProps = {
     title : string,
@@ -26,6 +27,6 @@ const styles = StyleSheet.create({
     text : {
         color : Colors.white1,
         fontSize : 18,
-        fontWeight : "bold"
+        fontFamily : Fonts.bold,
     }
 })

@@ -9,6 +9,7 @@ import Checkbox from "expo-checkbox";
 import SelectAgreement from "../component/auth/SelectAgreement";
 import { useSignupScreen } from "../hooks/auth/signup/useSignupScreen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Fonts } from "../constants/Fonts";
 
 export type SignupScreenProps = StackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -166,14 +167,14 @@ const styles = StyleSheet.create({
     titleText : {
         width : "100%",
         fontSize : 24,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         textAlign : "center",
         paddingVertical : 68
     },
     accentText : {
         width : "100%",
         fontSize : 24,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         textAlign : "center",
         color : Colors.primary
     },
@@ -211,13 +212,13 @@ const styles = StyleSheet.create({
     },
     containerText : {
         fontSize : 16,
-        fontWeight : "semibold",
+        fontFamily : Fonts.semiBold,
     },
     errorText : {
         textAlign : "center",
         color : Colors.error,
         fontSize : 12,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     },
     signinButton : {
         backgroundColor : Colors.primary,
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
     contourText : {
         color : Colors.gray2,
         fontSize : 16,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     },
     verifyButton : {
         backgroundColor : Colors.white1,
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
     },
     allSelectText : {
         fontSize : 14,
-        fontWeight : "semibold",
+        fontFamily : Fonts.semiBold,
         color : Colors.black1
     },
     line : {

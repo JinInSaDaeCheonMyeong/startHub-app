@@ -2,6 +2,7 @@ import Checkbox from "expo-checkbox"
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Colors } from "../../constants/Color"
 import RightArrow from "../../assets/icons/right-arrow-back.svg"
+import { Fonts } from "../../constants/Fonts"
 
 
 type SelectAgreementProps = {
@@ -60,6 +61,6 @@ const styles = StyleSheet.create({
     clickText : {
         color : Colors.gray2,
         fontSize : 14,
-        fontWeight : "medium"
+        fontFamily : Fonts.medium,
     }
 })

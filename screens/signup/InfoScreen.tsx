@@ -3,6 +3,7 @@ import { Colors } from "../../constants/Color";
 import DateInputText from "../../component/auth/DateInputText";
 import { DayList, MonthList, YearList } from "../../constants/DateNumber";
 import { useState } from "react";
+import { Fonts } from "../../constants/Fonts";
 
 type InfoScreenProps = {
     name : string,
@@ -78,18 +79,18 @@ const styles = StyleSheet.create({
     },
     subText : {
         fontSize : 16,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         color : Colors.black2
     },
     mainText : {
         fontSize : 20,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         color : Colors.black2
     },
     inputText : {
         fontSize : 18,
         color : Colors.black2,
-        fontWeight : "medium"
+        fontFamily : Fonts.medium
     },
     birthDateContainer : {
         flex : 1,
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
         backgroundColor : Colors.white2,
         color : Colors.black2,
         fontSize : 16,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         borderRadius : 8,
         textAlign : "center"
     }

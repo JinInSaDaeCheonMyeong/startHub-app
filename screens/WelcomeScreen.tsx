@@ -6,6 +6,7 @@ import {Colors} from "../constants/Color";
 import Carousel from "react-native-reanimated-carousel";
 import CommonButton from "../component/CommonButton";
 import { useDisabled } from '../hooks/util/useDisabled';
+import { Fonts } from '../constants/Fonts';
 
 const { width } = Dimensions.get('window');
 
@@ -29,12 +30,14 @@ export default function WelcomeScreen({navigation}: WelcomeScreenProps) {
               <Text style={[styles.headText, {color : Colors.primary}]}>
                   Hub</Text>에 {"\n"} 오신것을
               <Text style={[styles.headText, {color : Colors.primary}]}>
-              환영
-          </Text>
+               {' 환영'}
+              </Text>
               합니다
           </Text>
           <View style={styles.bodyContent}>
               <Carousel
+                autoPlay={true}
+                autoPlayInterval={3000}
                   loop={true}
                   data={images}
                   renderItem={({ item }) => (
@@ -89,8 +92,8 @@ const styles = StyleSheet.create({
     headText : {
         marginTop : 60,
         fontSize : 24,
-        fontWeight : 'bold',
-        textAlign : 'center',
+        fontFamily : Fonts.bold,
+        textAlign : 'center'
     },
     bodyContent : {
         paddingTop : 30,

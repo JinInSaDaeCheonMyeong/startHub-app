@@ -9,6 +9,7 @@ import CommonButton from "../component/CommonButton";
 import LinkActionText from "../component/auth/LinkActionText";
 import { useSigninScreen } from "../hooks/auth/signin/useSigninScreen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Fonts } from "../constants/Fonts";
 
 export type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
 
@@ -105,13 +106,13 @@ const styles = StyleSheet.create({
     titleText : {
         width : "100%",
         fontSize : 24,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         textAlign : "center"
     },
     accentText : {
         width : "100%",
         fontSize : 24,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         textAlign : "center",
         color : Colors.primary
     },
@@ -137,7 +138,7 @@ const styles = StyleSheet.create({
         textAlign : "center",
         color : Colors.error,
         fontSize : 12,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     },
     signinButton : {
         backgroundColor : Colors.primary,
@@ -147,6 +148,6 @@ const styles = StyleSheet.create({
     contourText : {
         color : Colors.gray2,
         fontSize : 16,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     }
 })
