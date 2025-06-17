@@ -9,6 +9,7 @@ import Checkbox from "expo-checkbox";
 import SelectAgreement from "../component/auth/SelectAgreement";
 import { useSignupScreen } from "../hooks/auth/signup/useSignupScreen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Fonts } from "../constants/Fonts";
 
 export type SignupScreenProps = StackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -93,7 +94,7 @@ export default function SignupScreen(props : SignupScreenProps){
                         />
                     </View>
                     <View style={styles.passwordContainer}>
-                    <Text style={styles.containerText}>비밀번호</Text>
+                        <Text style={styles.containerText}>비밀번호</Text>
                         <AuthTextInput 
                             value={password}
                             placeHolder="비밀번호" 
@@ -166,14 +167,14 @@ const styles = StyleSheet.create({
     titleText : {
         width : "100%",
         fontSize : 24,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         textAlign : "center",
         paddingVertical : 68
     },
     accentText : {
         width : "100%",
         fontSize : 24,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         textAlign : "center",
         color : Colors.primary
     },
@@ -211,13 +212,13 @@ const styles = StyleSheet.create({
     },
     containerText : {
         fontSize : 16,
-        fontWeight : "semibold",
+        fontFamily : Fonts.semiBold,
     },
     errorText : {
         textAlign : "center",
         color : Colors.error,
         fontSize : 12,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     },
     signinButton : {
         backgroundColor : Colors.primary,
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
     contourText : {
         color : Colors.gray2,
         fontSize : 16,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     },
     verifyButton : {
         backgroundColor : Colors.white1,
@@ -249,23 +250,23 @@ const styles = StyleSheet.create({
         color : Colors.primary
     },
     selectCheckBox : {
-        width : 20,
-        height : 20,
+        width : 24,
+        height : 24,
         borderColor : Colors.primary,
         backgroundColor : Colors.primary,
         borderRadius : 6,
         borderWidth : 1
     },
     unSelectCheckBox : {
-        width : 20,
-        height : 20,
+        width : 24,
+        height : 24,
         borderColor : Colors.gray3,
         borderRadius : 6,
         borderWidth : 1
     },
     selectContainer : {
         width : "100%",
-        gap : 12
+        gap : 16
     },
     allSelectBox : {
         flexDirection : "row",
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
     },
     allSelectText : {
         fontSize : 14,
-        fontWeight : "semibold",
+        fontFamily : Fonts.semiBold,
         color : Colors.black1
     },
     line : {

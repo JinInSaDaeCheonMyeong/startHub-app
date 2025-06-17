@@ -5,6 +5,7 @@ import BottomButton from "../../assets/icons/bottom-arrow-back.svg"
 import CheckMark from "../../assets/icons/checkmark.svg"
 import { StyleSheet } from "react-native";
 import { Colors } from "../../constants/Color";
+import { Fonts } from "../../constants/Fonts";
 
 type AuthDropDownProps = {
     open : boolean, 
@@ -18,55 +19,55 @@ type AuthDropDownProps = {
 export default function AuthDropDown(props : AuthDropDownProps){
 
     return (
-    <DropDownPicker
-        open={props.open}
-        value={props.value}
-        items={props.items}
-        setOpen={props.setOpen}
-        multiple = {false}
-        setValue={(callback) => {
-        const newValue =
-            typeof callback === "function"
-            ? callback(props.value)
-            : callback;
-        if (newValue !== null) {
-            props.setValue(newValue);
-        }
-        }}
-        placeholder={props.placeholder}
-        placeholderStyle={styles.placeholderStyle}
-        style={styles.mainStyle}
-        dropDownContainerStyle={styles.dropdownContainerStyle}
-        textStyle={styles.textStyle}
-        labelStyle={styles.lableStyle}
-        ArrowUpIconComponent={
-            ({style}) => (
-            <TopButton
-                width={18} 
-                height={18} 
-                color={Colors.gray2} 
-                style={style}
-            />
-        )}
-        ArrowDownIconComponent={
-            ({style}) => (
-            <BottomButton
-                width={18}
-                height={18}
-                color={Colors.gray2}
-                style={style}
-            />
-        )}
-        TickIconComponent={
-            ({style}) => (
-            <CheckMark
-                width={18}
-                height={18}
-                color={Colors.gray2}
-                style={style}
-            />
-        )}
-    />
+        <DropDownPicker
+            open={props.open}
+            value={props.value}
+            items={props.items}
+            setOpen={props.setOpen}
+            multiple = {false}
+            setValue={(callback) => {
+            const newValue =
+                typeof callback === "function"
+                ? callback(props.value)
+                : callback;
+            if (newValue !== null) {
+                props.setValue(newValue);
+            }}}
+            placeholder={props.placeholder}
+            placeholderStyle={styles.placeholderStyle}
+            style={styles.mainStyle}
+            dropDownContainerStyle={styles.dropdownContainerStyle}
+            textStyle={styles.textStyle}
+            labelStyle={styles.lableStyle}
+            containerStyle={{height : 48}}
+            ArrowUpIconComponent={
+                ({style}) => (
+                <TopButton
+                    width={18} 
+                    height={18} 
+                    color={Colors.gray2} 
+                    style={style}
+                />
+            )}
+            ArrowDownIconComponent={
+                ({style}) => (
+                <BottomButton
+                    width={18}
+                    height={18}
+                    color={Colors.gray2}
+                    style={style}
+                />
+            )}
+            TickIconComponent={
+                ({style}) => (
+                <CheckMark
+                    width={18}
+                    height={18}
+                    color={Colors.gray2}
+                    style={style}
+                />
+            )}
+        />
     )
 }
 
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
     placeholderStyle : {
         color : Colors.gray2,
         fontSize : 18,
-        fontWeight : "medium"
+        fontFamily : Fonts.medium
     },
     dropdownContainerStyle : {
         backgroundColor : Colors.white2,
@@ -90,14 +91,14 @@ const styles = StyleSheet.create({
     textStyle : {
         color : Colors.black2,
         fontSize : 18,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         paddingVertical : 8,
         paddingHorizontal : 6,
     },
     lableStyle : {
         color : Colors.black2,
         fontSize : 18,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         paddingVertical : 8,
         paddingHorizontal : 6,
     }

@@ -9,6 +9,7 @@ import InterestScreen from "./signup/InterestScreen";
 import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
 import { useSignupInputScreen } from "../hooks/auth/signup/input/useSignupInputScreen";
+import { Fonts } from "../constants/Fonts";
 
 export type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 
@@ -51,7 +52,7 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
         /> 
         </View>
         <View style={styles.progressBarContainer}>
-            <Text>{`${currentProgress} of ${MAXPROGRESS}`}</Text>
+            <Text style={styles.progressBarText}>{`${currentProgress} of ${MAXPROGRESS}`}</Text>
             <Progress.Bar 
                 width={width - 32} 
                 progress={currentProgress / MAXPROGRESS}
@@ -94,9 +95,13 @@ const styles = StyleSheet.create({
         textAlign : "center",
         color : Colors.error,
         fontSize : 12,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold
     },
     backButton: {
         marginTop: 22,
     },
+    progressBarText : {
+        color : Colors.black2,
+        fontFamily : Fonts.semiBold
+    }
 })

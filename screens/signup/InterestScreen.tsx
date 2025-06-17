@@ -2,6 +2,7 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import CategorySelectButton from "../../component/auth/CategorySelectButton";
 import { Colors } from "../../constants/Color";
 import { InterestTypeList } from "../../constants/InterestTypeList";
+import { Fonts } from "../../constants/Fonts";
 
 type InterestScreenProps = {
     interestList : string[]
@@ -56,12 +57,12 @@ const styles = StyleSheet.create({
     },
     subText : {
         fontSize : 16,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         color : Colors.black2
     },
     mainText : {
         fontSize : 20,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         color : Colors.black2
     },
     listContentContainer : {
