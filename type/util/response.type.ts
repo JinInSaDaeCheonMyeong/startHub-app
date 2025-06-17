@@ -4,3 +4,9 @@ export interface Response{
     message : string
     statusCode : string
 }
+
+export interface ErrorResponse{
+    message : string,
+    status : number,
+    timestamp : string
+}

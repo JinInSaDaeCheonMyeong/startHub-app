@@ -2,28 +2,14 @@ import axios from "axios";
 import { SigninRequest, SigninResponse } from "../type/user/signin.type";
 import { SignupRequest } from "../type/user/signup.type";
 import { RefreshRequest, RefreshResponse } from "../type/user/refresh.type";
+import StartHubAxios from "../lib/StartHubAxios";
+import { Response } from "../type/util/response.type";
 
-const url = process.env.EXPO_PUBLIC_API_URL
+export const signup = async (signupData : SignupRequest) : Promise<Response> =>
+    (await StartHubAxios.post('/user/sign-up', signupData)).data
 
-export const signup = async (signupData : SignupRequest)=> {
-    await axios.post(
-        url + '/user/sign-up',
-        signupData
-    )
-}
+export const signin = async (signinData : SigninRequest) : Promise<SigninResponse> => 
+    (await StartHubAxios.post('/user/sign-in', signinData)).data
 
-export const signin = async (signinData : SigninRequest) : Promise<SigninResponse> => {
-    const { data } = await axios.post(
-        url + '/user/sign-in',
-        signinData
-    )
-    return data;
-}
-
-export const refresh = async (refreshData : RefreshRequest) : Promise<RefreshResponse> => {
-    const { data } = await axios.post(
-        url + '/user/reissue',
-        refreshData
-    )
-    return data
-}
+export const refresh = async (refreshData : RefreshRequest) : Promise<RefreshResponse> => 
+    (await StartHubAxios.post('/user/refresh',refreshData)).data

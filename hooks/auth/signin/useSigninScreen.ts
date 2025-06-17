@@ -1,5 +1,3 @@
-import { StackScreenProps } from "@react-navigation/stack";
-import { AuthStackParamList } from "../../../navigation/AuthStack";
 import { useCallback, useEffect, useState } from "react";
 import { useError } from "../../util/useError";
 import { DefaultErrorMessage } from "../../../type/error/error.type";
@@ -9,6 +7,8 @@ import { useSigninValid } from "./useSigninValid";
 import { useDisabled } from "../../util/useDisabled";
 import { signin } from "../../../api/user";
 import { SigninScreenProps } from "../../../screens/SigninScreen";
+import axios from "axios";
+import { ErrorResponse } from "../../../type/util/response.type";
 
 export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const [formData, setFormData] = useState<SigninFormData>({
@@ -70,13 +70,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             await saveRefToken(data.refresh)
             successLogin()
         } catch (error) {
-            handleAxiosError(error, {
-                ...DefaultErrorMessage,
-                401 : "이메일 혹은 비밀번호가 일치하지 않습니다",
-                409 : "이미 존재하는 이메일입니다"
-            }, (value) => {
-                showError(value)
-            })
+            handleAxiosError(error, (value) => {showError(value)})
         } finally {
             enabledBtn()
         }
@@ -85,6 +79,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const goSignupScreen = () => {
         disabledBtn()
         navigation.navigate("Signup")
+        enabledBtn()
     }
 
     const successLogin = () => {
@@ -94,6 +89,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const goBack = () => {
         disabledBtn()
         navigation.goBack()
+        enabledBtn()
     }
 
     return {

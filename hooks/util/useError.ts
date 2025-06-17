@@ -1,6 +1,7 @@
 import { isAxiosError } from "axios"
 import { useState } from "react"
 import { DefaultErrorMessage, ErrorType } from "../../type/error/error.type"
+import { ErrorResponse } from "../../type/util/response.type"
 
 export const useError = () => {
     const [errorVisible, setErrorVisible] = useState(false)
@@ -21,30 +22,22 @@ export const useError = () => {
     }
 
     const handleAxiosError = (
-        error : unknown, 
-        messages : ErrorType,
-        showError : (value : string) => void
+        error : unknown,
+        show : (value : string) => void
     ) => {
-        const errorMessages : ErrorType = {...DefaultErrorMessage, ...messages}
         if(isAxiosError(error)){
             const response = error.response
             if(!response){
-                showError("네트워크 오류가 발생하였습니다")
+                show('네트워크 오류가 발생하였습니다')
             } else {
-                const status = response.status
-                const statusMessage = errorMessages[status as keyof ErrorType]
-                if(statusMessage && typeof statusMessage === 'string'){
-                    showError(statusMessage)
-                } else {
-                    if(!errorMessages.default) return
-                    showError(errorMessages.default)
-                }
+                const errorData = response.data as ErrorResponse
+                showError(errorData.message + "입니다")
             }
         } else {
-            showError("예상치 못한 오류가 발생하였습니다")
+            show("예상치 못한 오류가 발생하였습니다")
         }
     }
-
+    
     return {
         value : {
             errorVisible,
