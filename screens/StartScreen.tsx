@@ -1,20 +1,26 @@
 import {StackScreenProps} from "@react-navigation/stack";
 import {AuthStackParamList} from "../navigation/AuthStack";
+import {RootStackParamList} from "../navigation/RootStack";
+import {CompositeScreenProps} from "@react-navigation/native";
 import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, Image, TouchableOpacity} from "react-native";
 import {Colors} from "../constants/Color";
 import React from "react";
 import BackButton from "../component/BackButton";
 import useGoogleLogin from "../hooks/useGoogleLogin";
 
-type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Start'>;
+type StartScreenProps = CompositeScreenProps<
+    StackScreenProps<AuthStackParamList, 'Start'>,
+    StackScreenProps<RootStackParamList>
+>;
 
-export default function StartScreen({navigation}: WelcomeScreenProps) {
+export default function StartScreen({navigation}: StartScreenProps) {
     const { request, promptAsync } = useGoogleLogin( isFirst => {
+        console.log("isFirst", isFirst);
             if (isFirst){
                 //정보입력창 이동
             }
             else {
-                //메인이동
+                navigation.navigate('HomeStack');
             }
         }
     );
