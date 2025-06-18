@@ -20,7 +20,11 @@ export const useError = () => {
         console.log(errorText)
     }
 
-    const handleAxiosError = (error : unknown, messages : ErrorType) => {
+    const handleAxiosError = (
+        error : unknown, 
+        messages : ErrorType,
+        showError : (value : string) => void
+    ) => {
         const errorMessages : ErrorType = {...DefaultErrorMessage, ...messages}
         if(isAxiosError(error)){
             const response = error.response
@@ -32,6 +36,7 @@ export const useError = () => {
                 if(statusMessage && typeof statusMessage === 'string'){
                     showError(statusMessage)
                 } else {
+                    if(!errorMessages.default) return
                     showError(errorMessages.default)
                 }
             }

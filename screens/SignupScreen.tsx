@@ -1,14 +1,15 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import { Colors } from "../constants/Color";
-import {Platform, ScrollView, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Platform, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import BackButton from "../component/BackButton";
 import AuthTextInput from "../component/auth/AuthTextInput";
-import { useEffect, useState } from "react";
 import CommonButton from "../component/CommonButton";
 import Checkbox from "expo-checkbox";
 import SelectAgreement from "../component/auth/SelectAgreement";
 import { useSignupScreen } from "../hooks/auth/signup/useSignupScreen";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Fonts } from "../constants/Fonts";
 
 export type SignupScreenProps = StackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -30,7 +31,7 @@ export default function SignupScreen(props : SignupScreenProps){
         },
         actions : {
             goBack,
-            handleSignup,
+            requestSignup,
             requestSendcode
         },
         ui : {
@@ -48,98 +49,105 @@ export default function SignupScreen(props : SignupScreenProps){
 
     return(
     <SafeAreaView style={styles.container}>
-        <ScrollView>
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
-        <BackButton 
-        width={18} 
-        height={18} 
-        color={Colors.black2} 
-        onClick={() => {goBack()}}
-        />
-        <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 만들기</Text>
-        <View style={styles.interactionContainer}>
-            <View style={styles.emailContainer}>
-                <Text style={styles.containerText}>이메일</Text>
-                <View style={styles.emailInputContainer}>
-                    <View style={styles.emailInputWrapper}>
+            <KeyboardAwareScrollView
+                contentContainerStyle={{ flexGrow: 1 }}
+                keyboardShouldPersistTaps="handled"
+                showsVerticalScrollIndicator={false}
+            >
+                <View style={styles.backButton}>
+                    <BackButton 
+                    width={20} 
+                    height={20} 
+                    color={Colors.black2} 
+                    onClick={() => {goBack()}}
+                    />
+                </View>
+                <Text style={styles.titleText}>Start<Text style={styles.accentText}>Hub</Text> 계정 만들기</Text>
+                <View style={styles.interactionContainer}>
+                    <View style={styles.emailContainer}>
+                        <Text style={styles.containerText}>이메일</Text>
+                        <View style={styles.emailInputContainer}>
+                            <View style={styles.emailInputWrapper}>
+                                <AuthTextInput
+                                    value={email}
+                                    placeHolder="이메일"
+                                    placeHolderTextColor={Colors.gray2}
+                                    isPassword={false}
+                                    onChange={(text) => {
+                                        setEmail(text)
+                                    }}
+                                />
+                            </View>
+                            <TouchableOpacity disabled={disabled} style={styles.verifyButton} onPress={()=>{requestSendcode()}}>
+                                <Text style={styles.verifyButtonText}>인증번호 전송</Text>
+                            </TouchableOpacity>
+                        </View>
                         <AuthTextInput
-                            value={email}
-                            placeHolder="이메일"
+                            value={verifyCode}
+                            placeHolder="인증번호"
                             placeHolderTextColor={Colors.gray2}
                             isPassword={false}
                             onChange={(text) => {
-                                setEmail(text)
+                                setVerifyNumber(text)
                             }}
                         />
                     </View>
-                    <TouchableOpacity disabled={disabled} style={styles.verifyButton} onPress={()=>{requestSendcode()}}>
-                        <Text style={styles.verifyButtonText}>인증번호 전송</Text>
-                    </TouchableOpacity>
+                    <View style={styles.passwordContainer}>
+                        <Text style={styles.containerText}>비밀번호</Text>
+                        <AuthTextInput 
+                            value={password}
+                            placeHolder="비밀번호" 
+                            placeHolderTextColor={Colors.gray2}
+                            isPassword={true}
+                            onChange={(text) => {
+                                setPassword(text)
+                            }}
+                        />
+                        <AuthTextInput 
+                            value={checkPassword}
+                            placeHolder="비밀번호 확인" 
+                            placeHolderTextColor={Colors.gray2}
+                            isPassword={true}
+                            onChange={(text) => {
+                                setCheckPassword(text)
+                            }}
+                        />
+                    </View>
+                    <View style={styles.selectContainer}>
+                        <View style={styles.allSelectBox}>
+                            <Checkbox
+                                value={allChecked}
+                                onChange={() => {console.log(allChecked)}}
+                                onValueChange={(value) => {
+                                    setAllChecked(value)
+                                }}
+                                style={allChecked ? styles.selectCheckBox : styles.unSelectCheckBox}
+                                color={allChecked ? Colors.primary : undefined}
+                            />
+                            <Text style={styles.allSelectText}>전체 선택</Text>
+                        </View>
+                        <View style={styles.line}/>
+                        {selectItem.map(item => (
+                            <SelectAgreement
+                                key={item.key}
+                                value={item.value}
+                                title={item.title}
+                                onSelect={(value) => {setChecked(item.checkedKey, value)}}
+                                onClick={() => {}} // 노션 링크 넣을 예정
+                            />
+                        ))}
+                    </View>
                 </View>
-                <AuthTextInput
-                    value={verifyCode}
-                    placeHolder="인증번호"
-                    placeHolderTextColor={Colors.gray2}
-                    isPassword={false}
-                    onChange={(text) => {
-                        setVerifyNumber(text)
-                    }}
-                />
-            </View>
-            <View style={styles.passwordContainer}>
-            <Text style={styles.containerText}>비밀번호</Text>
-                <AuthTextInput 
-                    value={password}
-                    placeHolder="비밀번호" 
-                    placeHolderTextColor={Colors.gray2}
-                    isPassword={true}
-                    onChange={(text) => {
-                        setPassword(text)
-                    }}
-                />
-                <AuthTextInput 
-                    value={checkPassword}
-                    placeHolder="비밀번호 확인" 
-                    placeHolderTextColor={Colors.gray2}
-                    isPassword={true}
-                    onChange={(text) => {
-                        setCheckPassword(text)
-                    }}
-                />
-            </View>
-            <View style={styles.selectContainer}>
-                <View style={styles.allSelectBox}>
-                    <Checkbox
-                        value={allChecked}
-                        onChange={() => {console.log(allChecked)}}
-                        onValueChange={(value) => {
-                            setAllChecked(value)
-                        }}
-                        style={allChecked ? styles.selectCheckBox : styles.unSelectCheckBox}
-                    />
-                    <Text style={styles.allSelectText}>전체 선택</Text>
-                </View>
-                <View style={styles.line}/>
-                {selectItem.map(item => (
-                    <SelectAgreement
-                        key={item.key}
-                        value={item.value}
-                        title={item.title}
-                        onSelect={(value) => {setChecked(item.checkedKey, value)}}
-                        onClick={() => {}} // 노션 링크 넣을 예정
-                    />
-                ))}
-            </View>
-            <View style={styles.buttonContainer}>
-                <Text style={styles.errorText}>{errorVisible ? errorText : ""}</Text>
-                <CommonButton 
-                    title="회원가입" 
-                    onPress={() => {handleSignup()}}
-                    disabled={disabled}
-                />
-            </View>
+            </KeyboardAwareScrollView>
+        <View style={styles.buttonContainer}>
+            {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
+            <CommonButton 
+                title="회원가입" 
+                onPress={() => {requestSignup()}}
+                disabled={disabled}
+            />
         </View>
-        </ScrollView>
     </SafeAreaView>
     )
 }
@@ -152,19 +160,21 @@ const styles = StyleSheet.create({
         flex : 1,
         marginHorizontal :16,
         paddingVertical : 16,
-        gap : 68,
+    },
+    backButton: {
+        marginTop: 22,
     },
     titleText : {
         width : "100%",
         fontSize : 24,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         textAlign : "center",
         paddingVertical : 68
     },
     accentText : {
         width : "100%",
         fontSize : 24,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         textAlign : "center",
         color : Colors.primary
     },
@@ -190,8 +200,9 @@ const styles = StyleSheet.create({
         gap : 16
     },
     buttonContainer : {
+        paddingTop : 8,
         width : "100%",
-        gap : 8
+        gap : 8,
     },
     signupContainer : {
         flexDirection : "row",
@@ -201,13 +212,13 @@ const styles = StyleSheet.create({
     },
     containerText : {
         fontSize : 16,
-        fontWeight : "semibold",
+        fontFamily : Fonts.semiBold,
     },
     errorText : {
         textAlign : "center",
         color : Colors.error,
         fontSize : 12,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     },
     signinButton : {
         backgroundColor : Colors.primary,
@@ -216,7 +227,7 @@ const styles = StyleSheet.create({
     contourText : {
         color : Colors.gray2,
         fontSize : 16,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     },
     verifyButton : {
         backgroundColor : Colors.white1,
@@ -239,23 +250,23 @@ const styles = StyleSheet.create({
         color : Colors.primary
     },
     selectCheckBox : {
-        width : 20,
-        height : 20,
+        width : 24,
+        height : 24,
         borderColor : Colors.primary,
         backgroundColor : Colors.primary,
         borderRadius : 6,
         borderWidth : 1
     },
     unSelectCheckBox : {
-        width : 20,
-        height : 20,
+        width : 24,
+        height : 24,
         borderColor : Colors.gray3,
         borderRadius : 6,
         borderWidth : 1
     },
     selectContainer : {
         width : "100%",
-        gap : 12
+        gap : 16
     },
     allSelectBox : {
         flexDirection : "row",
@@ -264,7 +275,7 @@ const styles = StyleSheet.create({
     },
     allSelectText : {
         fontSize : 14,
-        fontWeight : "semibold",
+        fontFamily : Fonts.semiBold,
         color : Colors.black1
     },
     line : {

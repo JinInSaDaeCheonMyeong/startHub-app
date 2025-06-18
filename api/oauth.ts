@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getAccToken, saveAccToken, saveRefToken} from "../util/token";
+import { saveAccToken, saveRefToken} from "../util/token";
 import {ShowToast, ToastType} from "../util/ShowToast";
 import {Platform} from "react-native";
 

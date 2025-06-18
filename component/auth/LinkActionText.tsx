@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Colors } from "../../constants/Color";
+import { Fonts } from "../../constants/Fonts";
 
 type LinkActionTextProps = {
     title : string,
@@ -20,6 +21,6 @@ const styles = StyleSheet.create({
     linkActionText : {
         color : Colors.gray2,
         fontSize : 14,
-        fontWeight : "semibold"
+        fontFamily : Fonts.medium,
     }
 })

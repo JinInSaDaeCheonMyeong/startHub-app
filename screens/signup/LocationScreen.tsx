@@ -1,8 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 import AuthDropDown from "../../component/auth/AuthDropDown";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { LocationItems } from "../../constants/LocationItems";
 import { Colors } from "../../constants/Color";
+import { Fonts } from "../../constants/Fonts";
 
 type LocationScreenProps = {
     location : string,
@@ -42,12 +43,12 @@ const styles = StyleSheet.create({
     },
     subText : {
         fontSize : 16,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         color : Colors.black2
     },
     mainText : {
         fontSize : 20,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         color : Colors.black2
     }
 })

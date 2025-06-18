@@ -17,5 +17,3 @@ export interface SignupFormData extends SignupRequest {
 }
 
 export type CheckedKeyType = keyof SignupFormData['checked'];
-
-export interface SignupResponse extends Response{}

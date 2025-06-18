@@ -5,6 +5,8 @@ import {AuthStackParamList} from "../navigation/AuthStack";
 import {Colors} from "../constants/Color";
 import Carousel from "react-native-reanimated-carousel";
 import CommonButton from "../component/CommonButton";
+import { useDisabled } from '../hooks/util/useDisabled';
+import { Fonts } from '../constants/Fonts';
 
 const { width } = Dimensions.get('window');
 
@@ -19,6 +21,7 @@ type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Welcome'>;
 
 export default function WelcomeScreen({navigation}: WelcomeScreenProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const { disabled } = useDisabled()
   return (
       <SafeAreaView style={styles.container}>
           <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
@@ -27,12 +30,14 @@ export default function WelcomeScreen({navigation}: WelcomeScreenProps) {
               <Text style={[styles.headText, {color : Colors.primary}]}>
                   Hub</Text>에 {"\n"} 오신것을
               <Text style={[styles.headText, {color : Colors.primary}]}>
-              환영
-          </Text>
+               {' 환영'}
+              </Text>
               합니다
           </Text>
           <View style={styles.bodyContent}>
               <Carousel
+                autoPlay={true}
+                autoPlayInterval={3000}
                   loop={true}
                   data={images}
                   renderItem={({ item }) => (
@@ -73,7 +78,7 @@ export default function WelcomeScreen({navigation}: WelcomeScreenProps) {
               </View>
           </View>
           <View style={styles.bottomButton}>
-              <CommonButton disabled={false} title={'StartHub 시작하기'} onPress={() => navigation.navigate('Start')}/>
+              <CommonButton disabled={disabled} title={'StartHub 시작하기'} onPress={() => navigation.navigate('Start')}/>
           </View>
           <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
       </SafeAreaView>
@@ -87,8 +92,8 @@ const styles = StyleSheet.create({
     headText : {
         marginTop : 60,
         fontSize : 24,
-        fontWeight : 'bold',
-        textAlign : 'center',
+        fontFamily : Fonts.bold,
+        textAlign : 'center'
     },
     bodyContent : {
         paddingTop : 30,

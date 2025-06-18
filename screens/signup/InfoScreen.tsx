@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import { Colors } from "../../constants/Color";
-import { useState } from "react";
-import AuthDropDown from "../../component/auth/AuthDropDown";
 import DateInputText from "../../component/auth/DateInputText";
-import { DayList, MonthList, YearList } from "../../constants/\bDateNumber";
+import { DayList, MonthList, YearList } from "../../constants/DateNumber";
+import { useState } from "react";
+import { Fonts } from "../../constants/Fonts";
 
 type InfoScreenProps = {
     name : string,
@@ -17,6 +17,8 @@ type InfoScreenProps = {
 }
 
 export default function InfoScreen(props : InfoScreenProps) {
+
+    const [open, setOpen] = useState(false)
 
     return(
         <View style={styles.mainContainer}>
@@ -40,22 +42,22 @@ export default function InfoScreen(props : InfoScreenProps) {
                 </View>
                 <View style={styles.birthDateContainer}>
                     <DateInputText 
-                        data={YearList} 
+                        items={YearList} 
                         placeholder="YYYY"
-                        text={props.year} 
-                        setText={(s) => {props.setYear(s)}}
+                        value={props.year} 
+                        setValue={(s) => {props.setYear(s)}}
                     />
                     <DateInputText 
-                        data={MonthList} 
+                        items={MonthList} 
                         placeholder="MM"
-                        text={props.month} 
-                        setText={(s) => {props.setMonth(s)}}
+                        value={props.month} 
+                        setValue={(s) => {props.setMonth(s)}}
                     />
                     <DateInputText 
-                        data={DayList} 
+                        items={DayList} 
                         placeholder="DD"
-                        text={props.day} 
-                        setText={(s) => {props.setDay(s)}}
+                        value={props.day} 
+                        setValue={(s) => {props.setDay(s)}}
                     />
                 </View>
             </View>
@@ -71,29 +73,29 @@ const styles = StyleSheet.create({
     },
     inputBox : {
         gap : 16,
-        zIndex: 1
     },
     textBox : {
         gap : 4
     },
     subText : {
         fontSize : 16,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         color : Colors.black2
     },
     mainText : {
         fontSize : 20,
-        fontWeight : "bold",
+        fontFamily : Fonts.bold,
         color : Colors.black2
     },
     inputText : {
         fontSize : 18,
         color : Colors.black2,
-        fontWeight : "medium"
+        fontFamily : Fonts.medium
     },
     birthDateContainer : {
         flex : 1,
         flexDirection : "row",
+        justifyContent : "space-between",
         gap : 16,
     },
     birthInput : {
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
         backgroundColor : Colors.white2,
         color : Colors.black2,
         fontSize : 16,
-        fontWeight : "medium",
+        fontFamily : Fonts.medium,
         borderRadius : 8,
         textAlign : "center"
     }

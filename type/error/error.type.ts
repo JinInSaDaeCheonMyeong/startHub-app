@@ -1,3 +1,4 @@
+
 export interface ErrorType{
     401 ?: string;
     400 ?: string;
@@ -27,7 +28,7 @@ export const DefaultErrorMessage : ErrorType = {
     network : '네트워크 연결을 확인해주세요'
 }
 
-export type VaildError = {
-    value : boolean,
+export type ValidError = {
+    isValid : boolean,
     message? : string
 }

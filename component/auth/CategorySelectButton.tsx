@@ -1,8 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CategoryCheckMark from "../../assets/icons/category/category-check-mark.svg"
 import { Colors } from "../../constants/Color";
-import { ReactElement, useState } from "react";
+import { useState } from "react";
 import { SvgProps } from "react-native-svg";
+import { Fonts } from "../../constants/Fonts";
 
 type CategorySelectButtonProps = {
     key : string,
@@ -64,6 +65,6 @@ const styles = StyleSheet.create({
     },
     titleText : {
         fontSize : 18,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold,
     }
 })

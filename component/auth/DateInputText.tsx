@@ -1,125 +1,113 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import AutocompleteInput from "react-native-autocomplete-input";
+import { StyleSheet, View } from "react-native";
 import BottomArrow from "../../assets/icons/bottom-arrow-back.svg"
 import TopArrow from "../../assets/icons/top-arrow-back.svg"
 import { Colors } from "../../constants/Color";
-import { useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import DropDownPicker from "react-native-dropdown-picker";
+import CheckMark from "../../assets/icons/checkmark.svg"
+import { Fonts } from "../../constants/Fonts";
 
 type DateInputProps = {
-    data : string[]
+    value : string | null, 
+    items : string[]
     placeholder : string
-    text : string
-    setText : (s : string) => void
+    setValue : (s : string) => void
 }
 
 export default function DateInputText(props : DateInputProps) {
 
-    const [listVisible, setListVisible] = useState(false)
-    const [mainWidth, setMainWidth] = useState(0)
-    const [mainHeight, setMainHeight] = useState(0)
+    const [open, setOpen] = useState(false)
 
-    const filteredLst = useMemo(() => {
-        if(!props.text || props.text.length === 0) {
-            return props.data
-        }
-        const filtered = props.data.filter(item => item.includes(props.text))
-
-        if(filtered.length === 0){
-            return props.data
-        }
-
-        return filtered
-    }, [props.text])
+    const items = props.items.map(item => ({ label: item, value: item }))
 
     return (
-        <View 
-            onLayout={(event) => {
-                setMainWidth(event.nativeEvent.layout.width)
-                setMainHeight(event.nativeEvent.layout.height)
-            }}
-            style={styles.mainContainer}
-        >
-            <AutocompleteInput
-                autoCorrect={false}
-                data={filteredLst}
-                defaultValue={props.text}
-                hideResults={!listVisible}
-                onChangeText={(text) => {props.setText(text)}}
+        <View style={styles.mainContainer}>
+            <DropDownPicker
+                open={open}
+                value={props.value}
+                items={items}
+                setOpen={setOpen}
+                multiple = {false}
+                setValue={(callback) => {
+                const newValue =
+                    typeof callback === "function"
+                    ? callback(props.value)
+                    : callback;
+                if (newValue !== null) {
+                    props.setValue(newValue);
+                }}}
                 placeholder={props.placeholder}
-                placeholderTextColor={Colors.gray2}
-                containerStyle = {styles.container}
-                listContainerStyle = {styles.listConatiner}
-                inputContainerStyle = {styles.inputContainer}
-                style = {styles.dateInputTextContainer}
-                maxLength={props.placeholder.length}
-                keyboardType="numeric"
-                flatListProps={{
-                    keyboardShouldPersistTaps: 'always',
-                    style : {...styles.listConatiner, 
-                        width : mainWidth,
-                        maxHeight : 64
-                    },
-                    renderItem: ({ item }) => (
-                        <TouchableOpacity 
-                            style={styles.itemContainer}
-                            onPress={() => {
-                            props.setText(item)
-                            setListVisible(!listVisible)
-                        }}
-                        >
-                            <Text style={styles.itemText}>{item}</Text>
-                        </TouchableOpacity>
-                    ),
-                }}
+                placeholderStyle={styles.placeholderStyle}
+                style={styles.mainStyle}
+                dropDownContainerStyle={styles.dropdownContainerStyle}
+                textStyle={styles.textStyle}
+                labelStyle={styles.lableStyle}
+                containerStyle={{height : 48}}
+                ArrowUpIconComponent={
+                    ({style}) => (
+                    <TopArrow
+                        width={18} 
+                        height={18} 
+                        color={Colors.gray2} 
+                        style={style}
+                    />
+                )}
+                ArrowDownIconComponent={
+                    ({style}) => (
+                    <BottomArrow
+                        width={18}
+                        height={18}
+                        color={Colors.gray2}
+                        style={style}
+                    />
+                )}
+                TickIconComponent={
+                    ({style}) => (
+                    <CheckMark
+                        width={18}
+                        height={18}
+                        color={Colors.gray2}
+                        style={style}
+                    />
+                )}
             />
-            <TouchableOpacity onPress={() => setListVisible(!listVisible)}>
-                {listVisible ? 
-                    <TopArrow color={Colors.gray2} width={14} height={14}/> : 
-                    <BottomArrow color={Colors.gray2} width={14} height={14}/> 
-                }
-            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     mainContainer : {
-        minHeight: 48, 
-        position: 'relative', 
-        zIndex: 1000, 
-        borderRadius : 8,
-        backgroundColor : Colors.white2,
-        paddingEnd : 12,
         flex : 1,
-        flexDirection : "row",
-        justifyContent : "center",
-        alignItems : "center",
+        minHeight: 48
     },
-    container : {
-        flex : 1,
-        borderColor : Colors.white2,
+    mainStyle : {
+        backgroundColor : Colors.white2,
+        borderWidth : 0,
+        borderRadius : 8,
+        padding : 16
+    },
+    placeholderStyle : {
+        color : Colors.gray2,
+        fontSize : 18,
+        fontFamily : Fonts.medium,
+    },
+    dropdownContainerStyle : {
+        backgroundColor : Colors.white2,
+        borderWidth : 0,
         borderRadius : 8,
     },
-    dateInputTextContainer : {
-        borderColor : Colors.white2,
-        backgroundColor : Colors.white2,
-        paddingLeft : 16,
+    textStyle : {
+        color : Colors.black2,
+        fontSize : 18,
+        fontFamily : Fonts.medium,
+        paddingVertical : 8,
+        paddingHorizontal : 6,
     },
-    listConatiner : {
-        borderColor : Colors.white2,
-        backgroundColor : Colors.white2,
-        borderRadius : 8,
-        paddingHorizontal : 16,
-    },
-    inputContainer : {
-        borderColor : Colors.white2,
-        backgroundColor : Colors.white2,
-        borderRadius : 8,
-    },
-    itemContainer : {
-        marginBottom : 6
-    },
-    itemText : {
-        color : Colors.black2
+    lableStyle : {
+        color : Colors.black2,
+        fontSize : 18,
+        fontFamily : Fonts.medium,
+        paddingVertical : 8,
+        paddingHorizontal : 6,
     }
 })

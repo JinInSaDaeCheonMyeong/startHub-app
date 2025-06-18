@@ -4,19 +4,19 @@ import BackButton from "../component/BackButton";
 import { StackScreenProps } from "@react-navigation/stack";
 import { AuthStackParamList } from "../navigation/AuthStack";
 import * as Progress from 'react-native-progress';
-import { useState } from "react";
 import InfoScreen from "./signup/InfoScreen";
-import CategoryScreen from "./signup/CategoryScreen";
+import InterestScreen from "./signup/InterestScreen";
 import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
-import { useSignupInputScreen } from "../hooks/auth/useSignupInputScreen";
+import { useSignupInputScreen } from "../hooks/auth/signup/input/useSignupInputScreen";
+import { Fonts } from "../constants/Fonts";
 
-type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
+export type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
 
 const SCREENS = [
     InfoScreen,
     LocationScreen,
-    CategoryScreen
+    InterestScreen
 ] as const
 
 const MAXPROGRESS = SCREENS.length;
@@ -25,27 +25,37 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
     const {width} = useWindowDimensions();
     const {
         form,
-        ui, 
-        nav
+        ui : {
+            currentProgress,
+            errorText,
+            errorVisible,
+            disabled
+        }, 
+        actions : {
+            goBack,
+            goNext
+        }
     } = useSignupInputScreen(props, MAXPROGRESS)
-    const CurrentScreen = SCREENS[ui.currentProgress-1]
+    const CurrentScreen = SCREENS[currentProgress-1]
 
     return(
     <SafeAreaView style={styles.mainContainer}>
         <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
-        <BackButton 
-            width={20} 
-            height={20} 
-            color={Colors.black2} 
-            onClick={()=>{
-                nav.goBack()
-            }}
+        <View style={styles.backButton}>
+            <BackButton 
+                width={20} 
+                height={20} 
+                color={Colors.black2} 
+                onClick={()=>{
+                    goBack()
+                }}
         /> 
+        </View>
         <View style={styles.progressBarContainer}>
-            <Text>{`${ui.currentProgress} of ${MAXPROGRESS}`}</Text>
+            <Text style={styles.progressBarText}>{`${currentProgress} of ${MAXPROGRESS}`}</Text>
             <Progress.Bar 
                 width={width - 32} 
-                progress={ui.currentProgress / MAXPROGRESS}
+                progress={currentProgress / MAXPROGRESS}
                 color={Colors.primary} 
                 borderColor={Colors.white2}
                 unfilledColor={Colors.white2}
@@ -55,11 +65,11 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
         </View>
         <CurrentScreen {...form} />
         <View style={styles.buttonContainer}>
-            {ui.errorVisible && <Text style={styles.errorText}>{ui.errorText}</Text>}
+            {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
             <CommonButton
-                title={ui.currentProgress == MAXPROGRESS ? "완료" : "다음"}
-                onPress={() => {nav.goNext()}}
-                disabled={false}
+                title={currentProgress == MAXPROGRESS ? "완료" : "다음"}
+                onPress={() => {goNext()}}
+                disabled={disabled}
             />
         </View>
     </SafeAreaView>
@@ -85,6 +95,13 @@ const styles = StyleSheet.create({
         textAlign : "center",
         color : Colors.error,
         fontSize : 12,
-        fontWeight : "semibold"
+        fontFamily : Fonts.semiBold
     },
+    backButton: {
+        marginTop: 22,
+    },
+    progressBarText : {
+        color : Colors.black2,
+        fontFamily : Fonts.semiBold
+    }
 })
