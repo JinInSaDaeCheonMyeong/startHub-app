@@ -80,7 +80,9 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     }
 
     const successLogin = () => {
-        console.log("success")
+        disabledBtn()
+        navigation.navigate("HomeStack")
+        enabledBtn()
     }
 
     const goBack = () => {
