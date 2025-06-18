@@ -1,5 +1,8 @@
-import axios from "axios";
-import { getAccToken,} from "../util/token";
+import axios, { AxiosError } from "axios";
+import { getAccToken, getRefToken, removeTokens, saveAccToken, saveRefToken,} from "../util/token";
+import { refresh } from "../api/user";
+import { BackHandler, Platform } from "react-native";
+import RNExitApp from "react-native-exit-app";
 
 
 const StartHubAxios = axios.create({
@@ -7,18 +10,49 @@ const StartHubAxios = axios.create({
     timeout : 5000,
 })
 
-StartHubAxios.interceptors.request.use(async (config) => {
-    const token = await getAccToken()
-    if (!!token) {
-        config.headers.Authorization = `Bearer ${token}`
+StartHubAxios.interceptors.request.use(
+    async (config) => {
+        const token = await getAccToken()
+        if (!!token) {
+            config.headers.Authorization = `Bearer ${token}`
+        }
+        return config
+    },
+    (error) => {
+        return Promise.reject(error)
     }
-    return config
-})
+)
 
 StartHubAxios.interceptors.response.use(
     (response) => response,
-    async (error) => {
-        if(error.response?.status === 401){
+    async (error : AxiosError) => {
+        const originalRequest = error.config
+
+        if(error.response?.status === 401 && originalRequest){
+            try {
+                const refreshData = await getRefToken()
+                if(!refreshData){
+                    throw new Error('No refresh token')
+                }
+                const { 
+                    data : {
+                        access : accessToken, 
+                        refresh : refreshToken
+                    }
+                } = await refresh({refresh : refreshData})
+                await saveAccToken(accessToken)
+                await saveRefToken(refreshToken)
+                originalRequest.headers.Authorization = `Baerer ${accessToken}`
+                return StartHubAxios(originalRequest)
+            } catch (error) {
+                await removeTokens()
+                if(Platform.OS === 'ios'){
+                    RNExitApp.exitApp()
+                } else {
+                    BackHandler.exitApp()
+                }
+                return Promise.reject(error)
+            }
         }
         return Promise.reject(error);
     }

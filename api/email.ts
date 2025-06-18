@@ -1,19 +1,11 @@
 import axios from "axios";
 import { SendcodeRequest } from "../type/email/sendcode.type";
 import { VerifyRequest } from "../type/email/verify.type";
+import { Response } from "../type/util/response.type";
+import StartHubAxios from "../lib/StartHubAxios";
 
-const url = process.env.EXPO_PUBLIC_API_URL
+export const verify = async (verifyData : VerifyRequest) : Promise<Response> => 
+    (await StartHubAxios.post('/email/verify', verifyData)).data
 
-export const verify = async (verifyData : VerifyRequest) => {
-    await axios.post(
-        url + '/email/verify',
-        verifyData
-    )
-}
-
-export const sendcode = async (sendcodeData : SendcodeRequest) => {
-    await axios.post(
-        url + '/email/send-code',
-        sendcodeData
-    )
-}
+export const sendcode = async (sendcodeData : SendcodeRequest) : Promise<Response> => 
+    (await StartHubAxios.post('/email/send-code', sendcodeData)).data

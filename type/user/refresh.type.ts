@@ -2,7 +2,7 @@ import { Response } from "../util/response.type";
 
 
 export interface RefreshRequest {
-    refresh : StringConstructor
+    refresh : string
 }
 
 export interface RefreshResponse extends Response {
