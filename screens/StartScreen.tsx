@@ -1,5 +1,7 @@
 import {StackScreenProps} from "@react-navigation/stack";
 import {AuthStackParamList} from "../navigation/AuthStack";
+import {RootStackParamList} from "../navigation/RootStack";
+import {CompositeScreenProps} from "@react-navigation/native";
 import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, Image, TouchableOpacity} from "react-native";
 import {Colors} from "../constants/Color";
 import React from "react";
@@ -7,16 +9,20 @@ import BackButton from "../component/BackButton";
 import useGoogleLogin from "../hooks/useGoogleLogin";
 import { Fonts } from "../constants/Fonts";
 
-type StartScreenProps = StackScreenProps<AuthStackParamList, 'Start'>;
 
-export default function StartScreen({navigation} : StartScreenProps) {
+type StartScreenProps = CompositeScreenProps<
+    StackScreenProps<AuthStackParamList, 'Start'>,
+    StackScreenProps<RootStackParamList>
+>;
+
+export default function StartScreen({navigation}: StartScreenProps) {
     const { request, promptAsync } = useGoogleLogin( isFirst => {
-        console.log(isFirst)
+        console.log("isFirst", isFirst);
             if (isFirst){
                 navigation.navigate("SignupInput")
             }
             else {
-                //메인이동
+                navigation.navigate('HomeStack');
             }
         }
     );
