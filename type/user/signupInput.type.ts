@@ -1,14 +1,14 @@
 
-export type UserInfo =  {
+export interface UserInfo {
     name : string,
     year : string,
     month : string,
     day : string,
 } 
-export type LocationInfo =  {
+export interface LocationInfo {
     location : string
 } 
-export type InterestInfo = {
+export interface InterestInfo {
     interestList : string[]
 }
 

@@ -27,7 +27,7 @@ export const useAuthValid = () => {
                 return {isValid : false, message : "비밀번호가 일치하지 않습니다"}
             }
         }
-        const passwordRegex = /^(?=.[A-Za-z])(?=.\d)(?=.[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
         if(!passwordRegex.test(password)){
             return {isValid : false, message : "비밀번호는 대소문자, 숫자, 특수문자(@$!%*?&)가 포함되어야 합니다"}
         }
@@ -59,9 +59,6 @@ export const useAuthValid = () => {
             return {isValid : false, message : "생년월일을 입력해주세요!"}
         }
         const date = new Date(`${year}-${month.padStart(2, "0")}-${day.padStart(2,"0")}`)
-        console.log(date.getFullYear())
-        console.log(date.getMonth())
-        console.log(date.getDate())
         ShowToast("안내", `${date.getFullYear()}년 ${date.getMonth()+1}월 ${date.getDate()}일로 기록되었습니다`, ToastType.INFO)
         if(isNaN(date.getTime())){
             return {isValid : false, message : "올바른 생년월일을 입력해주세요!"}

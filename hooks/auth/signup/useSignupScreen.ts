@@ -4,7 +4,6 @@ import { useError } from "../../util/useError"
 import { SignupFormData, SignupRequest } from "../../../type/user/signup.type"
 import { useSignupValid } from "./useSignupValid"
 import { SendcodeRequest } from "../../../type/email/sendcode.type"
-import { DefaultErrorMessage } from "../../../type/error/error.type"
 import { VerifyRequest } from "../../../type/email/verify.type"
 import { useDisabled } from "../../util/useDisabled"
 import { sendcode, verify } from "../../../api/email"
@@ -116,13 +115,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             await signup(signupData)
             navigation.navigate('SignupInput')
         } catch (error) {
-            handleAxiosError(error, {
-                ...DefaultErrorMessage,
-                401 : "잘못된 인증번호 입니다",
-                409 : "이미 가입된 이메일입니다"
-            }, (value) => {
-                showError(value)
-            })
+            handleAxiosError(error, (value) => {showError(value)})
         } finally {
             enabledBtn()
         }
@@ -144,11 +137,7 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
             await sendcode(sendcodeData)
             ShowToast("요청 성공", "인증번호의 유효 시간은 5분입니다", ToastType.SUCCESS)
         } catch (error) {
-            handleAxiosError(error, {
-                ...DefaultErrorMessage
-            }, (value) => {
-                showError(value)
-            })
+            handleAxiosError(error, (value) => {showError(value)})
             enabledBtn()
             return
         }
