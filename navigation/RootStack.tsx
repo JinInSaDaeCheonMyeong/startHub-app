@@ -12,7 +12,6 @@ export type RootStackParamList = {
 
 export default function RootStack() {
     return (
- <Stack.Screen name="HomeStack" component={HomeStack} />
         <Stack.Navigator 
             initialRouteName={"AuthStack"} 
             screenOptions={{

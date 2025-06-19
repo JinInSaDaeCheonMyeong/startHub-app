@@ -2,12 +2,23 @@ import {StackScreenProps} from "@react-navigation/stack";
 import {AuthStackParamList} from "../navigation/AuthStack";
 import {RootStackParamList} from "../navigation/RootStack";
 import {CompositeScreenProps} from "@react-navigation/native";
-import {SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View, Image, TouchableOpacity} from "react-native";
+import {
+    Image,
+    Platform,
+    SafeAreaView,
+    ScrollView,
+    StatusBar,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
+} from "react-native";
 import {Colors} from "../constants/Color";
 import React from "react";
 import BackButton from "../component/BackButton";
 import useGoogleLogin from "../hooks/useGoogleLogin";
-import { Fonts } from "../constants/Fonts";
+import {Fonts} from "../constants/Fonts";
+import {ShowToast, ToastType} from "../util/ShowToast";
 
 
 type StartScreenProps = CompositeScreenProps<
@@ -16,6 +27,10 @@ type StartScreenProps = CompositeScreenProps<
 >;
 
 export default function StartScreen({navigation}: StartScreenProps) {
+    const platform = Platform.select({
+        ios: "ios",
+        android: "android"
+    })
     const { request, promptAsync } = useGoogleLogin( isFirst => {
         console.log("isFirst", isFirst);
             if (isFirst){
@@ -40,19 +55,42 @@ export default function StartScreen({navigation}: StartScreenProps) {
             title: 'Google',
             icon: require('../assets/logos/google_logo.png'),
             onPress: async () => {
-                await promptAsync();
+                if (platform == "ios") {
+                    await promptAsync();
+                }
+                else {
+                    ShowToast(
+                        "안내",
+                        "아직 개발 중인 기능입니다.",
+                        ToastType.INFO
+                    )
+                }
             },
             request: request
         },
         {
             title: '네이버',
             icon: require('../assets/logos/naver_logo.png'),
-            onPress: async () => {}
+            onPress: async () => {
+                ShowToast(
+                    "안내",
+                    "아직 개발 중인 기능입니다.",
+                    ToastType.INFO
+                )
+            },
+            request: true
         },
         {
             title: 'Apple',
             icon: require('../assets/logos/apple_logo.png'),
-            onPress: async () => {}
+            onPress: async () => {
+                ShowToast(
+                    "안내",
+                    "아직 개발 중인 기능입니다.",
+                    ToastType.INFO
+                )
+            },
+            request: true
         }
     ];
     return (
