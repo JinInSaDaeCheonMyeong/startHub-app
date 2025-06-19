@@ -1,9 +1,11 @@
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
+import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
 import { HeaderBar } from "../../component/home/HeaderBar";
 import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
 import { Shadow } from "react-native-shadow-2";
 import BMCNote from "../../assets/icons/bmc_note.svg"
+import { NoticeListItem } from "../../component/home/NoticeListItem";
+import { NoticeListItemList } from "../../constants/NoticeListItem";
 
 export default function HomeScreen() {
     return (
@@ -43,8 +45,45 @@ export default function HomeScreen() {
                         </View>
                     </Shadow>
                 </View>
-                <View>
-                    <Text></Text>
+                <View style={[commonContainer.container, styles.flatListContainer]}>
+                    <Text style={styles.listText}>추천 공고</Text>
+                    <FlatList
+                        contentContainerStyle={{gap : 16}}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        style={{overflow : 'visible'}}
+                        data={NoticeListItemList}
+                        renderItem={(item) => (
+                            <NoticeListItem
+                                id={item.item.id}
+                                noticeCategory={item.item.noticeCategory}
+                                title={item.item.title}
+                                startTime={item.item.startTime}
+                                endTime={item.item.endTime}
+                                hashTagList={item.item.hashTagList}
+                            />
+                        )}
+                    />
+                </View>
+                <View style={[commonContainer.container, styles.flatListContainer]}>
+                    <Text style={styles.listText}>추천 공고</Text>
+                    <FlatList
+                        contentContainerStyle={{gap : 16}}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal={true}
+                        style={{overflow : 'visible'}}
+                        data={NoticeListItemList}
+                        renderItem={(item) => (
+                            <NoticeListItem
+                                id={item.item.id}
+                                noticeCategory={item.item.noticeCategory}
+                                title={item.item.title}
+                                startTime={item.item.startTime}
+                                endTime={item.item.endTime}
+                                hashTagList={item.item.hashTagList}
+                            />
+                        )}
+                    />
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -85,6 +124,10 @@ const styles = StyleSheet.create({
         borderRadius : 8,
         gap : 12
     },
+    flatListContainer : {
+        gap : 12,
+        paddingVertical : 16
+    },
     imminentText : {
         color : Colors.error,
         fontFamily : Fonts.bold,
@@ -103,5 +146,10 @@ const styles = StyleSheet.create({
         flex : 1,
         fontSize : 16,
         flexShrink : 1
+    },
+    listText : {
+        fontSize : 18,
+        fontFamily : Fonts.semiBold,
+        color : Colors.black2
     }
 })
