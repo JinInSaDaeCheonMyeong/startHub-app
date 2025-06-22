@@ -1,9 +1,10 @@
 import { NoticeListItemType } from "../type/notice/notice.type";
+import { NoticeCategory } from "./NoticeCategory";
 
 export const NoticeListItemList : NoticeListItemType[] = [
     {
         id : 1,
-        noticeCategory : "string1",
+        noticeCategory : NoticeCategory.BUSINESS,
         title : "string1string1string1string1string1string1string1",
         startTime : new Date(),
         endTime : new Date(),
@@ -11,7 +12,7 @@ export const NoticeListItemList : NoticeListItemType[] = [
     },
     {
         id : 2,
-        noticeCategory : "string2",
+        noticeCategory : NoticeCategory.BUSINESS,
         title : "string2",
         startTime : new Date(),
         endTime : new Date(),
@@ -19,7 +20,7 @@ export const NoticeListItemList : NoticeListItemType[] = [
     },
     {
         id : 3,
-        noticeCategory : "string3",
+        noticeCategory : NoticeCategory.BUSINESS,
         title : "string3",
         startTime : new Date(),
         endTime : new Date(),

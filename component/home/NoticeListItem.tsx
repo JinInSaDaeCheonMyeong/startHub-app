@@ -3,6 +3,15 @@ import { NoticeListItemType } from "../../type/notice/notice.type"
 import { Shadow } from "react-native-shadow-2"
 import { Colors } from "../../constants/Color"
 import { Fonts } from "../../constants/Fonts"
+import { NoticeCategory } from "../../constants/NoticeCategory"
+import BusinessIcon from "../../assets/icons/category/notice/business.svg"
+import EducationIcon from "../../assets/icons/category/notice/education.svg"
+import EventIcon from "../../assets/icons/category/notice/event.svg"
+import FacilityIcon from "../../assets/icons/category/notice/facility.svg"
+import FundingIcon from "../../assets/icons/category/notice/funding.svg"
+import GlobalIcon from "../../assets/icons/category/notice/global.svg"
+import RNDIcon from "../../assets/icons/category/notice/rnd.svg"
+import TalentIcon from "../../assets/icons/category/notice/talent.svg"
 
 interface NoticeListItemProps extends NoticeListItemType {}
 
@@ -16,6 +25,46 @@ export const NoticeListItem = ({
 } : NoticeListItemProps ) => {
     const transformDate = (date : Date) => {
         return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+    }
+    const transformCategoryText = (category : NoticeCategory) => {
+        switch(category){
+            case NoticeCategory.BUSINESS:
+                return "사업화"
+            case NoticeCategory.EDUCATION:
+                return "교육"
+            case NoticeCategory.EVENT:
+                return "행사"
+            case NoticeCategory.FACILITY:
+                return "시설"
+            case NoticeCategory.FUNDING:
+                return "자금"
+            case NoticeCategory.GLOBAL:
+                return "글로벌"
+            case NoticeCategory.RND:
+                return "R&D"
+            case NoticeCategory.TALENT:
+                return "인력"
+        }
+    }
+    const transformCategoryIcon = (category : NoticeCategory) => {
+        switch(category){
+            case NoticeCategory.BUSINESS:
+                return <BusinessIcon width={16} height={16}/>
+            case NoticeCategory.EDUCATION:
+                return <EducationIcon width={16} height={16}/>
+            case NoticeCategory.EVENT:
+                return <EventIcon width={16} height={16}/>
+            case NoticeCategory.FACILITY:
+                return <FacilityIcon width={16} height={16}/>
+            case NoticeCategory.FUNDING:
+                return <FundingIcon width={16} height={16}/>
+            case NoticeCategory.GLOBAL:
+                return <GlobalIcon width={16} height={16}/>
+            case NoticeCategory.RND:
+                return <RNDIcon width={16} height={16}/>
+            case NoticeCategory.TALENT:
+                return <TalentIcon width={16} height={16}/>
+        }
     }
     const {width} = useWindowDimensions()
     
@@ -32,8 +81,10 @@ export const NoticeListItem = ({
             >
                 <View style={styles.mainContainer} key={id}>
                     <View style={styles.categoryContainer}>
-                        <Text style={styles.categoryText}>이미지</Text>
-                        <Text style={styles.categoryText}>{noticeCategory}</Text>
+                        {transformCategoryIcon(noticeCategory)}
+                        <Text style={styles.categoryText}>
+                            {transformCategoryText(noticeCategory)}
+                        </Text>
                     </View>
                     <View style={styles.titleContainer}>
                         <Text style={styles.titleText} 
@@ -70,12 +121,12 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.white1,
         padding: 16,
         borderRadius: 16,
-        gap: 16,
+        gap: 12,
         width: '100%',
     },
     categoryContainer: {
         flexDirection: 'row',
-        gap: 8,
+        gap: 4,
         alignItems: 'center'
     },
     categoryText: {
@@ -84,7 +135,7 @@ const styles = StyleSheet.create({
         color: Colors.primary
     },
     titleContainer: {
-        gap: 6
+        gap: 4
     },
     titleText: {
         fontSize: 16,

@@ -1,6 +1,8 @@
+import { NoticeCategory } from "../../constants/NoticeCategory"
+
 export interface NoticeListItemType {
     id : number
-    noticeCategory : string
+    noticeCategory : NoticeCategory
     title : string
     startTime : Date
     endTime : Date

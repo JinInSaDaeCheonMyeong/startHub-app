@@ -66,7 +66,7 @@ export default function HomeScreen() {
                     />
                 </View>
                 <View style={[commonContainer.container, styles.flatListContainer]}>
-                    <Text style={styles.listText}>추천 공고</Text>
+                    <Text style={styles.listText}>멤버 모집</Text>
                     <FlatList
                         contentContainerStyle={{gap : 16}}
                         showsHorizontalScrollIndicator={false}
