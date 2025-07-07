@@ -1,4 +1,4 @@
-import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, View} from "react-native";
+import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
 import { HeaderBar } from "../../component/home/HeaderBar";
 import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
@@ -18,18 +18,21 @@ export default function HomeScreen() {
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                     gap : 16,
+                    paddingBottom : 16
                 }} 
             >
-                <View style={styles.imminentContainer}>
-                    <Text style={styles.imminentText}>마감임박</Text>
-                    <Text 
-                        style={styles.imminentTitleText}
-                        numberOfLines={1}
-                        ellipsizeMode={"tail"}
-                    >
-                        {'[아산나눔재단]어쩌고저쩌고쌸라fdsafsdafㄴㅇㄹㄴㄴs'}
-                    </Text>
-                </View>
+                <TouchableOpacity onPress={() => {console.log("안녕")}}>
+                    <View style={styles.imminentContainer}>
+                        <Text style={styles.imminentText}>마감임박</Text>
+                        <Text 
+                            style={styles.imminentTitleText}
+                            numberOfLines={1}
+                            ellipsizeMode={"tail"}
+                        >
+                            {'[아산나눔재단]어쩌고저쩌고쌸라fdsafsdafㄴㅇㄹㄴㄴs'}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
                 <View style={commonContainer.container}>
                     <Shadow
                         distance={6} 
@@ -53,14 +56,15 @@ export default function HomeScreen() {
                         horizontal={true}
                         style={{overflow : 'visible'}}
                         data={NoticeListItemList}
-                        renderItem={(item) => (
+                        renderItem={({item}) => (
                             <NoticeListItem
-                                id={item.item.id}
-                                noticeCategory={item.item.noticeCategory}
-                                title={item.item.title}
-                                startTime={item.item.startTime}
-                                endTime={item.item.endTime}
-                                hashTagList={item.item.hashTagList}
+                                id={item.id}
+                                noticeCategory={item.noticeCategory}
+                                title={item.title}
+                                startTime={item.startTime}
+                                endTime={item.endTime}
+                                hashTagList={item.hashTagList}
+                                isHome={true}
                             />
                         )}
                     />
@@ -73,14 +77,15 @@ export default function HomeScreen() {
                         horizontal={true}
                         style={{overflow : 'visible'}}
                         data={NoticeListItemList}
-                        renderItem={(item) => (
+                        renderItem={({item}) => (
                             <NoticeListItem
-                                id={item.item.id}
-                                noticeCategory={item.item.noticeCategory}
-                                title={item.item.title}
-                                startTime={item.item.startTime}
-                                endTime={item.item.endTime}
-                                hashTagList={item.item.hashTagList}
+                                id={item.id}
+                                noticeCategory={item.noticeCategory}
+                                title={item.title}
+                                startTime={item.startTime}
+                                endTime={item.endTime}
+                                hashTagList={item.hashTagList}
+                                isHome={false}
                             />
                         )}
                     />

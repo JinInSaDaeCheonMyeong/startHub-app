@@ -5,10 +5,10 @@ export const NoticeListItemList : NoticeListItemType[] = [
     {
         id : 1,
         noticeCategory : NoticeCategory.BUSINESS,
-        title : "string1string1string1string1string1string1string1",
+        title : "string1string1string1string1string1string1string1string1string1string1",
         startTime : new Date(),
         endTime : new Date(),
-        hashTagList : ["안녕", "안녕", "안녕"]
+        hashTagList : ["안녕", "안녕", "안녕","안녕", "안녕", "안녕","안녕", "안녕", "안녕","안녕", "안녕", "안녕"]
     },
     {
         id : 2,

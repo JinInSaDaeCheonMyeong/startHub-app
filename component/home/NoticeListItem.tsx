@@ -12,8 +12,13 @@ import FundingIcon from "../../assets/icons/category/notice/funding.svg"
 import GlobalIcon from "../../assets/icons/category/notice/global.svg"
 import RNDIcon from "../../assets/icons/category/notice/rnd.svg"
 import TalentIcon from "../../assets/icons/category/notice/talent.svg"
+import { useState } from "react"
+import BookMarkFill from "../../assets/icons/bookMark/bookmark.fill.svg"
+import BookMark from "../../assets/icons/bookMark/bookmark.svg"
 
-interface NoticeListItemProps extends NoticeListItemType {}
+interface NoticeListItemProps extends NoticeListItemType {
+    isHome : boolean
+}
 
 export const NoticeListItem = ({
     id, 
@@ -21,10 +26,13 @@ export const NoticeListItem = ({
     title,
     startTime,
     endTime,
-    hashTagList
+    hashTagList,
+    isHome
 } : NoticeListItemProps ) => {
+    const {width} = useWindowDimensions()
+    const [isSelected, setIsSelected] = useState(false)
     const transformDate = (date : Date) => {
-        return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+        return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`
     }
     const transformCategoryText = (category : NoticeCategory) => {
         switch(category){
@@ -66,17 +74,18 @@ export const NoticeListItem = ({
                 return <TalentIcon width={16} height={16}/>
         }
     }
-    const {width} = useWindowDimensions()
     
     return (
-        <TouchableOpacity style={[styles.wrapper, {width : (width/2)}]}>
+        <TouchableOpacity style={[styles.wrapper, {
+            width : isHome ? width/2 : "100%"
+            }]}>
             <Shadow
                 containerStyle={styles.shadowContainer}
                 distance={6} 
                 offset={[0, 4]} 
                 startColor="rgba(155, 155, 155, 0.2)"
                 style={{
-                    width : "100%"
+                    width : isHome ? width/2 : "100%"
                 }}
             >
                 <View style={styles.mainContainer} key={id}>
@@ -94,13 +103,36 @@ export const NoticeListItem = ({
                             {title}
                         </Text>
                         <Text style={styles.dateText}>
-                            {`모집 : ${transformDate(startTime)} ~ ${transformDate(endTime)}`}
+                            {`모집 : ${transformDate(startTime)}~${transformDate(endTime)}`}
                         </Text>
                     </View>
-                    <View style={styles.hashTagContainer}>
-                        {hashTagList.map((value, index) => (
-                            <Text key={index} style={styles.hashTagText}>{`#${value}`}</Text>
-                        ))}
+                    <View style={styles.bookMarkCotainer}>
+                        <View style={styles.hashTagContainer}>
+                            {hashTagList.map((value, index) => (
+                                <Text key={index} style={styles.hashTagText}>{`#${value}`}</Text>
+                            ))}
+                        </View>
+                        {!isHome ?
+                            <TouchableOpacity onPress={() => {setIsSelected(!isSelected)}}>
+                                {isSelected ? 
+                                <BookMarkFill 
+                                    width={24}
+                                    height={24}
+                                    fill={Colors.primary}
+                                    color={Colors.primary}
+                                />
+                                :
+                                <BookMark
+                                    width={24}
+                                    height={24}
+                                    fill={Colors.primary}
+                                    color={Colors.primary}
+                                />
+                                }
+                            </TouchableOpacity>
+                        : 
+                            <></>
+                        }   
                     </View>
                 </View>
             </Shadow>
@@ -110,7 +142,7 @@ export const NoticeListItem = ({
 
 const styles = StyleSheet.create({
     wrapper: {
-        width: 200,
+        height : 154
     },
     shadowContainer: {
         borderRadius: 16,
@@ -123,6 +155,7 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         gap: 12,
         width: '100%',
+        height : 164
     },
     categoryContainer: {
         flexDirection: 'row',
@@ -135,27 +168,35 @@ const styles = StyleSheet.create({
         color: Colors.primary
     },
     titleContainer: {
-        gap: 4
+        gap: 4,
     },
     titleText: {
         fontSize: 16,
         fontFamily: Fonts.semiBold,
         color: Colors.black2,
-        lineHeight: 24
+        lineHeight : 20,
+        height : 44
     },
     dateText: {
         fontSize: 12,
         fontFamily: Fonts.medium,
-        color: Colors.gray2
+        color: Colors.black2
     },
     hashTagContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 8
+        gap: 8,
+        maxHeight : 32,
+        overflow : "hidden"
     },
     hashTagText: {
         fontSize: 12,
+        lineHeight : 12,
         fontFamily: Fonts.medium,
         color: Colors.primary
+    },
+    bookMarkCotainer : {
+        flexDirection : "row",
+        width : "100%"
     }
 })
