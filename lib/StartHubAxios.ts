@@ -2,7 +2,6 @@ import axios, { AxiosError } from "axios";
 import { getAccToken, getRefToken, removeTokens, saveAccToken, saveRefToken,} from "../util/token";
 import { refresh } from "../api/user";
 import { BackHandler, Platform } from "react-native";
-import RNExitApp from "react-native-exit-app";
 
 
 const StartHubAxios = axios.create({
@@ -46,8 +45,13 @@ StartHubAxios.interceptors.response.use(
                 return StartHubAxios(originalRequest)
             } catch (error) {
                 await removeTokens()
+                Platform.select({
+                    ios: (console.log('exit')),
+                    android: (
+                        BackHandler.exitApp()
+                    )
+                })
                 if(Platform.OS === 'ios'){
-                    RNExitApp.exitApp()
                 } else {
                     BackHandler.exitApp()
                 }
