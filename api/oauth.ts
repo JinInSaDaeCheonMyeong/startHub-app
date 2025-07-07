@@ -35,7 +35,7 @@ export async function googleLogin(code: String, codeVerifier : String) {
         return;
     }
     try {
-        const response = await axios.get(url + '/oauth/google',{
+        const response = await axios.get(url + '/oauth/google/app',{
             params : {
                 code : code,
                 state : state,
