@@ -2,9 +2,9 @@ import { NoticeCategory } from "../../constants/NoticeCategory"
 
 export interface NoticeItemType {
     id : number
-    noticeCategory : NoticeCategory
+    category : NoticeCategory
     title : string
     startTime : Date
     endTime : Date
-    hashTagList : string[]
+    hashTags : string[]
 }

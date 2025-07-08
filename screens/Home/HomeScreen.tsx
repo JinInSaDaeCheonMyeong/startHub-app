@@ -1,11 +1,13 @@
-import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
+import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import HeaderBar from "../../component/home/HeaderBar";
 import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
 import { Shadow } from "react-native-shadow-2";
 import BMCNote from "../../assets/icons/bmc_note.svg"
 import NoticeItem from "../../component/home/NoticeItem";
-import { NoticeListItemList } from "../../constants/NoticeListItem";
+import { NoticeItemList } from "../../constants/NoticeItemList";
+import MemberNoticeItem from "../../component/home/MemberNoticeItem";
+import { MemberNoticeItemList } from "../../constants/MemberNoticeItemList";
 
 export default function HomeScreen() {
     return (
@@ -35,9 +37,9 @@ export default function HomeScreen() {
                 </TouchableOpacity>
                 <View style={commonContainer.container}>
                     <Shadow
-                        distance={6} 
+                        distance={4} 
                         offset={[0, 4]} 
-                        startColor="rgba(155, 155, 155, 0.2)"
+                        startColor="rgba(185, 185, 185, 0.2)"
                         style={{
                             width : "100%"
                         }}
@@ -55,16 +57,17 @@ export default function HomeScreen() {
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         style={{overflow : 'visible'}}
-                        data={NoticeListItemList}
+                        data={NoticeItemList}
                         renderItem={({item}) => (
                             <NoticeItem
                                 id={item.id}
-                                noticeCategory={item.noticeCategory}
+                                category={item.category}
                                 title={item.title}
                                 startTime={item.startTime}
                                 endTime={item.endTime}
-                                hashTagList={item.hashTagList}
+                                hashTags={item.hashTags}
                                 isHome={true}
+                                onPress={() => {console.log("안녕")}}
                             />
                         )}
                     />
@@ -76,16 +79,18 @@ export default function HomeScreen() {
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         style={{overflow : 'visible'}}
-                        data={NoticeListItemList}
+                        data={MemberNoticeItemList}
                         renderItem={({item}) => (
-                            <NoticeItem
+                            <MemberNoticeItem
                                 id={item.id}
-                                noticeCategory={item.noticeCategory}
+                                img={item.img}
+                                location={item.location}
+                                workHistory={item.workHistory}
+                                category={item.category}
                                 title={item.title}
-                                startTime={item.startTime}
-                                endTime={item.endTime}
-                                hashTagList={item.hashTagList}
-                                isHome={false}
+                                hashTags={item.hashTags}
+                                isHome={true}
+                                onPress={() => {console.log("안녕")}}
                             />
                         )}
                     />
