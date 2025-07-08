@@ -17,82 +17,55 @@ import BookMarkFill from "../../assets/icons/bookMark/bookmark.fill.svg"
 import BookMark from "../../assets/icons/bookMark/bookmark.svg"
 
 interface NoticeItemProps extends NoticeItemType {
-    isHome : boolean
+    isHome : boolean,
+    onPress : () => void
 }
 
 export default function NoticeItem({
     id, 
-    noticeCategory,
+    category,
     title,
     startTime,
     endTime,
-    hashTagList,
-    isHome
+    hashTags,
+    isHome,
+    onPress
 } : NoticeItemProps ){
     const {width} = useWindowDimensions()
     const [isSelected, setIsSelected] = useState(false)
     const transformDate = (date : Date) => {
         return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`
     }
-    const transformCategoryText = (category : NoticeCategory) => {
-        switch(category){
-            case NoticeCategory.BUSINESS:
-                return "사업화"
-            case NoticeCategory.EDUCATION:
-                return "교육"
-            case NoticeCategory.EVENT:
-                return "행사"
-            case NoticeCategory.FACILITY:
-                return "시설"
-            case NoticeCategory.FUNDING:
-                return "자금"
-            case NoticeCategory.GLOBAL:
-                return "글로벌"
-            case NoticeCategory.RND:
-                return "R&D"
-            case NoticeCategory.TALENT:
-                return "인력"
-        }
+    const categoryMap = {
+        [NoticeCategory.BUSINESS] : {label : "사업화", icon : <BusinessIcon width={16} height={16}/>},
+        [NoticeCategory.EDUCATION] : {label : "교육", icon : <EducationIcon width={16} height={16}/>},
+        [NoticeCategory.EVENT] : {label : "행사", icon : <EventIcon width={16} height={16}/>},
+        [NoticeCategory.FACILITY] : {label : "시설", icon : <FacilityIcon width={16} height={16}/>},
+        [NoticeCategory.FUNDING] : {label : "자금", icon : <FundingIcon width={16} height={16}/>},
+        [NoticeCategory.GLOBAL] : {label : "글로벌", icon : <GlobalIcon width={16} height={16}/>},
+        [NoticeCategory.RND] : {label : "R&D", icon : <RNDIcon width={16} height={16}/>},
+        [NoticeCategory.TALENT] : {label : "인력", icon : <TalentIcon width={16} height={16}/>}
     }
-    const transformCategoryIcon = (category : NoticeCategory) => {
-        switch(category){
-            case NoticeCategory.BUSINESS:
-                return <BusinessIcon width={16} height={16}/>
-            case NoticeCategory.EDUCATION:
-                return <EducationIcon width={16} height={16}/>
-            case NoticeCategory.EVENT:
-                return <EventIcon width={16} height={16}/>
-            case NoticeCategory.FACILITY:
-                return <FacilityIcon width={16} height={16}/>
-            case NoticeCategory.FUNDING:
-                return <FundingIcon width={16} height={16}/>
-            case NoticeCategory.GLOBAL:
-                return <GlobalIcon width={16} height={16}/>
-            case NoticeCategory.RND:
-                return <RNDIcon width={16} height={16}/>
-            case NoticeCategory.TALENT:
-                return <TalentIcon width={16} height={16}/>
-        }
-    }
-    
     return (
-        <TouchableOpacity style={[styles.wrapper, {
+        <TouchableOpacity 
+        onPress={() => {onPress()}}
+        style={[styles.wrapper, {
             width : isHome ? width/2 : "100%"
             }]}>
             <Shadow
                 containerStyle={styles.shadowContainer}
-                distance={6} 
-                offset={[0, 4]} 
-                startColor="rgba(155, 155, 155, 0.2)"
+                distance={4} 
+                offset={[0, 4]}
+                startColor="rgba(185, 185, 185, 0.2)"
                 style={{
                     width : isHome ? width/2 : "100%"
                 }}
             >
                 <View style={styles.mainContainer} key={id}>
                     <View style={styles.categoryContainer}>
-                        {transformCategoryIcon(noticeCategory)}
+                        {categoryMap[category]?.icon}
                         <Text style={styles.categoryText}>
-                            {transformCategoryText(noticeCategory)}
+                            {categoryMap[category]?.label}
                         </Text>
                     </View>
                     <View style={styles.titleContainer}>
@@ -108,7 +81,7 @@ export default function NoticeItem({
                     </View>
                     <View style={styles.bookMarkCotainer}>
                         <View style={styles.hashTagContainer}>
-                            {hashTagList.map((value, index) => (
+                            {hashTags.map((value, index) => (
                                 <Text key={index} style={styles.hashTagText}>{`#${value}`}</Text>
                             ))}
                         </View>
