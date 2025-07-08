@@ -1,7 +1,7 @@
-import { NoticeListItemType } from "../type/notice/notice.type";
+import { NoticeItemType } from "../type/notice/notice.type";
 import { NoticeCategory } from "./NoticeCategory";
 
-export const NoticeListItemList : NoticeListItemType[] = [
+export const NoticeListItemList : NoticeItemType[] = [
     {
         id : 1,
         noticeCategory : NoticeCategory.BUSINESS,

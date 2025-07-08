@@ -1,10 +1,10 @@
 import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View} from "react-native";
-import { HeaderBar } from "../../component/home/HeaderBar";
+import HeaderBar from "../../component/home/HeaderBar";
 import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
 import { Shadow } from "react-native-shadow-2";
 import BMCNote from "../../assets/icons/bmc_note.svg"
-import { NoticeListItem } from "../../component/home/NoticeListItem";
+import NoticeItem from "../../component/home/NoticeItem";
 import { NoticeListItemList } from "../../constants/NoticeListItem";
 
 export default function HomeScreen() {
@@ -57,7 +57,7 @@ export default function HomeScreen() {
                         style={{overflow : 'visible'}}
                         data={NoticeListItemList}
                         renderItem={({item}) => (
-                            <NoticeListItem
+                            <NoticeItem
                                 id={item.id}
                                 noticeCategory={item.noticeCategory}
                                 title={item.title}
@@ -78,7 +78,7 @@ export default function HomeScreen() {
                         style={{overflow : 'visible'}}
                         data={NoticeListItemList}
                         renderItem={({item}) => (
-                            <NoticeListItem
+                            <NoticeItem
                                 id={item.id}
                                 noticeCategory={item.noticeCategory}
                                 title={item.title}

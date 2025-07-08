@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native"
-import { NoticeListItemType } from "../../type/notice/notice.type"
+import { NoticeItemType } from "../../type/notice/notice.type"
 import { Shadow } from "react-native-shadow-2"
 import { Colors } from "../../constants/Color"
 import { Fonts } from "../../constants/Fonts"
@@ -16,11 +16,11 @@ import { useState } from "react"
 import BookMarkFill from "../../assets/icons/bookMark/bookmark.fill.svg"
 import BookMark from "../../assets/icons/bookMark/bookmark.svg"
 
-interface NoticeListItemProps extends NoticeListItemType {
+interface NoticeItemProps extends NoticeItemType {
     isHome : boolean
 }
 
-export const NoticeListItem = ({
+export default function NoticeItem({
     id, 
     noticeCategory,
     title,
@@ -28,7 +28,7 @@ export const NoticeListItem = ({
     endTime,
     hashTagList,
     isHome
-} : NoticeListItemProps ) => {
+} : NoticeItemProps ){
     const {width} = useWindowDimensions()
     const [isSelected, setIsSelected] = useState(false)
     const transformDate = (date : Date) => {

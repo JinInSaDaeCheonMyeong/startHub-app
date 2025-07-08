@@ -8,7 +8,7 @@ type HeaderBarProps = {
     onClickSystemIcon : () => void
 }
 
-export const HeaderBar = (props : HeaderBarProps) => {
+export default function HeaderBar(props : HeaderBarProps){
     return (
         <View style={styles.headerContainer}>
             <Image source={require("../../assets/logos/starthub_title_logo.png")}/>
