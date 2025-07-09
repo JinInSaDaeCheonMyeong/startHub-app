@@ -1,4 +1,3 @@
-import { Title } from "react-native-paper";
 import { MemberNoticeItemType } from "../type/notice/member.type";
 import { InterestType } from "./InterestType";
 

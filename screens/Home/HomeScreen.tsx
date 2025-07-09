@@ -8,6 +8,7 @@ import { NoticeItemList } from "../../constants/NoticeItemList";
 import MemberNoticeItem from "../../component/notice/MemberNoticeItem";
 import { MemberNoticeItemList } from "../../constants/MemberNoticeItemList";
 import Spacer from "../../component/Spacer";
+import ImminentView from "../../component/home/ImminentView";
 
 export default function HomeScreen() {
     return (
@@ -16,18 +17,10 @@ export default function HomeScreen() {
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
-                <TouchableOpacity onPress={() => {console.log("안녕")}}>
-                    <View style={styles.imminentContainer}>
-                        <Text style={styles.imminentText}>마감임박</Text>
-                        <Text 
-                            style={styles.imminentTitleText}
-                            numberOfLines={1}
-                            ellipsizeMode="tail"
-                        >
-                            {'[아산나눔재단]어쩌고저쩌고쌸라fdsafsdafㄴㅇㄹㄴㄴsadsfad'}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                <ImminentView
+                    title="dummydummydummydummydummydummydummy"
+                    onPress={() => {console.log("마감임박 공고로 이동")}}
+                />
                 <Spacer height={16}/>
                 <View style={commonContainer.container}>
                     <Shadow
@@ -109,18 +102,6 @@ const styles = StyleSheet.create({
         backgroundColor : Colors.white1,
         gap : 16,
     },
-    imminentContainer : {
-        marginTop : 16,
-        marginHorizontal : 16,
-        flexDirection : 'row',
-        gap : 16,
-        paddingVertical : 12,
-        paddingHorizontal : 16,
-        borderColor : Colors.error,
-        borderWidth : 1,
-        borderStyle : "solid",
-        borderRadius : 8,
-    },
     BMCContainer : {
         backgroundColor : Colors.white1,
         justifyContent : "center",
@@ -133,18 +114,6 @@ const styles = StyleSheet.create({
         gap : 12,
         paddingVertical : 16,
         paddingHorizontal : 0
-    },
-    imminentText : {
-        color : Colors.error,
-        fontFamily : Fonts.bold,
-        fontSize : 14
-    },
-    imminentTitleText : {
-        color : Colors.black2,
-        fontFamily : Fonts.medium,
-        flex : 1,
-        flexShrink : 1,
-        fontSize : 14
     },
     BMCText : {
         color : Colors.black2,
