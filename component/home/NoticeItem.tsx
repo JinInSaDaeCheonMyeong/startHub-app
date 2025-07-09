@@ -49,7 +49,7 @@ export default function NoticeItem({
     return (
         <TouchableOpacity 
         onPress={() => {onPress()}}
-        style={[styles.wrapper, {
+        style={[{
             width : isHome ? width/2 : "100%"
             }]}>
             <Shadow
@@ -114,9 +114,6 @@ export default function NoticeItem({
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
-        height : 154
-    },
     shadowContainer: {
         borderRadius: 16,
         overflow: 'visible',
@@ -124,11 +121,10 @@ const styles = StyleSheet.create({
     },
     mainContainer: {
         backgroundColor: Colors.white1,
-        padding: 16,
+        padding: 20,
         borderRadius: 16,
         gap: 12,
         width: '100%',
-        height : 164
     },
     categoryContainer: {
         flexDirection: 'row',
@@ -159,7 +155,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 8,
-        maxHeight : 32,
+        height : 32,
         overflow : "hidden"
     },
     hashTagText: {

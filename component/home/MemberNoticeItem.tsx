@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { MemberNoticeItemType } from "../../type/notice/member.type";
 import { Shadow } from "react-native-shadow-2";
 import { InterestType } from "../../constants/InterestType";
@@ -10,6 +10,8 @@ import ITSoftwareIcon from "../../assets/icons/category/interest/software-catego
 import EcommerceIcon from "../../assets/icons/category/interest/deal-category.svg"
 import ETCIcon from "../../assets/icons/category/interest/etc-category.svg"
 import { Colors } from "../../constants/Color";
+import { useState } from "react";
+import { Fonts } from "../../constants/Fonts";
 
 interface MemberNoticeItemProps extends MemberNoticeItemType{
     isHome : boolean
@@ -27,6 +29,8 @@ export default function MemberNoticeItem({
     isHome,
     onPress
 } : MemberNoticeItemProps){
+    const {width} = useWindowDimensions()
+    const [isSelected, setIsSelected] = useState(false)
     const categoryMap = {
         [InterestType.CONTENT_MEDIA] : {label : "콘텐츠/미디어", icon : <ContentMediaIcon width={14} height={14} color={Colors.content_media}/>, color : Colors.content_media},
         [InterestType.FINTECH] : {label : "핀테크", icon : <FintechIcon width={14} height={14}/>, color : Colors.fintech},
@@ -37,30 +41,42 @@ export default function MemberNoticeItem({
         [InterestType.ETC] : {label : "기타", icon : <ETCIcon width={14} height={14}/>, color : Colors.etc}
     }
     return(
-        <TouchableOpacity onPress={() => {onPress()}}>
+        <TouchableOpacity 
+            onPress={() => {onPress()}}
+            style={[{
+            width : isHome ? width/2 : "100%"
+            }]}
+            >
             <Shadow
+                containerStyle={styles.shadowContainer}
                 distance={4} 
-                offset={[0, 4]} 
+                offset={[0, 4]}
                 startColor="rgba(185, 185, 185, 0.2)"
                 style={{
-                    width : "100%"
+                    width : isHome ? width/2 : "100%"
                 }}
             >
-                <View key={id}>
-                    <Image source={{uri : img}}/>
-                    <View>
-                        <View>
+                <View style={styles.mainContainer} key={id}>
+                    <Image source={{uri : img}} style={{width : 60, minHeight : 16}}/>
+                    <View style={styles.textContainer}>
+                        <View style={styles.categoryContainer}>
                             {categoryMap[category]?.icon}
-                            <Text style={[{color : categoryMap[category]?.color}]}>{categoryMap[category]?.label}</Text>
+                            <Text style={[styles.categoryText, {color : categoryMap[category]?.color}]}>{categoryMap[category]?.label}</Text>
                         </View>
-                        <View>
-                            <Text>{title}</Text>
-                            <Text>{`${location}-${workHistory}`}</Text>
+                        <View style={styles.titleContainer}>
+                            <Text 
+                                style={styles.titleText}
+                                numberOfLines={2}
+                                ellipsizeMode="tail"
+                            >
+                                {title + " dkss uddf safsddsafsadfsddsaf"}
+                                </Text>
+                            <Text style={styles.locationText}>{`${location}-${workHistory}`}</Text>
                         </View>
                     </View>
-                    <View>
-                        {hashTags.map((value, index) => (
-                            <Text id={`${index}`}>
+                    <View style={styles.hashTagContainer}>
+                        {[...hashTags].map((value, index) => (
+                            <Text style={styles.hashTagText} id={`${index}`}>
                                 {'#' + value}
                             </Text>
                         ))}
@@ -70,3 +86,61 @@ export default function MemberNoticeItem({
         </TouchableOpacity>
     )
 }
+
+const styles = StyleSheet.create({
+    shadowContainer: {
+        borderRadius: 16,
+        overflow: 'visible',
+        width: '100%',
+    },
+    mainContainer: {
+        backgroundColor: Colors.white1,
+        padding: 20,
+        borderRadius: 16,
+        gap: 12,
+        width: '100%',
+    },
+    categoryContainer: {
+        flexDirection: 'row',
+        gap: 4,
+        alignItems: 'center'
+    },
+    categoryText: {
+        fontSize: 12,
+        fontFamily: Fonts.semiBold,
+    },
+    textContainer : {
+        gap : 6
+    },
+    titleContainer: {
+        gap: 4,
+    },
+    titleText: {
+        fontSize: 16,
+        lineHeight : 20,
+        fontFamily: Fonts.semiBold,
+        color: Colors.black2,
+    },
+    locationText: {
+        fontSize: 12,
+        fontFamily: Fonts.medium,
+        color: Colors.black2
+    },
+    hashTagContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 8,
+        height : 32,
+        overflow : "hidden"
+    },
+    hashTagText: {
+        fontSize: 12,
+        lineHeight : 12,
+        fontFamily: Fonts.medium,
+        color: Colors.primary
+    },
+    bookMarkCotainer : {
+        flexDirection : "row",
+        width : "100%"
+    }
+})
