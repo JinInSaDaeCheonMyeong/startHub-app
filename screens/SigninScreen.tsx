@@ -10,8 +10,13 @@ import LinkActionText from "../component/auth/LinkActionText";
 import { useSigninScreen } from "../hooks/auth/signin/useSigninScreen";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Fonts } from "../constants/Fonts";
+import { CompositeScreenProps } from "@react-navigation/core";
+import { RootStackParamList } from "../navigation/RootStack";
 
-export type SigninScreenProps = StackScreenProps<AuthStackParamList, 'Signin'>;
+export type SigninScreenProps = CompositeScreenProps<
+    StackScreenProps<AuthStackParamList, 'Signin'>,
+    StackScreenProps<RootStackParamList>
+>;
 
 export default function SigninScreen(props: SigninScreenProps) {
 

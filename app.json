@@ -1,6 +1,6 @@
 {
   "expo": {
-    "scheme" : "startHub-app",
+    "scheme": "startHub-app",
     "name": "startHub-app",
     "slug": "startHub-app",
     "version": "1.0.0",
@@ -35,7 +35,8 @@
     },
     "owner": "iszero",
     "plugins": [
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-font"
     ]
   }
 }

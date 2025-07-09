@@ -21,11 +21,12 @@ export default function InterestScreen(props : InterestScreenProps){
             data={InterestTypeList}
             showsVerticalScrollIndicator={false}
             contentContainerStyle = {styles.listContentContainer}
-            renderItem={({item : {id, color, icon}}) => (
+            renderItem={({item : {id, color, text, icon}}) => (
                 <CategorySelectButton
                     key={id}
                     id={id}
                     color={color}
+                    text={text}
                     icons={icon}
                     onClick={(id) => {
                         if (props.interestList.includes(id)) {

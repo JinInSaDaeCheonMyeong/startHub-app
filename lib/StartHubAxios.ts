@@ -3,7 +3,6 @@ import { getAccToken, getRefToken, removeTokens, saveAccToken, saveRefToken,} fr
 import { refresh } from "../api/user";
 import { BackHandler, Platform } from "react-native";
 
-
 const StartHubAxios = axios.create({
     baseURL : process.env.EXPO_PUBLIC_API_URL,
     timeout : 5000,
@@ -51,10 +50,6 @@ StartHubAxios.interceptors.response.use(
                         BackHandler.exitApp()
                     )
                 })
-                if(Platform.OS === 'ios'){
-                } else {
-                    BackHandler.exitApp()
-                }
                 return Promise.reject(error)
             }
         }
