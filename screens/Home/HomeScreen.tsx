@@ -7,7 +7,6 @@ import NoticeItem from "../../component/notice/NoticeItem";
 import { NoticeItemList } from "../../constants/NoticeItemList";
 import MemberNoticeItem from "../../component/notice/MemberNoticeItem";
 import { MemberNoticeItemList } from "../../constants/MemberNoticeItemList";
-import Spacer from "../../component/Spacer";
 import ImminentView from "../../component/home/ImminentView";
 
 export default function HomeScreen() {
@@ -21,7 +20,7 @@ export default function HomeScreen() {
                     title="dummydummydummydummydummydummydummy"
                     onPress={() => {console.log("마감임박 공고로 이동")}}
                 />
-                <Spacer height={16}/>
+                <View style={{height : 16}}/>
                 <View style={commonContainer.container}>
                     <Shadow
                         distance={4} 
@@ -37,7 +36,7 @@ export default function HomeScreen() {
                         </View>
                     </Shadow>
                 </View>
-                <Spacer height={16}/>
+                <View style={{height : 16}}/>
                 <View style={[commonContainer.container, styles.flatListContainer]}>
                     <Text style={styles.listText}>추천 공고</Text>
                     <FlatList
