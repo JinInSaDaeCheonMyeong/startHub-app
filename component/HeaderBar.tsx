@@ -1,7 +1,7 @@
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native"
-import { Colors } from "../../constants/Color"
-import BellIcon from "../../assets/icons/header/bell.svg"
-import SystemIcon from "../../assets/icons/header/cogwheel-outline.svg"
+import { Colors } from "../constants/Color"
+import BellIcon from "../assets/icons/header/bell.svg"
+import SystemIcon from "../assets/icons/header/cogwheel-outline.svg"
 
 type HeaderBarProps = {
     onClickBellIcon : () => void,
@@ -9,9 +9,10 @@ type HeaderBarProps = {
 }
 
 export default function HeaderBar(props : HeaderBarProps){
+    const logo = require("../assets/logos/starthub_title_logo.png")
     return (
         <View style={styles.headerContainer}>
-            <Image source={require("../../assets/logos/starthub_title_logo.png")}/>
+            <Image style={{width : 88, height : 36}} source={logo}/>
             <View style={styles.iconContainer}>
                 <TouchableOpacity onPress={props.onClickBellIcon}>
                     <BellIcon width={24} height={24} color={Colors.black2}/>

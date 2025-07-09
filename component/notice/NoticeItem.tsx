@@ -49,9 +49,11 @@ export default function NoticeItem({
     return (
         <TouchableOpacity 
         onPress={() => {onPress()}}
+        key={id}
         style={[{
             width : isHome ? width/2 : "100%"
-            }]}>
+            }]}
+        >
             <Shadow
                 containerStyle={styles.shadowContainer}
                 distance={4} 
@@ -61,7 +63,7 @@ export default function NoticeItem({
                     width : isHome ? width/2 : "100%"
                 }}
             >
-                <View style={styles.mainContainer} key={id}>
+                <View style={styles.mainContainer}>
                     <View style={styles.categoryContainer}>
                         {categoryMap[category]?.icon}
                         <Text style={styles.categoryText}>

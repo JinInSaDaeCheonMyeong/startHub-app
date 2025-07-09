@@ -1,17 +1,18 @@
-import {FlatList, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import HeaderBar from "../../component/home/HeaderBar";
+import {FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import HeaderBar from "../../component/HeaderBar";
 import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
 import { Shadow } from "react-native-shadow-2";
 import BMCNote from "../../assets/icons/bmc_note.svg"
-import NoticeItem from "../../component/home/NoticeItem";
+import NoticeItem from "../../component/notice/NoticeItem";
 import { NoticeItemList } from "../../constants/NoticeItemList";
-import MemberNoticeItem from "../../component/home/MemberNoticeItem";
+import MemberNoticeItem from "../../component/notice/MemberNoticeItem";
 import { MemberNoticeItemList } from "../../constants/MemberNoticeItemList";
 
 export default function HomeScreen() {
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
             <HeaderBar 
                 onClickBellIcon={() => {}}
                 onClickSystemIcon={() => {}}

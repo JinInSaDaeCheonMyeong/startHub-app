@@ -46,6 +46,7 @@ export default function MemberNoticeItem({
             style={[{
             width : isHome ? width/2 : "100%"
             }]}
+            key={id}
             >
             <Shadow
                 containerStyle={styles.shadowContainer}
@@ -56,7 +57,7 @@ export default function MemberNoticeItem({
                     width : isHome ? width/2 : "100%"
                 }}
             >
-                <View style={styles.mainContainer} key={id}>
+                <View style={styles.mainContainer} >
                     <Image source={{uri : img}} style={{width : 60, minHeight : 16}}/>
                     <View style={styles.textContainer}>
                         <View style={styles.categoryContainer}>
@@ -75,8 +76,8 @@ export default function MemberNoticeItem({
                         </View>
                     </View>
                     <View style={styles.hashTagContainer}>
-                        {[...hashTags].map((value, index) => (
-                            <Text style={styles.hashTagText} id={`${index}`}>
+                        {[...hashTags ,"6년", "7년", "8년","6년", "7년", "8년","6년", "7년", "8년"].map((value, index) => (
+                            <Text style={styles.hashTagText} key={index}>
                                 {'#' + value}
                             </Text>
                         ))}
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 8,
-        height : 32,
+        height : 34,
         overflow : "hidden"
     },
     hashTagText: {

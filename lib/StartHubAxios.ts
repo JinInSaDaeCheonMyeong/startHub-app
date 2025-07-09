@@ -50,10 +50,6 @@ StartHubAxios.interceptors.response.use(
                         BackHandler.exitApp()
                     )
                 })
-                if(Platform.OS === 'ios'){
-                } else {
-                    BackHandler.exitApp()
-                }
                 return Promise.reject(error)
             }
         }
