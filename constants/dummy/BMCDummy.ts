@@ -1,0 +1,22 @@
+export const dummyBMC = [
+    { title: "창업 아이디어 캔버스", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2024.01.01' },
+    { title: "비즈니스 모델 워크샵", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2024.01.23' },
+    { title: "BMC 실전 사례", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2023.05.11' },
+    { title: "비즈니스 전략 설계", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2025.01.01' },
+    { title: "창업모델 분석", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2024.03.01' },
+    { title: "BMC 인사이트", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2024.01.03' },
+    { title: "아이디어 모델링", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2024.05.15' },
+    { title: "스타트업 전략", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2023.12.31' },
+    { title: "비즈니스 기획서", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2023.11.01' },
+    { title: "시장 분석 보고서", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2024.06.20' },
+    { title: "제품 서비스 전략", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2022.09.15' },
+    { title: "고객 세분화 모델", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2025.03.17' },
+    { title: "가치 제안 구성", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2023.01.01' },
+    { title: "창업 전략 구조화", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2023.04.28' },
+    { title: "스타트허브 워크북", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2024.10.10' },
+    { title: "창업 로드맵 시뮬레이션", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2025.07.08' },
+    { title: "아이디어 사업화 툴킷", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2024.08.30' },
+    { title: "고객 여정 분석", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2022.12.01' },
+    { title: "스타트업 실행 계획", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2023.06.10' },
+    { title: "BMC 구조 마스터", thumbnail: require('../../assets/images/bmc-thumbnail-exam.png'), date: '2023.07.15' }
+];
