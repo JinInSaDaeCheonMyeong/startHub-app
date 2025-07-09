@@ -50,9 +50,9 @@ export default function NoticeItem({
         <TouchableOpacity 
         onPress={() => {onPress()}}
         key={id}
-        style={[{
+        style={{
             width : isHome ? width/2 : "100%"
-            }]}
+            }}
         >
             <Shadow
                 containerStyle={styles.shadowContainer}
@@ -71,7 +71,10 @@ export default function NoticeItem({
                         </Text>
                     </View>
                     <View style={styles.titleContainer}>
-                        <Text style={styles.titleText} 
+                        <Text style={[styles.titleText, isHome && {
+                            lineHeight : 20,
+                            height : 44
+                        }]} 
                             numberOfLines={2}
                             ellipsizeMode="tail"
                         >
@@ -82,31 +85,29 @@ export default function NoticeItem({
                         </Text>
                     </View>
                     <View style={styles.bookMarkCotainer}>
-                        <View style={styles.hashTagContainer}>
+                        <View style={[styles.hashTagContainer, {height : isHome ? 34 : 'auto'}]}>
                             {hashTags.map((value, index) => (
                                 <Text key={index} style={styles.hashTagText}>{`#${value}`}</Text>
                             ))}
                         </View>
-                        {!isHome ?
-                            <TouchableOpacity onPress={() => {setIsSelected(!isSelected)}}>
-                                {isSelected ? 
-                                <BookMarkFill 
-                                    width={24}
-                                    height={24}
-                                    fill={Colors.primary}
-                                    color={Colors.primary}
-                                />
-                                :
-                                <BookMark
-                                    width={24}
-                                    height={24}
-                                    fill={Colors.primary}
-                                    color={Colors.primary}
-                                />
-                                }
-                            </TouchableOpacity>
-                        : 
-                            <></>
+                        {!isHome && (
+                                <TouchableOpacity onPress={() => {setIsSelected((value) => !value)}}>
+                                    {isSelected ? 
+                                    <BookMarkFill 
+                                        width={24}
+                                        height={24}
+                                        fill={Colors.primary}
+                                        color={Colors.primary}
+                                    />
+                                    :
+                                    <BookMark
+                                        width={24}
+                                        height={24}
+                                        color={Colors.black2}
+                                    />
+                                    }
+                                </TouchableOpacity>
+                            )
                         }   
                     </View>
                 </View>
@@ -145,8 +146,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: Fonts.semiBold,
         color: Colors.black2,
-        lineHeight : 20,
-        height : 44
     },
     dateText: {
         fontSize: 12,
@@ -157,7 +156,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 8,
-        height : 32,
         overflow : "hidden"
     },
     hashTagText: {
@@ -168,6 +166,9 @@ const styles = StyleSheet.create({
     },
     bookMarkCotainer : {
         flexDirection : "row",
+        gap : 32,
+        justifyContent : "space-between",
+        alignItems : "center",
         width : "100%"
     }
 })

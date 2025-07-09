@@ -1,5 +1,4 @@
 import {FlatList, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import HeaderBar from "../../component/HeaderBar";
 import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
 import { Shadow } from "react-native-shadow-2";
@@ -17,11 +16,6 @@ export default function HomeScreen() {
             <ScrollView
                 showsVerticalScrollIndicator={false}
             >
-                <HeaderBar 
-                    onClickBellIcon={() => {}}
-                    onClickSystemIcon={() => {}}
-                />
-                <Spacer height={16}/>
                 <TouchableOpacity onPress={() => {console.log("안녕")}}>
                     <View style={styles.imminentContainer}>
                         <Text style={styles.imminentText}>마감임박</Text>

@@ -9,6 +9,8 @@ import EducationEdutechIcon from "../../assets/icons/category/interest/study-cat
 import ITSoftwareIcon from "../../assets/icons/category/interest/software-category.svg"
 import EcommerceIcon from "../../assets/icons/category/interest/deal-category.svg"
 import ETCIcon from "../../assets/icons/category/interest/etc-category.svg"
+import BookMarkFill from "../../assets/icons/bookMark/bookmark.fill.svg"
+import BookMark from "../../assets/icons/bookMark/bookmark.svg"
 import { Colors } from "../../constants/Color";
 import { useState } from "react";
 import { Fonts } from "../../constants/Fonts";
@@ -33,19 +35,19 @@ export default function MemberNoticeItem({
     const [isSelected, setIsSelected] = useState(false)
     const categoryMap = {
         [InterestType.CONTENT_MEDIA] : {label : "콘텐츠/미디어", icon : <ContentMediaIcon width={14} height={14} color={Colors.content_media}/>, color : Colors.content_media},
-        [InterestType.FINTECH] : {label : "핀테크", icon : <FintechIcon width={14} height={14}/>, color : Colors.fintech},
-        [InterestType.HEALTHCARE_BIO] : {label : "헬스케어/바이오", icon : <HealthcareBioIcon width={14} height={14}/>, color : Colors.healthcare_bio},
-        [InterestType.EDUCATION_EDUTECH] : {label : "교육/에듀테크", icon : <EducationEdutechIcon width={14} height={14}/>, color : Colors.education_edutech},
-        [InterestType.IT_SOFTWARE] : {label : "IT/소프트웨어", icon : <ITSoftwareIcon width={14} height={14}/>, color : Colors.it_software},
-        [InterestType.ECOMMERCE] : {label : "전자상거래", icon : <EcommerceIcon width={14} height={14}/>, color : Colors.ecommerce},
-        [InterestType.ETC] : {label : "기타", icon : <ETCIcon width={14} height={14}/>, color : Colors.etc}
+        [InterestType.FINTECH] : {label : "핀테크", icon : <FintechIcon width={14} height={14} color={Colors.fintech}/>, color : Colors.fintech},
+        [InterestType.HEALTHCARE_BIO] : {label : "헬스케어/바이오", icon : <HealthcareBioIcon width={14} height={14} color={Colors.healthcare_bio}/>, color : Colors.healthcare_bio},
+        [InterestType.EDUCATION_EDUTECH] : {label : "교육/에듀테크", icon : <EducationEdutechIcon width={14} height={14} color={Colors.education_edutech}/>, color : Colors.education_edutech},
+        [InterestType.IT_SOFTWARE] : {label : "IT/소프트웨어", icon : <ITSoftwareIcon width={14} height={14} color={Colors.it_software}/>, color : Colors.it_software},
+        [InterestType.ECOMMERCE] : {label : "전자상거래", icon : <EcommerceIcon width={14} height={14} color={Colors.ecommerce}/>, color : Colors.ecommerce},
+        [InterestType.ETC] : {label : "기타", icon : <ETCIcon width={14} height={14} color={Colors.etc}/>, color : Colors.etc}
     }
     return(
         <TouchableOpacity 
             onPress={() => {onPress()}}
-            style={[{
+            style={{
             width : isHome ? width/2 : "100%"
-            }]}
+            }}
             key={id}
             >
             <Shadow
@@ -70,17 +72,40 @@ export default function MemberNoticeItem({
                                 numberOfLines={2}
                                 ellipsizeMode="tail"
                             >
-                                {title + " dkss uddf safsddsafsadfsddsaf"}
+                                {title}
                                 </Text>
                             <Text style={styles.locationText}>{`${location}-${workHistory}`}</Text>
                         </View>
                     </View>
-                    <View style={styles.hashTagContainer}>
-                        {[...hashTags ,"6년", "7년", "8년","6년", "7년", "8년","6년", "7년", "8년"].map((value, index) => (
-                            <Text style={styles.hashTagText} key={index}>
-                                {'#' + value}
-                            </Text>
-                        ))}
+                    <View style={styles.bookMarkCotainer}>
+                        <View style={[styles.hashTagContainer, isHome && {
+                            height : 34
+                        }]}>
+                            {hashTags.map((value, index) => (
+                                <Text style={styles.hashTagText} key={index}>
+                                    {'#' + value}
+                                </Text>
+                            ))}
+                        </View>
+                        {!isHome && (
+                                <TouchableOpacity onPress={() => {setIsSelected((value) => !value)}}>
+                                    {isSelected ? 
+                                    <BookMarkFill 
+                                        width={24}
+                                        height={24}
+                                        fill={Colors.primary}
+                                        color={Colors.primary}
+                                    />
+                                    :
+                                    <BookMark
+                                        width={24}
+                                        height={24}
+                                        color={Colors.black2}
+                                    />
+                                    }
+                                </TouchableOpacity>
+                            )
+                        }   
                     </View>
                 </View>
             </Shadow>
@@ -130,8 +155,8 @@ const styles = StyleSheet.create({
     hashTagContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
+        flex : 1,
         gap: 8,
-        height : 34,
         overflow : "hidden"
     },
     hashTagText: {
@@ -141,7 +166,9 @@ const styles = StyleSheet.create({
         color: Colors.primary
     },
     bookMarkCotainer : {
+        gap : 32,
         flexDirection : "row",
-        width : "100%"
+        justifyContent : "space-between",
+        alignItems : "center",
     }
 })
