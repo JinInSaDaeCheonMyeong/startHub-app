@@ -6,6 +6,8 @@ import MatchScreen from "../screens/Home/MatchScreen";
 import BMCScreen from "../screens/Home/BMCScreen";
 import ChatScreen from "../screens/Home/ChatScreen";
 import { Colors } from '../constants/Color';
+import { Easing } from 'react-native';
+import HeaderBar from '../component/HeaderBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +17,18 @@ export function HomeStack() {
         <Tab.Navigator 
             tabBar={(props) => <BottomBar {...props} />}
             screenOptions={{
-                headerShown: false,
+                header : () => (<HeaderBar
+                    onClickBellIcon={() => {}}
+                    onClickSystemIcon={() => {}}
+                />),
+                animation : 'shift',
+                transitionSpec : {
+                    animation : 'timing',
+                    config : {
+                        duration : 90,
+                        easing : Easing.inOut(Easing.ease)
+                    }
+                },
                 sceneStyle : {
                     backgroundColor : Colors.white1,
                     overflow : "visible"
