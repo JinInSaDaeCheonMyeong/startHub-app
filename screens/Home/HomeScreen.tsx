@@ -8,34 +8,33 @@ import NoticeItem from "../../component/notice/NoticeItem";
 import { NoticeItemList } from "../../constants/NoticeItemList";
 import MemberNoticeItem from "../../component/notice/MemberNoticeItem";
 import { MemberNoticeItemList } from "../../constants/MemberNoticeItemList";
+import Spacer from "../../component/Spacer";
 
 export default function HomeScreen() {
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
-            <HeaderBar 
-                onClickBellIcon={() => {}}
-                onClickSystemIcon={() => {}}
-            />
             <ScrollView
                 showsVerticalScrollIndicator={false}
-                contentContainerStyle={{
-                    gap : 16,
-                    paddingBottom : 16
-                }} 
             >
+                <HeaderBar 
+                    onClickBellIcon={() => {}}
+                    onClickSystemIcon={() => {}}
+                />
+                <Spacer height={16}/>
                 <TouchableOpacity onPress={() => {console.log("안녕")}}>
                     <View style={styles.imminentContainer}>
                         <Text style={styles.imminentText}>마감임박</Text>
                         <Text 
                             style={styles.imminentTitleText}
                             numberOfLines={1}
-                            ellipsizeMode={"tail"}
+                            ellipsizeMode="tail"
                         >
-                            {'[아산나눔재단]어쩌고저쩌고쌸라fdsafsdafㄴㅇㄹㄴㄴs'}
+                            {'[아산나눔재단]어쩌고저쩌고쌸라fdsafsdafㄴㅇㄹㄴㄴsadsfad'}
                         </Text>
                     </View>
                 </TouchableOpacity>
+                <Spacer height={16}/>
                 <View style={commonContainer.container}>
                     <Shadow
                         distance={4} 
@@ -51,10 +50,11 @@ export default function HomeScreen() {
                         </View>
                     </Shadow>
                 </View>
+                <Spacer height={16}/>
                 <View style={[commonContainer.container, styles.flatListContainer]}>
                     <Text style={styles.listText}>추천 공고</Text>
                     <FlatList
-                        contentContainerStyle={{gap : 16}}
+                        contentContainerStyle={{gap : 16, paddingHorizontal : 16, paddingBottom : 16 }}
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         style={{overflow : 'visible'}}
@@ -76,7 +76,7 @@ export default function HomeScreen() {
                 <View style={[commonContainer.container, styles.flatListContainer]}>
                     <Text style={styles.listText}>멤버 모집</Text>
                     <FlatList
-                        contentContainerStyle={{gap : 16}}
+                        contentContainerStyle={{gap : 16, paddingHorizontal : 16, paddingBottom : 16}}
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         style={{overflow : 'visible'}}
@@ -137,7 +137,8 @@ const styles = StyleSheet.create({
     },
     flatListContainer : {
         gap : 12,
-        paddingVertical : 16
+        paddingVertical : 16,
+        paddingHorizontal : 0
     },
     imminentText : {
         color : Colors.error,
@@ -160,6 +161,7 @@ const styles = StyleSheet.create({
     },
     listText : {
         fontSize : 18,
+        marginStart : 16,
         fontFamily : Fonts.semiBold,
         color : Colors.black2
     }
