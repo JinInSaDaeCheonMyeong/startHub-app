@@ -6,10 +6,20 @@ import { Fonts } from "../../constants/Fonts";
 import {PaperProvider } from "react-native-paper";
 import { ChatMenuButton } from "../../component/home/ChatMenuButton";
 import { dummyChatRommList } from "../../constants/dummy/ChatDummy";
-import { getDateDifference } from "../../util/dateFormat";
+import { getDateDifference } from "../../util/DateFormat";
 import { ChatRoomType } from "../../type/chat/chatRoom.type";
+import { CompositeScreenProps } from "@react-navigation/core";
+import { StackScreenProps } from "@react-navigation/stack";
+import { RootStackParamList } from "../../navigation/RootStack";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { HomeStackParamList } from "../../navigation/HomeStack";
 
-export default function ChatScreen() {
+export type ChatScreenProps = CompositeScreenProps<
+    BottomTabScreenProps<HomeStackParamList, 'Chat'>,
+    StackScreenProps<RootStackParamList>
+>
+
+export default function ChatScreen({navigation} : ChatScreenProps) {
 
     const chatRoomListSort = (list : ChatRoomType[]) => 
     [...list].sort((a, b) => b.date.getTime() - a.date.getTime())
@@ -34,7 +44,16 @@ export default function ChatScreen() {
                                 data={chatRoomListSort(dummyChatRommList)}
                                 contentContainerStyle={{gap : 16}}
                                 renderItem={({item}) => (
-                                    <TouchableOpacity onPress={() => {console.log(item.id)}}>
+                                    <TouchableOpacity 
+                                        onPress={() => {
+                                            navigation.navigate('InChat', {
+                                                roomId : item.id,
+                                                img : item.img,
+                                                name : item.userName,
+                                                affiliation : item.userName
+                                            })
+                                        }}
+                                    >
                                     <View 
                                         style={styles.chatRoomContainer}
                                         key={item.id}

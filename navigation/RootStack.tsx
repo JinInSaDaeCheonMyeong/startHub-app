@@ -2,12 +2,19 @@ import {createStackNavigator} from "@react-navigation/stack";
 import AuthStack from "./AuthStack";
 import {HomeStack} from "./HomeStack";
 import { Colors } from "../constants/Color";
+import InChatScreen from "../screens/Home/chat/InChatScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 export type RootStackParamList = {
     AuthStack: undefined;
     HomeStack: undefined;
+    InChat : {
+        roomId : number
+        name : string
+        affiliation : string
+        img : string
+    }
 };
 
 export default function RootStack() {
@@ -23,6 +30,7 @@ export default function RootStack() {
         >
             <Stack.Screen name="AuthStack" component={AuthStack} />
             <Stack.Screen name="HomeStack" component={HomeStack} />
+            <Stack.Screen name="InChat" component={InChatScreen}/>
         </Stack.Navigator>
     )
 };
