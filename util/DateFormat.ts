@@ -23,3 +23,20 @@ export const getDateDifference = (date: Date): string => {
     
     return "방금 전";
 };
+
+export const formatToTime = (data : string) : string => {
+    const date = new Date(data);
+    return date.toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+    });
+}
+
+export const formatToDate = (data : string) : string => {
+    const dateTime = new Date(data)
+    const years = dateTime.getFullYear()
+    const months = dateTime.getMonth()
+    const days = dateTime.getDate()
+    return `${years}-${months}-${days}`
+}

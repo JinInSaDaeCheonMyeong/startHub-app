@@ -3,21 +3,22 @@ import SockJS from 'sockjs-client';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { messages } from '../../api/chat';
 import { getUser } from '../../api/user';
+import { ChatMessage } from '../../type/chat/messages.type';
 
 const SOCKET_URL = 'https://api.start-hub.kr/ws';
 
 export function useInChatScreen(roomId: number) {
-    const [msgs, setMsgs] = useState<any[]>([]);
+    const [msgs, setMsgs] = useState<ChatMessage[]>([]);
     const clientRef = useRef<Client | null>(null);
     const [senderId, setSenderId] = useState<string | null>(null);
 
     useEffect(() => {
         let client: Client;
 
-        const getMessages = async () => {
+        const initMessages = async () => {
             try {
                 const msgLst = await (await messages(roomId)).data
-                setMsgs((prevs) => [...prevs, ...msgLst])
+                setMsgs(msgLst)
             } catch (error) {
                 console.log(error)
             }
@@ -71,7 +72,7 @@ export function useInChatScreen(roomId: number) {
             }
         };
 
-        getMessages()
+        initMessages()
         setupStompClient();
 
         return () => {
@@ -112,6 +113,5 @@ export function useInChatScreen(roomId: number) {
             body: JSON.stringify(payload),
         });
     }, [roomId, senderId]);
-
     return { msgs, sendMessage };
 }

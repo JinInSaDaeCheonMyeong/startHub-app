@@ -5,7 +5,7 @@ export interface ChatMessage{
     roomId : number
     senderId : string
     message : string
-    sendAt : string
+    sentAt : string
 }
 
 export interface ChatMessagesResponse extends Response{
