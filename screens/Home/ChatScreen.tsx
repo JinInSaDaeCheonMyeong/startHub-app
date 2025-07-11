@@ -7,7 +7,7 @@ import {PaperProvider } from "react-native-paper";
 import { ChatMenuButton } from "../../component/home/ChatMenuButton";
 import { dummyChatRommList } from "../../constants/dummy/ChatDummy";
 import { getDateDifference } from "../../util/DateFormat";
-import { ChatRoomType } from "../../type/chat/chatRoom.type";
+import { ChatRoomType } from "../../type/chat/room.type";
 import { CompositeScreenProps } from "@react-navigation/core";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigation/RootStack";

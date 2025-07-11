@@ -16,8 +16,8 @@ type InChatHeaderBarProps = {
 export default function InChatHeaderBar({img, name, affiliation, backClick, menuClick} : InChatHeaderBarProps) {
     return (
         <Shadow
-            distance={6} 
-            offset={[0, 0]}
+            distance={4} 
+            offset={[0, 4]}
             startColor="rgba(185, 185, 185, 0.2)"
             style={{
                 width : "100%"
@@ -58,7 +58,6 @@ export default function InChatHeaderBar({img, name, affiliation, backClick, menu
 
 const styles = StyleSheet.create({
     mainContainer : {
-        flex : 1,
         flexDirection : 'row',
         padding : 16,
         alignItems : "center",
