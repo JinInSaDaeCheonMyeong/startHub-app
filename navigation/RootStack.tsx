@@ -3,6 +3,7 @@ import AuthStack from "./AuthStack";
 import {HomeStack} from "./HomeStack";
 import { Colors } from "../constants/Color";
 import InChatScreen from "../screens/Home/chat/InChatScreen";
+import { ChatMessage } from "../type/chat/messages.type";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -11,6 +12,7 @@ export type RootStackParamList = {
     HomeStack: undefined;
     InChat : {
         roomId : number
+        chatLst : ChatMessage[]
         name : string
         affiliation : string
         img : string

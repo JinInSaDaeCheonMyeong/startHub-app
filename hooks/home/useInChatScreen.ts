@@ -1,28 +1,18 @@
 import { Client, Frame } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { messages } from '../../api/chat';
 import { getUser } from '../../api/user';
 import { ChatMessage } from '../../type/chat/messages.type';
 
 const SOCKET_URL = 'https://api.start-hub.kr/ws';
 
-export function useInChatScreen(roomId: number) {
-    const [msgs, setMsgs] = useState<ChatMessage[]>([]);
+export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
+    const [msgs, setMsgs] = useState<ChatMessage[]>(chatLst);
     const clientRef = useRef<Client | null>(null);
     const [senderId, setSenderId] = useState<string | null>(null);
 
     useEffect(() => {
         let client: Client;
-
-        const initMessages = async () => {
-            try {
-                const msgLst = await (await messages(roomId)).data
-                setMsgs(msgLst)
-            } catch (error) {
-                console.log(error)
-            }
-        }
 
         const setupStompClient = async () => {
             try {
@@ -31,8 +21,6 @@ export function useInChatScreen(roomId: number) {
 
                 if (!fetchedSenderId) throw new Error("No sender ID found");
                 setSenderId(fetchedSenderId);
-
-                setMsgs([]); // roomId가 바뀌면 메시지 초기화
 
                 client = new Client({
                     webSocketFactory: () => new SockJS(SOCKET_URL),
@@ -72,7 +60,6 @@ export function useInChatScreen(roomId: number) {
             }
         };
 
-        initMessages()
         setupStompClient();
 
         return () => {
@@ -113,5 +100,6 @@ export function useInChatScreen(roomId: number) {
             body: JSON.stringify(payload),
         });
     }, [roomId, senderId]);
-    return { msgs, sendMessage };
+
+    return { msgs, sendMessage, senderId };
 }

@@ -23,6 +23,8 @@ export default function InChatFooterBar({onPress} : InChatFooterBarProps) {
         >
             <View style={styles.mainContainer}>
                 <TextInput
+                    multiline
+                    numberOfLines={4}
                     style={styles.textInputBox}
                     value={text}
                     placeholder="채팅을 입력해주세요..."
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
         paddingVertical : 12,
         paddingHorizontal : 16,
         gap :12,
-        alignItems : "center"
+        alignItems : "flex-end"
     },
     textInputBox : {
         backgroundColor : Colors.gray4,

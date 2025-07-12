@@ -13,6 +13,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigation/RootStack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { HomeStackParamList } from "../../navigation/HomeStack";
+import { messages } from "../../api/chat";
 
 export type ChatScreenProps = CompositeScreenProps<
     BottomTabScreenProps<HomeStackParamList, 'Chat'>,
@@ -45,9 +46,12 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                                 contentContainerStyle={{gap : 16}}
                                 renderItem={({item}) => (
                                     <TouchableOpacity 
-                                        onPress={() => {
+                                        onPress={async () => {
+                                            const messagesResponse = await (await messages(item.id)).data
+                                            console.log(messagesResponse)
                                             navigation.navigate('InChat', {
                                                 roomId : item.id,
+                                                chatLst : messagesResponse,
                                                 img : item.img,
                                                 name : item.userName,
                                                 affiliation : item.userName
