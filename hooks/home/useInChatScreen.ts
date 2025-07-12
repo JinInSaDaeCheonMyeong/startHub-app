@@ -27,8 +27,6 @@ export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
                     debug: (str) => console.log('STOMP_DEBUG:', str),
                     reconnectDelay: 5000,
                     onConnect: (frame: Frame) => {
-                        console.log('Connected to STOMP:', frame.headers);
-
                         client.subscribe(`/sub/chat/${roomId}`, (message) => {
                             try {
                                 const body = JSON.parse(message.body);
@@ -37,23 +35,11 @@ export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
                                 console.error('Failed to parse message:', e);
                             }
                         }, { id: `sub-${roomId}` });
-
-                        console.log(`Subscribed to /sub/chat/${roomId}`);
                     },
-                    onStompError: (frame) => {
-                        console.error('STOMP Protocol Error:', frame.headers['message'], frame.body);
-                    },
-                    onWebSocketError: (evt) => {
-                        console.error('WebSocket Error:', evt);
-                    },
-                    onDisconnect: () => {
-                        console.log('Disconnected from STOMP');
-                    }
                 });
 
                 client.activate();
                 clientRef.current = client;
-                console.log("STOMP client activated.");
 
             } catch (error) {
                 console.error("Failed to initialize STOMP client:", error);
@@ -63,7 +49,6 @@ export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
         setupStompClient();
 
         return () => {
-            console.log("Cleaning up STOMP client...");
             if (clientRef.current?.active) {
                 clientRef.current.deactivate().then(() => {
                     console.log("STOMP client deactivated.");
@@ -76,24 +61,19 @@ export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
     }, [roomId]);
 
     const sendMessage = useCallback((message: string) => {
+        if(message.trim().length === 0) return
         const client = clientRef.current;
 
-        if (!client?.connected) {
-            console.warn('Cannot send: STOMP client not connected.');
-            return;
-        }
-        if (!senderId) {
-            console.warn('Cannot send: Sender ID missing.');
-            return;
-        }
+        if (!client?.connected) return;
+        
+        if (!senderId) return;
+        
 
         const payload = {
             roomId : roomId,
             senderId : senderId,
             message : message,
         };
-
-        console.log("Sending message:", payload);
 
         client.publish({
             destination: '/pub/send',
