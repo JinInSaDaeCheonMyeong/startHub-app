@@ -1,10 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { FlatList, Keyboard, SafeAreaView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
+import { FlatList, Keyboard, SafeAreaView, StyleSheet, Text, useWindowDimensions, View, Image } from "react-native";
 import InChatHeaderBar from "../../../component/home/InChatHeaderBar";
 import { RootStackParamList } from "../../../navigation/RootStack";
 import InChatFooterBar from "../../../component/home/InChatFooterBar";
 import { useInChatScreen } from "../../../hooks/home/useInChatScreen"
-import { formatToTime } from "../../../util/DateFormat";
+import { formatToDate, formatToTime } from "../../../util/DateFormat";
 import { Colors } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Fonts";
 import { useEffect, useMemo, useRef } from "react";
@@ -68,19 +68,45 @@ export default function InChatScreen({navigation, route : {params}} : InChatScre
                 }}
                 renderItem={({item, index}) => {
                     const prev = reversedMsgs[index - 1];
+                    const next = reversedMsgs[index + 1];
+                    const showDate = !next || formatToDate(next.sentAt) !== formatToDate(item.sentAt);
                     const showTime = !prev || formatToTime(prev.sentAt) !== formatToTime(item.sentAt) || prev.senderId !== item.senderId;
                     const isMine = senderId && item.senderId === senderId;
+                    const showProfile = !isMine && (!next || next.senderId !== item.senderId || showDate)
                     return (
-                        <View style={[styles.messageRow, isMine ? styles.myRow : styles.otherRow]}>
-                            {showTime && (
-                                <Text style={styles.timeText}>{formatToTime(item.sentAt)}</Text>
-                            )}
-                            <View style={[styles.bubble, isMine ? styles.myBubble : styles.otherBubble, { maxWidth: width / 2 - 16 }]}>
-                                <Text style={[styles.messageText, isMine ? styles.myText : styles.otherText]}>
-                                    {item.message}
-                                </Text>
+                        <>
+                            <View style={[styles.messageRow, isMine ? styles.myRow : styles.otherRow]}>
+                                {showTime && (
+                                    <Text style={styles.timeText}>{formatToTime(item.sentAt)}</Text>
+                                )}
+                                <View style={[styles.bubble, isMine ? styles.myBubble : styles.otherBubble, { maxWidth: width / 2 - 16 }]}>
+                                    <Text style={[styles.messageText, isMine ? styles.myText : styles.otherText]}>
+                                        {item.message}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
+                            {showProfile && (
+                                <View style={{flexDirection : "row", alignItems : "center", gap : 4}}>
+                                    <Image source={{uri : params.img}} style={{width: 34, height: 34, borderRadius: 16}} />
+                                    <Text style={{fontFamily : Fonts.semiBold, fontSize : 14, color : Colors.gray2}}>{params.name}</Text>
+                                </View>
+                            )}
+                            {showDate && (
+                                <View style={{
+                                    flexDirection : "row", 
+                                    justifyContent : "space-between", 
+                                    alignItems: "center", 
+                                    gap : 12,
+                                    marginVertical: 24 }
+                                }>
+                                    <View style={{borderStyle : "solid", borderBottomColor : Colors.gray3, borderWidth : 0.5, height : 0, flex : 1}}/>
+                                    <Text style={{ fontSize: 14, color: Colors.gray3, fontFamily: Fonts.semiBold }}>
+                                        {formatToDate(item.sentAt)}
+                                    </Text>
+                                    <View style={{borderStyle : "solid", borderBottomColor : Colors.gray3, borderWidth : 0.5, height : 0, flex : 1}}/>
+                                </View>
+                            )}
+                        </>
                     );
                 }}
             />
@@ -122,6 +148,7 @@ const styles = StyleSheet.create({
     otherBubble: {
         backgroundColor: Colors.white2,
         borderBottomStartRadius: 0,
+        marginStart : 34
     },
     messageText: {
         fontSize: 14,
