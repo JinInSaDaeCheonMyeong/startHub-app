@@ -48,7 +48,6 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                                     <TouchableOpacity 
                                         onPress={async () => {
                                             const messagesResponse = await (await messages(item.id)).data
-                                            console.log(messagesResponse)
                                             navigation.navigate('InChat', {
                                                 roomId : item.id,
                                                 chatLst : messagesResponse,

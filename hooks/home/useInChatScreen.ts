@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { getUser } from '../../api/user';
 import { ChatMessage } from '../../type/chat/messages.type';
 
-const SOCKET_URL = 'https://api.start-hub.kr/ws';
+const SOCKET_URL = process.env.EXPO_PUBLIC_API_URL + '/ws';
 
 export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
     const [msgs, setMsgs] = useState<ChatMessage[]>(chatLst);
@@ -24,7 +24,6 @@ export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
 
                 client = new Client({
                     webSocketFactory: () => new SockJS(SOCKET_URL),
-                    debug: (str) => console.log('STOMP_DEBUG:', str),
                     reconnectDelay: 5000,
                     onConnect: (frame: Frame) => {
                         client.subscribe(`/sub/chat/${roomId}`, (message) => {
@@ -50,9 +49,10 @@ export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
 
         return () => {
             if (clientRef.current?.active) {
-                clientRef.current.deactivate().then(() => {
-                    console.log("STOMP client deactivated.");
-                }).catch((e) => {
+                clientRef.current.deactivate()
+                .then(() => {
+                })
+                .catch((e) => {
                     console.error("Error during deactivation:", e);
                 });
             }
