@@ -11,6 +11,14 @@ import HeaderBar from '../component/HeaderBar';
 
 const Tab = createBottomTabNavigator();
 
+export type HomeStackParamList = {
+    Home : undefined,
+    Notice : undefined,
+    Match : undefined,
+    Chat : undefined,
+    BMC : undefined
+}
+
 export function HomeStack() {
 
     return (
