@@ -19,7 +19,7 @@ export type HomeStackParamList = {
     BMC : undefined
 }
 
-export function HomeStack() {
+export function HomeStack({ navigation }: any) {
 
     return (
         <Tab.Navigator 
@@ -27,7 +27,7 @@ export function HomeStack() {
             screenOptions={{
                 header : () => (<HeaderBar
                     onClickBellIcon={() => {}}
-                    onClickSystemIcon={() => {}}
+                    onClickSystemIcon={() => navigation.navigate('System')}
                 />),
                 animation : 'shift',
                 transitionSpec : {
