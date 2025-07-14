@@ -21,6 +21,7 @@ import { getUser } from "../../api/user";
 import { SystemStackParamList } from "../../navigation/SystemStack";
 import { GetUserResponse } from "../../type/user/user.type";
 import {useFocusEffect} from "@react-navigation/native"
+import { removeTokens } from "../../util/token";
 
 type SystemScreenProps = StackScreenProps<SystemStackParamList, 'System'>
 
@@ -161,6 +162,21 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                         </View>
                     </Shadow>
                 ))}
+                <TouchableOpacity 
+                    style={{alignItems : "flex-end", margin : 12}} 
+                    onPress={ async() => {
+                        try {
+                            await removeTokens()
+                            ShowToast("로그아웃", "로그아웃에 성공하셨습니다", ToastType.INFO)
+                            navigation.popToTop()
+                            
+                        } catch (error) {
+                            ShowToast("로그아웃", "로그아웃에 실패하셨습니다", ToastType.ERROR)
+                        }
+                    }}
+                >
+                    <Text style={styles.logoutText}>로그아웃</Text>
+                </TouchableOpacity>
             </ScrollView>
         </SafeAreaView>
     )
@@ -293,4 +309,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: Colors.black2,
     },
+    logoutText : {
+        fontSize : 12,
+        color : Colors.error,
+        fontFamily : Fonts.semiBold
+    }
 });
