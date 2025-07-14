@@ -8,6 +8,8 @@ import { useState } from "react";
 import { Shadow } from "react-native-shadow-2";
 import { setProfile } from "../../api/user";
 import { ShowToast, ToastType } from "../../util/ShowToast";
+import CameraIcon from "../../assets/icons/category/interest/media-category.svg"
+import { pickerImage } from "../../util/PickerImage";
 
 type ProfileScreenProps = StackScreenProps<SystemStackParamList, 'EditProfile'>
 
@@ -60,20 +62,57 @@ export default function EditProfileScreen({navigation, route : {params}} : Profi
             </View>
             <View style={styles.dataContainer}>
                 <View style={styles.imgContainer}>
-                    <Shadow
-                        distance={4} 
-                        offset={[0, 4]}
-                        startColor="rgba(185, 185, 185, 0.2)"
-                        style={{borderRadius : 80}}
-                    >
-                        <Image 
+                    <TouchableOpacity onPress={async () => {
+                        const uri = await pickerImage()
+                        if (uri) setUser({...user, profileImage : uri})
+                    }}>
+                        <Shadow
+                            distance={4}
+                            offset={[0, 4]}
+                            startColor="rgba(185, 185, 185, 0.2)"
+                            style={{ borderRadius: 80 }}
+                        >
+                        <View style={{ position: "relative" }}>
+                            <Image
+                                style={{
+                                width: width / 4,
+                                height: width / 4,
+                                borderRadius: 80,
+                                }}
+                                source={{ uri : user.profileImage }}
+                            />
+                        <View
                             style={{
-                                width : width/4, 
-                                height : width/4,
-                                borderRadius : 80
-                            }} source={{uri : user.profileImage}}
-                        />
-                    </Shadow>
+                            position: "absolute",
+                            bottom: 0,
+                            right: 0,
+                            }}
+                        >
+                            <Shadow
+                            distance={4}
+                            offset={[0, 4]}
+                            startColor="rgba(185, 185, 185, 0.2)"
+                            style={{ borderRadius: 20 }}
+                            >
+                                <View
+                                    style={{
+                                    backgroundColor: Colors.white1,
+                                    borderRadius: 20,
+                                    padding: 8,
+                                    }}
+                                >
+                                    <CameraIcon
+                                        width={20} 
+                                        height={20}
+                                        color={Colors.gray2}
+                                        fill={Colors.gray2}
+                                    />
+                                </View>
+                            </Shadow>
+                        </View>
+                        </View>
+                        </Shadow>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.dataInputContainer}>
                     <Text style={styles.titleText}>이름</Text>
@@ -185,7 +224,8 @@ const styles = StyleSheet.create({
     imgContainer : {
         padding : 16,
         justifyContent : "center",
-        alignItems : "center"
+        alignItems : "center",
+        position : "relative"
     },
     dataInputWrap : {
         flex : 1,
