@@ -19,13 +19,21 @@ import { ShowToast, ToastType } from "../../util/ShowToast";
 import { AxiosError, HttpStatusCode, isAxiosError } from "axios";
 import { getUser } from "../../api/user";
 import { SystemStackParamList } from "../../navigation/SystemStack";
+import { GetUserResponse } from "../../type/user/user.type";
 
 type SystemScreenProps = StackScreenProps<SystemStackParamList, 'System'>
 
 export default function SystemScreen({navigation} : SystemScreenProps) {
+    const DEFAULT_DATA = ''
     const [companyName, setCompanyName] = useState('소속된 기업이 없습니다...')
-    const [name, setName] = useState('')
-    const [imgURL, setImgURL] = useState('')
+    const [user, setUser] = useState<GetUserResponse['data']>({
+        id : DEFAULT_DATA, 
+        email : DEFAULT_DATA,
+        username : DEFAULT_DATA,
+        birth : DEFAULT_DATA,
+        gender : DEFAULT_DATA,
+        profileImage : DEFAULT_DATA
+    })
 
     const menus = [
         {label : '경쟁사\n분석', icon : <AnalysisIcon width={40} height={40} color={Colors.primary} />},
@@ -60,8 +68,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
         const setProfile = async () => {
             try {
                 const userInfo = (await getUser()).data
-                setName(userInfo.username)
-                setImgURL(userInfo.profileImage)
+                setUser(userInfo)
             } catch (error) {
                 if(isAxiosError(error)){
                     ShowToast("오류 발생", error.message, ToastType.ERROR)
@@ -89,7 +96,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                 style={styles.scroll} 
                 contentContainerStyle={styles.scrollContent}
             >
-                <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+                <TouchableOpacity onPress={() => navigation.navigate("Profile", {...user})}>
                     <Shadow 
                         distance={4} 
                         offset={[0, 4]}
@@ -97,10 +104,10 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                         style={styles.profileShadow}
                     >
                         <View style={styles.profileCardInner}>
-                            <Image source={{uri: imgURL}} style={styles.profileImage}/>
+                            <Image source={{uri: user.profileImage}} style={styles.profileImage}/>
                             <View style={styles.profileInfo}>
                                 <Text style={styles.profileCompany}>{companyName}</Text>
-                                <Text style={styles.profileName}>{name}</Text>
+                                <Text style={styles.profileName}>{user.username}</Text>
                             </View>
                             <RightArrow width={16} height={16} color={Colors.black2}/>
                         </View>
