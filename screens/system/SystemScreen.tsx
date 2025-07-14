@@ -14,12 +14,13 @@ import { Colors } from "../../constants/Color";
 import { StackScreenProps } from "@react-navigation/stack";
 import { Shadow } from "react-native-shadow-2";
 import { Fonts } from "../../constants/Fonts";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ShowToast, ToastType } from "../../util/ShowToast";
-import { AxiosError, HttpStatusCode, isAxiosError } from "axios";
+import {  isAxiosError } from "axios";
 import { getUser } from "../../api/user";
 import { SystemStackParamList } from "../../navigation/SystemStack";
 import { GetUserResponse } from "../../type/user/user.type";
+import {useFocusEffect} from "@react-navigation/native"
 
 type SystemScreenProps = StackScreenProps<SystemStackParamList, 'System'>
 
@@ -27,12 +28,13 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
     const DEFAULT_DATA = ''
     const [companyName, setCompanyName] = useState('소속된 기업이 없습니다...')
     const [user, setUser] = useState<GetUserResponse['data']>({
-        id : DEFAULT_DATA, 
+        id : -1, 
         email : DEFAULT_DATA,
         username : DEFAULT_DATA,
         birth : DEFAULT_DATA,
         gender : DEFAULT_DATA,
-        profileImage : DEFAULT_DATA
+        profileImage : DEFAULT_DATA,
+        introduction : DEFAULT_DATA
     })
 
     const menus = [
@@ -64,20 +66,22 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
         }
     ]
 
-    useEffect(() => {
-        const setProfile = async () => {
-            try {
-                const userInfo = (await getUser()).data
-                setUser(userInfo)
-            } catch (error) {
-                if(isAxiosError(error)){
-                    ShowToast("오류 발생", error.message, ToastType.ERROR)
+    useFocusEffect(
+        useCallback(() => {
+            const fetchUserProfile = async () => {
+                try {
+                    const userInfo = (await getUser()).data
+                    setUser(userInfo)
+                } catch (error) {
+                    if(isAxiosError(error)){
+                        ShowToast("오류 발생", error.message, ToastType.ERROR)
+                    }
                 }
             }
-        }
 
-        setProfile()
-    },[])
+            fetchUserProfile()
+        }, [])
+    )
 
     return (
         <SafeAreaView style={styles.safeArea}>

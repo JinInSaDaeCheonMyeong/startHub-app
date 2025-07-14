@@ -6,6 +6,8 @@ import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
 import { useState } from "react";
 import { Shadow } from "react-native-shadow-2";
+import { setProfile } from "../../api/user";
+import { ShowToast, ToastType } from "../../util/ShowToast";
 
 type ProfileScreenProps = StackScreenProps<SystemStackParamList, 'EditProfile'>
 
@@ -18,12 +20,6 @@ export default function EditProfileScreen({navigation, route : {params}} : Profi
     const [selectGender, setSelectGender] = useState(user.gender === "MALE")
     const {width} = useWindowDimensions()
 
-    // email : DEFAULT_DATA,
-    // username : DEFAULT_DATA,
-    // birth : DEFAULT_DATA,
-    // gender : DEFAULT_DATA,
-    // profileImage : DEFAULT_DATA
-
     return(
         <SafeAreaView style={styles.mainContainer}>
             <View style={styles.header}>
@@ -35,7 +31,25 @@ export default function EditProfileScreen({navigation, route : {params}} : Profi
                 />
                 <Text style={styles.headerTitle}>프로필</Text>
                 <TouchableOpacity
-                    onPress={()=>{navigation.popTo("System")}}
+                    onPress={async ()=>{
+                        try {
+                            await setProfile({
+                            username : user.username,
+                            introduction : user.introduction,
+                            birth: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`,
+                            gender : selectGender ? "MALE" : "FEMALE",
+                            profileImage : user.profileImage,
+                            interests : []
+                        })
+                            ShowToast("프로필 수정", "프로필 수정에 성공하셨습니다", ToastType.SUCCESS)
+                            navigation.popTo("System")
+                        } catch (error : any) {
+                            if(error.isAxiosError){
+                                ShowToast("프로필 수정", "프로필 수정에 실패하셨습니다", ToastType.ERROR)
+                                console.log(error.message)
+                            }
+                        } 
+                    }}
                 >   
                     <Text
                         style={styles.headerRight}
@@ -69,6 +83,16 @@ export default function EditProfileScreen({navigation, route : {params}} : Profi
                         placeholder="이름을 입력해주세요..."
                         placeholderTextColor={Colors.gray2}
                         onChangeText={(value) => {setUser({...user, username : value})}}
+                    />
+                </View>
+                <View style={styles.dataInputContainer}>
+                    <Text style={styles.titleText}>소개</Text>
+                    <TextInput
+                        style={styles.dataInputText}
+                        value={user.introduction} 
+                        placeholder="자신의 소개를 입력해주세요..."
+                        placeholderTextColor={Colors.gray2}
+                        onChangeText={(value) => {setUser({...user, introduction : value})}}
                     />
                 </View>
                 <View style={styles.dataInputContainer}>
@@ -119,16 +143,6 @@ export default function EditProfileScreen({navigation, route : {params}} : Profi
                             onChangeText={(value) => {setDay(value)}}
                         />
                     </View>
-                </View>
-                <View style={styles.dataInputContainer}>
-                    <Text style={styles.titleText}>이메일</Text>
-                    <TextInput
-                        style={styles.dataInputText}
-                        value={user.email} 
-                        placeholder="이메일을 입력해주세요..."
-                        placeholderTextColor={Colors.gray2}
-                        onChangeText={(text) => {setUser({...user, email : text})}}
-                    />
                 </View>
             </View>
         </SafeAreaView>

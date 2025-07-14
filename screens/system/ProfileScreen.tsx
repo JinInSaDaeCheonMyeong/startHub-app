@@ -14,6 +14,7 @@ export default function ProfileScreen({navigation, route : {params}} : ProfileSc
     const genderMap = new Map<string, string>([['MALE', "남"], ["FEMALE", "여"]])
     const profileList = [
         {label : '이름', data : params.username ?? "내용을 불러올 수 없습니다"},
+        {label : '소개', data : params.introduction ?? "내용을 불러올 수 없습니다"},
         {label : '성별', data : genderMap.get(params.gender) ?? "내용을 불러올 수 없습니다"},
         {label : '생년월일', data : new Date(params.birth).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }) ?? "내용을 불러올 수 없습니다"},
         {label : '이메일', data : params.email ?? "내용을 불러올 수 없습니다"},
