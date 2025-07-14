@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
 import DropDown from "../../component/DropDown";
 import { useState } from "react";
 import { LocationItems } from "../../constants/LocationItems";
@@ -9,6 +9,8 @@ type LocationScreenProps = {
     location : string,
     setLocation : (value : string) => void
 }
+
+const width = Dimensions.get("window").width;
 
 export default function LocationScreen(props : LocationScreenProps) {
 
@@ -27,6 +29,7 @@ export default function LocationScreen(props : LocationScreenProps) {
                 setValue={(s) => {props.setLocation(s)}}
                 items={LocationItems}
                 placeholder="지역"
+                minWidth={width-32}
             />
         </View>
     )

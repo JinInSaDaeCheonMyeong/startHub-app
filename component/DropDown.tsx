@@ -20,6 +20,8 @@ type DropDownProps = {
     iconWidth?: number
     iconHeight?: number
     containerStyle?: StyleProp<ViewStyle>,
+    minWidth?: number,
+    maxWidth?: number,
 }
 
 export default function DropDown(props :DropDownProps){
@@ -28,7 +30,29 @@ export default function DropDown(props :DropDownProps){
     const labelStyle = props.labelStyle ?? styles.labelStyle;
     const iconWidth = props.iconWidth?? 18;
     const iconHeight = props.iconHeight?? 18;
-    const containerStyle = props.containerStyle?? {height:48};
+    const calculateTextWidth = (text: string) => {
+        let width = 0;
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            if (/[가-힣]/.test(char)) {
+                width += 16;
+            } else if (/[a-zA-Z0-9]/.test(char)) {
+                width += 8;
+            } else {
+                width += 6;
+            }
+        }
+        return width + 60;
+    };
+    const selectedItem = props.items.find(item => item.value === props.value);
+    const displayText = selectedItem ? selectedItem.label : props.placeholder;
+    const calculatedWidth = calculateTextWidth(displayText || "");
+    
+    const minWidth = props.minWidth ?? 80;
+    const maxWidth = props.maxWidth ?? 200;
+    const dynamicWidth = Math.max(minWidth, Math.min(maxWidth, calculatedWidth));
+    
+    const containerStyle = props.containerStyle ?? {height:48, width: dynamicWidth};
     return (
         <DropDownPicker
             open={props.open}
@@ -50,6 +74,11 @@ export default function DropDown(props :DropDownProps){
             dropDownContainerStyle={styles.dropdownContainerStyle}
             textStyle={textStyle}
             labelStyle={labelStyle}
+            listItemLabelStyle={labelStyle}
+            selectedItemLabelStyle={labelStyle}
+            listItemContainerStyle={styles.listItemContainerStyle}
+            listChildLabelStyle={labelStyle}
+            disableBorderRadius={false}
             containerStyle={containerStyle}
             ArrowUpIconComponent={
                 ({style}) => (
@@ -98,6 +127,7 @@ const styles = StyleSheet.create({
         backgroundColor : Colors.white2,
         borderWidth : 0,
         borderRadius : 8,
+        maxHeight : 200,
     },
     textStyle : {
         color : Colors.black2,
@@ -108,9 +138,23 @@ const styles = StyleSheet.create({
     },
     labelStyle : {
         color : Colors.black2,
-        fontSize : 18,
+        fontSize : 16,
         fontFamily : Fonts.medium,
-        paddingVertical : 8,
+        paddingVertical : 4,
         paddingHorizontal : 6,
+        flexWrap : 'wrap',
+        flexShrink : 1,
+        textAlign : 'left',
+        lineHeight : 20,
+        width : '90%',
+    },
+    listItemContainerStyle : {
+        minHeight : 60,
+        justifyContent : 'center',
+        paddingHorizontal : 8,
+        paddingVertical : 4,
+        flexDirection : 'row',
+        alignItems : 'center',
+        flexWrap : 'wrap',
     }
 })
