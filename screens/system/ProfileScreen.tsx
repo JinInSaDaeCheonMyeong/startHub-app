@@ -28,7 +28,10 @@ export default function ProfileScreen({navigation, route : {params}} : ProfileSc
                     onClick={() => {navigation.goBack()}}
                 />
                 <Text style={styles.headerTitle}>프로필</Text>
-                <TouchableOpacity style={styles.headerRight}>
+                <TouchableOpacity 
+                    onPress={()=>{navigation.navigate('EditProfile', params)}}
+                    style={styles.headerRight}
+                >
                     <EditIcon style={styles.headerRight}/>
                 </TouchableOpacity>
             </View>
