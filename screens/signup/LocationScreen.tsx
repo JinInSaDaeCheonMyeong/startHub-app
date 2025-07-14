@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import AuthDropDown from "../../component/auth/AuthDropDown";
+import DropDown from "../../component/DropDown";
 import { useState } from "react";
 import { LocationItems } from "../../constants/LocationItems";
 import { Colors } from "../../constants/Color";
@@ -20,7 +20,7 @@ export default function LocationScreen(props : LocationScreenProps) {
                 <Text style={styles.subText}>회원님이 사는 지역을 선택해주세요!</Text>
                 <Text style={styles.mainText}>가까운 주변 공고를 알려드릴게요!</Text>
             </View>
-            <AuthDropDown
+            <DropDown
                 open={open}
                 value={props.location}
                 setOpen={setOpen}
