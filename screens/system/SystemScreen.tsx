@@ -12,19 +12,20 @@ import InfoIcon from '../../assets/icons/section/information.svg'
 import ServiceIcon from '../../assets/icons/section/service.svg'
 import { Colors } from "../../constants/Color";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../navigation/RootStack";
 import { Shadow } from "react-native-shadow-2";
 import { Fonts } from "../../constants/Fonts";
 import { useEffect, useState } from "react";
 import { ShowToast, ToastType } from "../../util/ShowToast";
 import { AxiosError, HttpStatusCode, isAxiosError } from "axios";
 import { getUser } from "../../api/user";
+import { SystemStackParamList } from "../../navigation/SystemStack";
 
-type SystemScreenProps = StackScreenProps<RootStackParamList, 'System'>
+type SystemScreenProps = StackScreenProps<SystemStackParamList, 'System'>
 
 export default function SystemScreen({navigation} : SystemScreenProps) {
-    const [companyName, setCompanyName] = useState('dummy company')
+    const [companyName, setCompanyName] = useState('소속된 기업이 없습니다...')
     const [name, setName] = useState('')
+    const [imgURL, setImgURL] = useState('')
 
     const menus = [
         {label : '경쟁사\n분석', icon : <AnalysisIcon width={40} height={40} color={Colors.primary} />},
@@ -60,6 +61,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
             try {
                 const userInfo = (await getUser()).data
                 setName(userInfo.username)
+                setImgURL(userInfo.profileImage)
             } catch (error) {
                 if(isAxiosError(error)){
                     ShowToast("오류 발생", error.message, ToastType.ERROR)
@@ -87,7 +89,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                 style={styles.scroll} 
                 contentContainerStyle={styles.scrollContent}
             >
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
                     <Shadow 
                         distance={4} 
                         offset={[0, 4]}
@@ -95,7 +97,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                         style={styles.profileShadow}
                     >
                         <View style={styles.profileCardInner}>
-                            <Image source={{uri: ''}} style={styles.profileImage}/>
+                            <Image source={{uri: imgURL}} style={styles.profileImage}/>
                             <View style={styles.profileInfo}>
                                 <Text style={styles.profileCompany}>{companyName}</Text>
                                 <Text style={styles.profileName}>{name}</Text>
@@ -154,10 +156,6 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: Colors.white1,
-    },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -172,6 +170,10 @@ const styles = StyleSheet.create({
     headerRight: {
         width: 24,
         height: 24,
+    },
+    safeArea: {
+        flex: 1,
+        backgroundColor: Colors.white1,
     },
     scroll: {
         flex: 1,
@@ -216,7 +218,6 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.bold,
         fontSize: 20,
         color: Colors.black2,
-        marginTop: 2,
     },
     menuRowWrap: {
         width : "100%",

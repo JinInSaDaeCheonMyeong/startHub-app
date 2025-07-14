@@ -27,7 +27,7 @@ export function HomeStack({ navigation }: any) {
             screenOptions={{
                 header : () => (<HeaderBar
                     onClickBellIcon={() => {}}
-                    onClickSystemIcon={() => navigation.navigate('System')}
+                    onClickSystemIcon={() => navigation.navigate('SystemStack')}
                 />),
                 animation : 'shift',
                 transitionSpec : {
