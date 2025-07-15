@@ -38,5 +38,5 @@ export const formatToDate = (data : string) : string => {
     const years = dateTime.getFullYear()
     const months = dateTime.getMonth()
     const days = dateTime.getDate()
-    return `${years}-${months}-${days}`
+    return `${years}.${months}.${days}`
 }

@@ -26,8 +26,8 @@ export default function InChatHeaderBar({img, name, affiliation, backClick, menu
             <View style={styles.mainContainer}>
                 <View style={styles.titleContainer}>
                     <BackButton
-                        width={20}
-                        height={20}
+                        width={24}
+                        height={24}
                         color={Colors.black2} 
                         onClick={() => {backClick()}}
                     />

@@ -1,4 +1,4 @@
-import { MemberNoticeItemType } from "../type/notice/member.type";
+import { MemberNoticeItemType } from "../type/notice/recruits.type";
 import { InterestType } from "./InterestType";
 
 export const MemberNoticeItemList : MemberNoticeItemType[] = [
