@@ -9,16 +9,8 @@ export const getRecruitsList = async (page : number, size : number) : Promise<Ge
         }
     })).data
 
-export const GetDetailRecruits = async (id : number) : Promise<GetDetailRecruitResponse>=> 
-    (await StartHubAxios.get('/recruits/{id}', {
-        params : {
-            id : id
-        }
-    })).data
+export const getDetailRecruits = async (id : number) : Promise<GetDetailRecruitResponse>=> 
+    (await StartHubAxios.get(`/recruits/${id}`)).data
 
-export const DeleteRecruits = async (id : number) => 
-    (await StartHubAxios.delete('/recruits/{id}', {
-        params : {
-            id : id
-        }
-    }))
+export const deleteRecruits = async (id : number) => 
+    (await StartHubAxios.delete(`/recruits/${id}`))
