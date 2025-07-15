@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { MemberNoticeItemType } from "../../type/notice/member.type";
+import { MemberNoticeItemType } from "../../type/notice/recruits.type";
 import { Shadow } from "react-native-shadow-2";
 import { InterestType } from "../../constants/InterestType";
 import ContentMediaIcon from "../../assets/icons/category/interest/media-category.svg"
@@ -17,7 +17,7 @@ import { Fonts } from "../../constants/Fonts";
 
 interface MemberNoticeItemProps extends MemberNoticeItemType{
     isHome : boolean
-    onPress : () => void
+    onPress : (id : number) => void
 }
 
 export default function MemberNoticeItem({
@@ -44,7 +44,7 @@ export default function MemberNoticeItem({
     }
     return(
         <TouchableOpacity 
-            onPress={() => {onPress()}}
+            onPress={() => {onPress(id)}}
             style={{
             width : isHome ? width/2 : "100%"
             }}
