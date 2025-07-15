@@ -10,13 +10,22 @@ import ImminentView from "../../component/home/ImminentView";
 import { RecruitsItemType } from "../../type/notice/recruits.type";
 import { useCallback, useState } from "react";
 import RecruitsItem from "../../component/notice/RecruitsItem";
-import { useFocusEffect } from "@react-navigation/core";
+import { CompositeScreenProps, useFocusEffect } from "@react-navigation/core";
 import { ShowToast, ToastType } from "../../util/ShowToast";
 import { isAxiosError } from "axios";
 import { getRecruitsList } from "../../api/recruits";
 import { ErrorResponse } from "../../type/util/response.type";
+import { HomeStackParamList } from "../../navigation/HomeStack";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { RootStackParamList } from "../../navigation/RootStack";
+import { StackScreenProps } from "@react-navigation/stack";
 
-export default function HomeScreen() {
+export type HomeScreenProps = CompositeScreenProps<
+    BottomTabScreenProps<HomeStackParamList, 'Home'>,
+    StackScreenProps<RootStackParamList>
+>
+
+export default function HomeScreen({navigation} : HomeScreenProps) {
     const [recruitsItems, setRecruitsItems] = useState<RecruitsItemType[]>([])
 
     const getRecruitsItems = async () => {
@@ -114,7 +123,7 @@ export default function HomeScreen() {
                                 isClosed={item.isClosed}
                                 createdAt={item.createdAt}
                                 isHome={true}
-                                onPress={() => {console.log("안녕")}}
+                                onPress={(id) => {navigation.navigate('InMatch', {matchId : id})}}
                             />
                         )}
                     />
