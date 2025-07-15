@@ -8,11 +8,42 @@ import { NoticeItemList } from "../../constants/NoticeItemList";
 import MemberNoticeItem from "../../component/notice/RecruitsItem";
 import ImminentView from "../../component/home/ImminentView";
 import { RecruitsItemType } from "../../type/notice/recruits.type";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import RecruitsItem from "../../component/notice/RecruitsItem";
+import { useFocusEffect } from "@react-navigation/core";
+import { ShowToast, ToastType } from "../../util/ShowToast";
+import { isAxiosError } from "axios";
+import { getRecruitsList } from "../../api/recruits";
+import { ErrorResponse } from "../../type/util/response.type";
 
 export default function HomeScreen() {
     const [recruitsItems, setRecruitsItems] = useState<RecruitsItemType[]>([])
+
+    const getRecruitsItems = async () => {
+        try {
+            const response = (await getRecruitsList(0, 10)).data
+            setRecruitsItems(response.content)
+        } catch (error : unknown) {
+            if(isAxiosError(error)){
+                const response = error.response
+                if(!response){
+                    ShowToast("오류 발생", "네트워크 오류가 발생했습니다", ToastType.ERROR)
+                    return
+                } 
+                const errorData = response.data as ErrorResponse
+                ShowToast("오류 발생", errorData.message, ToastType.ERROR)
+                return
+            }
+            ShowToast("오류 발생", "알 수 없는 오류가 발생했습니다", ToastType.ERROR)
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            getRecruitsItems()
+        }, [])
+    )
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
@@ -46,6 +77,9 @@ export default function HomeScreen() {
                         contentContainerStyle={{gap : 16, paddingHorizontal : 16, paddingBottom : 16 }}
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
+                        onEndReached={() => {
+
+                        }}
                         style={{overflow : 'visible'}}
                         data={NoticeItemList}
                         renderItem={({item}) => (
