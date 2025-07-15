@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { GetDetailRecruitResponse } from "../../../type/notice/recruits.type";
 import { isAxiosError } from "axios";
@@ -14,6 +14,7 @@ import { Colors } from "../../../constants/Color";
 import { formatToDate } from "../../../util/DateFormat";
 import CommonButton from "../../../component/CommonButton";
 import { Fonts } from "../../../constants/Fonts";
+import { useFocusEffect} from "@react-navigation/core";
 
 type InMatchScreenProps = StackScreenProps<RootStackParamList, 'InMatch'>;
 
@@ -21,29 +22,32 @@ export default function InMatchScreen({navigation, route : {params}} : InMatchSc
     const [matchData, setMatchData] = useState<GetDetailRecruitResponse["data"]>()
     const [select, setSelect] = useState(false) 
 
-    useEffect(() => {
-        const getData = async () => {
-            try {
-                const data = (await getDetailRecruits(params.matchId)).data
-                setMatchData(data)
-                console.log(JSON.stringify(data))
-            } catch (error : unknown) {
-                if(isAxiosError(error)){
-                    const response = error.response
-                    if(!response){
-                        ShowToast("오류 발생", "네트워크 오류가 발생하였습니다", ToastType.ERROR)
-                    } else {
-                        const errorData = response.data as ErrorResponse
-                        ShowToast("오류 발생", errorData.message, ToastType.ERROR)
-                    }
-                    return
+    const getData = async () => {
+        try {
+            const data = (await getDetailRecruits(params.matchId)).data
+            setMatchData(data)
+            console.log(JSON.stringify(data))
+        } catch (error : unknown) {
+            if(isAxiosError(error)){
+                const response = error.response
+                if(!response){
+                    ShowToast("오류 발생", "네트워크 오류가 발생하였습니다", ToastType.ERROR)
+                } else {
+                    const errorData = response.data as ErrorResponse
+                    ShowToast("오류 발생", errorData.message, ToastType.ERROR)
                 }
-                ShowToast("오류 발생", "알 수 없는 오류가 발생했습니다", ToastType.ERROR)
                 return
             }
+            ShowToast("오류 발생", "알 수 없는 오류가 발생했습니다", ToastType.ERROR)
+            return
         }
-        getData()
-    }, [])
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            getData()
+        }, [])
+    )
     return (
     <SafeAreaView style={styles.safeArea}>
         <StatusBar backgroundColor={Colors.primary} barStyle="light-content" />
@@ -74,8 +78,14 @@ export default function InMatchScreen({navigation, route : {params}} : InMatchSc
                 <Text style={styles.recruitTitle}>{`[${matchData?.workType}] ${matchData?.title}`}</Text>
             </View>
             <View style={styles.textBox}>
-                <Text style={styles.boxTitle}>모집기간</Text>
-                <Text style={styles.boxContent}>
+                <Text style={[styles.boxTitle, {
+                    color : matchData?.isClosed ? Colors.error : Colors.black2,
+                    textDecorationLine : matchData?.isClosed ? "line-through" : "none",
+                }]}>모집기간</Text>
+                <Text style={[styles.boxContent, {
+                    color : matchData?.isClosed ? Colors.error : Colors.black2,
+                    textDecorationLine : matchData?.isClosed ? "line-through" : "none",
+                }]}>
                 모집 : {formatToDate(`${matchData?.startDate}`)} ~ {formatToDate(`${matchData?.endDate}`)}
                 </Text>
             </View>
@@ -98,9 +108,9 @@ export default function InMatchScreen({navigation, route : {params}} : InMatchSc
         </ScrollView>
         <View style={{paddingHorizontal : 16, paddingBottom : 16}}>
             <CommonButton 
-                title="스타트업 매칭하기" 
-                disabled={false} 
-                onPress={() => {}} 
+                title={matchData?.isClosed ? "매칭 마감됨" : "스타트업 매칭하기"} 
+                disabled={matchData ? matchData.isClosed : false}
+                onPress={() => {}}
             />
         </View>
     </SafeAreaView>

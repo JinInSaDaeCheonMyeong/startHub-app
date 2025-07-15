@@ -1,13 +1,5 @@
-import { Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { Shadow } from "react-native-shadow-2";
-import { InterestType } from "../../constants/InterestType";
-import ContentMediaIcon from "../../assets/icons/category/interest/media-category.svg"
-import FintechIcon from "../../assets/icons/category/interest/fintech-category.svg"
-import HealthcareBioIcon from "../../assets/icons/category/interest/health-category.svg"
-import EducationEdutechIcon from "../../assets/icons/category/interest/study-category.svg"
-import ITSoftwareIcon from "../../assets/icons/category/interest/software-category.svg"
-import EcommerceIcon from "../../assets/icons/category/interest/deal-category.svg"
-import ETCIcon from "../../assets/icons/category/interest/etc-category.svg"
 import BookMarkFill from "../../assets/icons/bookMark/bookmark.fill.svg"
 import BookMark from "../../assets/icons/bookMark/bookmark.svg"
 import { Colors } from "../../constants/Color";
@@ -116,10 +108,6 @@ const styles = StyleSheet.create({
         gap: 4,
         alignItems: 'center'
     },
-    categoryText: {
-        fontSize: 12,
-        fontFamily: Fonts.semiBold,
-    },
     textContainer : {
         flexDirection : "row",
         justifyContent : "space-between",
@@ -129,22 +117,22 @@ const styles = StyleSheet.create({
         gap : 6
     },
     titleText: {
-        fontSize: 14,
+        fontSize: 16,
         fontFamily: Fonts.bold,
         color: Colors.black2,
     },
     companyText : {
-        fontSize: 12,
+        fontSize: 14,
         fontFamily: Fonts.semiBold,
         color: Colors.black2,
     },
     headerText : {
-        fontSize : 10,
+        fontSize : 12,
         fontFamily : Fonts.medium,
         color : Colors.black2
     },
     endDateText : {
-        fontSize : 10,
+        fontSize : 12,
         fontFamily : Fonts.medium,
     },
     bookMarkCotainer : {
