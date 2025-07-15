@@ -1,19 +1,19 @@
 import {FlatList, Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import SearchBar from "../../component/home/SearchBar";
+import SearchBar from "../../../component/home/SearchBar";
 import { Shadow } from "react-native-shadow-2";
-import { Colors } from "../../constants/Color";
-import { Fonts } from "../../constants/Fonts";
+import { Colors } from "../../../constants/Color";
+import { Fonts } from "../../../constants/Fonts";
 import {PaperProvider } from "react-native-paper";
-import { ChatMenuButton } from "../../component/home/ChatMenuButton";
-import { dummyChatRommList } from "../../constants/dummy/ChatDummy";
-import { getDateDifference } from "../../util/DateFormat";
-import { ChatRoomType } from "../../type/chat/room.type";
+import { ChatMenuButton } from "../../../component/home/ChatMenuButton";
+import { dummyChatRommList } from "../../../constants/dummy/ChatDummy";
+import { getDateDifference } from "../../../util/DateFormat";
+import { ChatRoomType } from "../../../type/chat/room.type";
 import { CompositeScreenProps } from "@react-navigation/core";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../navigation/RootStack";
+import { RootStackParamList } from "../../../navigation/RootStack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { HomeStackParamList } from "../../navigation/HomeStack";
-import { messages } from "../../api/chat";
+import { HomeStackParamList } from "../../../navigation/HomeStack";
+import { getMessages } from "../../../api/chat";
 
 export type ChatScreenProps = CompositeScreenProps<
     BottomTabScreenProps<HomeStackParamList, 'Chat'>,
@@ -47,7 +47,7 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                                 renderItem={({item}) => (
                                     <TouchableOpacity 
                                         onPress={async () => {
-                                            const messagesResponse = await (await messages(item.id)).data
+                                            const messagesResponse = await (await getMessages(item.id)).data
                                             navigation.navigate('InChat', {
                                                 roomId : item.id,
                                                 chatLst : messagesResponse,
