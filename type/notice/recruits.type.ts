@@ -1,14 +1,14 @@
 import { InterestType } from "../../constants/InterestType"
 import { Response } from "../util/response.type"
 
-export interface MemberNoticeItemType {
-    id : number
-    category : InterestType
-    img : string
-    title : string
-    location : string
-    workHistory : string
-    hashTags : string[]
+export interface RecruitsItemType {
+    id: number;
+    title: string;
+    companyName: string;
+    endDate: string;
+    viewCount: number;
+    isClosed: boolean;
+    createdAt: string;
 }
 
 export interface GetRecruitsListResponse extends Response {
@@ -28,15 +28,7 @@ export interface GetRecruitsListResponse extends Response {
         unpaged: boolean;
         };
         size: number;
-        content: {
-        id: number;
-        title: string;
-        companyName: string;
-        endDate: string;
-        viewCount: number;
-        isClosed: boolean;
-        createdAt: string;
-        }[];
+        content: RecruitsItemType[];
         number: number;
         sort: {
         sorted: boolean;

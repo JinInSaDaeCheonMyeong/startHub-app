@@ -5,11 +5,14 @@ import { Shadow } from "react-native-shadow-2";
 import BMCNote from "../../assets/icons/bmc_note.svg"
 import NoticeItem from "../../component/notice/NoticeItem";
 import { NoticeItemList } from "../../constants/NoticeItemList";
-import MemberNoticeItem from "../../component/notice/MemberNoticeItem";
-import { MemberNoticeItemList } from "../../constants/MemberNoticeItemList";
+import MemberNoticeItem from "../../component/notice/RecruitsItem";
 import ImminentView from "../../component/home/ImminentView";
+import { RecruitsItemType } from "../../type/notice/recruits.type";
+import { useState } from "react";
+import RecruitsItem from "../../component/notice/RecruitsItem";
 
 export default function HomeScreen() {
+    const [recruitsItems, setRecruitsItems] = useState<RecruitsItemType[]>([])
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
@@ -66,16 +69,16 @@ export default function HomeScreen() {
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         style={{overflow : 'visible'}}
-                        data={MemberNoticeItemList}
+                        data={recruitsItems}
                         renderItem={({item}) => (
-                            <MemberNoticeItem
+                            <RecruitsItem
                                 id={item.id}
-                                img={item.img}
-                                location={item.location}
-                                workHistory={item.workHistory}
-                                category={item.category}
                                 title={item.title}
-                                hashTags={item.hashTags}
+                                companyName={item.companyName}
+                                endDate={item.endDate}
+                                viewCount={item.viewCount}
+                                isClosed={item.isClosed}
+                                createdAt={item.createdAt}
                                 isHome={true}
                                 onPress={() => {console.log("안녕")}}
                             />

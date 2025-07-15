@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { GetDetailRecruitResponse } from "../../type/notice/recruits.type";
+import { GetDetailRecruitResponse } from "../../../type/notice/recruits.type";
 import { isAxiosError } from "axios";
-import { ShowToast, ToastType } from "../../util/ShowToast";
-import { getDetailRecruits } from "../../api/recruits";
+import { ShowToast, ToastType } from "../../../util/ShowToast";
+import { getDetailRecruits } from "../../../api/recruits";
 import { StackScreenProps } from "@react-navigation/stack";
-import { RootStackParamList } from "../../navigation/RootStack";
-import { ErrorResponse } from "../../type/util/response.type";
-import BackButton from "../../component/BackButton";
-import BookMarkIcon from "../../assets/icons/bookMark/bookmark.svg"
-import BookMarkFillIcon from "../../assets/icons/bookMark/bookmark.fill.svg"
-import { Colors } from "../../constants/Color";
-import { formatToDate } from "../../util/DateFormat";
-import CommonButton from "../../component/CommonButton";
-import { Fonts } from "../../constants/Fonts";
+import { RootStackParamList } from "../../../navigation/RootStack";
+import { ErrorResponse } from "../../../type/util/response.type";
+import BackButton from "../../../component/BackButton";
+import BookMarkIcon from "../../../assets/icons/bookMark/bookmark.svg"
+import BookMarkFillIcon from "../../../assets/icons/bookMark/bookmark.fill.svg"
+import { Colors } from "../../../constants/Color";
+import { formatToDate } from "../../../util/DateFormat";
+import CommonButton from "../../../component/CommonButton";
+import { Fonts } from "../../../constants/Fonts";
 
 type InMatchScreenProps = StackScreenProps<RootStackParamList, 'InMatch'>;
 
@@ -109,7 +109,7 @@ export default function InMatchScreen({navigation, route : {params}} : InMatchSc
 
 const styles = StyleSheet.create({
     safeArea: {
-        flex: 1,
+        flex: 1
     },
     headerContainer: {
         padding: 16,

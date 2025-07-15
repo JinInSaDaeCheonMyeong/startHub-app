@@ -5,7 +5,7 @@ import { Colors } from "../constants/Color";
 import InChatScreen from "../screens/Home/chat/InChatScreen";
 import { ChatMessage } from "../type/chat/messages.type";
 import SystemStack from "./SystemStack";
-import InMatchScreen from "../screens/Home/InMatchScreen";
+import InMatchScreen from "../screens/Home/match/InMatchScreen";
 
 const Stack = createStackNavigator<RootStackParamList>();
 

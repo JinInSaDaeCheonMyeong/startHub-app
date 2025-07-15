@@ -1,5 +1,4 @@
 import { Image, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { MemberNoticeItemType } from "../../type/notice/recruits.type";
 import { Shadow } from "react-native-shadow-2";
 import { InterestType } from "../../constants/InterestType";
 import ContentMediaIcon from "../../assets/icons/category/interest/media-category.svg"
@@ -14,34 +13,27 @@ import BookMark from "../../assets/icons/bookMark/bookmark.svg"
 import { Colors } from "../../constants/Color";
 import { useState } from "react";
 import { Fonts } from "../../constants/Fonts";
+import { RecruitsItemType } from "../../type/notice/recruits.type";
+import { formatToDate } from "../../util/DateFormat";
 
-interface MemberNoticeItemProps extends MemberNoticeItemType{
+interface RecruitsItemProps extends RecruitsItemType{
     isHome : boolean
     onPress : (id : number) => void
 }
 
-export default function MemberNoticeItem({
+export default function RecruitsItem({
     id,
     title,
-    category,
-    img,
-    location,
-    workHistory,
-    hashTags,
+    companyName,
+    endDate,
+    viewCount,
+    isClosed,
+    createdAt,
     isHome,
     onPress
-} : MemberNoticeItemProps){
+} : RecruitsItemProps){
     const {width} = useWindowDimensions()
     const [isSelected, setIsSelected] = useState(false)
-    const categoryMap = {
-        [InterestType.CONTENT_MEDIA] : {label : "콘텐츠/미디어", icon : <ContentMediaIcon width={14} height={14} color={Colors.content_media}/>, color : Colors.content_media},
-        [InterestType.FINTECH] : {label : "핀테크", icon : <FintechIcon width={14} height={14} color={Colors.fintech}/>, color : Colors.fintech},
-        [InterestType.HEALTHCARE_BIO] : {label : "헬스케어/바이오", icon : <HealthcareBioIcon width={14} height={14} color={Colors.healthcare_bio}/>, color : Colors.healthcare_bio},
-        [InterestType.EDUCATION_EDUTECH] : {label : "교육/에듀테크", icon : <EducationEdutechIcon width={14} height={14} color={Colors.education_edutech}/>, color : Colors.education_edutech},
-        [InterestType.IT_SOFTWARE] : {label : "IT/소프트웨어", icon : <ITSoftwareIcon width={14} height={14} color={Colors.it_software}/>, color : Colors.it_software},
-        [InterestType.ECOMMERCE] : {label : "전자상거래", icon : <EcommerceIcon width={14} height={14} color={Colors.ecommerce}/>, color : Colors.ecommerce},
-        [InterestType.ETC] : {label : "기타", icon : <ETCIcon width={14} height={14} color={Colors.etc}/>, color : Colors.etc}
-    }
     return(
         <TouchableOpacity 
             onPress={() => {onPress(id)}}
@@ -60,33 +52,26 @@ export default function MemberNoticeItem({
                 }}
             >
                 <View style={styles.mainContainer} >
-                    <Image source={{uri : img}} style={{width : 60, minHeight : 16}}/>
                     <View style={styles.textContainer}>
-                        <View style={styles.categoryContainer}>
-                            {categoryMap[category]?.icon}
-                            <Text style={[styles.categoryText, {color : categoryMap[category]?.color}]}>{categoryMap[category]?.label}</Text>
-                        </View>
-                        <View style={styles.titleContainer}>
-                            <Text 
-                                style={styles.titleText}
-                                numberOfLines={2}
-                                ellipsizeMode="tail"
-                            >
-                                {title}
-                                </Text>
-                            <Text style={styles.locationText}>{`${location}-${workHistory}`}</Text>
-                        </View>
+                        <Text style={styles.headerText}>{`${formatToDate(createdAt)}`}</Text>
+                        <Text style={styles.headerText}>{`조회수 : ${viewCount}`}</Text>
+                    </View>
+                    <View style={styles.titleContainer}>
+                        <Text style={styles.companyText}>{companyName}</Text>
+                        <Text style={styles.titleText}>{title}</Text>
                     </View>
                     <View style={styles.bookMarkCotainer}>
-                        <View style={[styles.hashTagContainer, isHome && {
-                            height : 34
-                        }]}>
-                            {hashTags.map((value, index) => (
-                                <Text style={styles.hashTagText} key={index}>
-                                    {'#' + value}
-                                </Text>
-                            ))}
-                        </View>
+                        <Text
+                            style={[
+                                styles.endDateText, 
+                                {
+                                    color : isClosed ? Colors.error : Colors.primary,
+                                    textDecorationLine : isClosed ? "line-through" : "none"
+                                }]
+                            }
+                        >
+                            {`모집 마감일 : ${formatToDate(endDate)}`}
+                        </Text>
                         {!isHome && (
                                 <TouchableOpacity onPress={() => {setIsSelected((value) => !value)}}>
                                     {isSelected ? 
@@ -136,34 +121,31 @@ const styles = StyleSheet.create({
         fontFamily: Fonts.semiBold,
     },
     textContainer : {
-        gap : 6
+        flexDirection : "row",
+        justifyContent : "space-between",
+        alignItems : "center"
     },
     titleContainer: {
-        gap: 4,
+        gap : 6
     },
     titleText: {
-        fontSize: 16,
-        lineHeight : 20,
+        fontSize: 14,
+        fontFamily: Fonts.bold,
+        color: Colors.black2,
+    },
+    companyText : {
+        fontSize: 12,
         fontFamily: Fonts.semiBold,
         color: Colors.black2,
     },
-    locationText: {
-        fontSize: 12,
-        fontFamily: Fonts.medium,
-        color: Colors.black2
+    headerText : {
+        fontSize : 10,
+        fontFamily : Fonts.medium,
+        color : Colors.black2
     },
-    hashTagContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        flex : 1,
-        gap: 8,
-        overflow : "hidden"
-    },
-    hashTagText: {
-        fontSize: 12,
-        lineHeight : 12,
-        fontFamily: Fonts.medium,
-        color: Colors.primary
+    endDateText : {
+        fontSize : 10,
+        fontFamily : Fonts.medium,
     },
     bookMarkCotainer : {
         gap : 32,
