@@ -9,7 +9,7 @@ const SOCKET_URL = process.env.EXPO_PUBLIC_API_URL + '/ws';
 export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
     const [msgs, setMsgs] = useState<ChatMessage[]>(chatLst);
     const clientRef = useRef<Client | null>(null);
-    const [senderId, setSenderId] = useState<string | null>(null);
+    const [senderId, setSenderId] = useState<number | null>(null);
 
     useEffect(() => {
         let client: Client;

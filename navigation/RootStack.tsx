@@ -4,6 +4,7 @@ import {HomeStack} from "./HomeStack";
 import { Colors } from "../constants/Color";
 import InChatScreen from "../screens/Home/chat/InChatScreen";
 import { ChatMessage } from "../type/chat/messages.type";
+import SystemStack from "./SystemStack";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -16,7 +17,8 @@ export type RootStackParamList = {
         name : string
         affiliation : string
         img : string
-    }
+    },
+    SystemStack : undefined
 };
 
 export default function RootStack() {
@@ -33,6 +35,7 @@ export default function RootStack() {
             <Stack.Screen name="AuthStack" component={AuthStack} />
             <Stack.Screen name="HomeStack" component={HomeStack} />
             <Stack.Screen name="InChat" component={InChatScreen}/>
+            <Stack.Screen name="SystemStack" component={SystemStack}/>
         </Stack.Navigator>
     )
 };
