@@ -1,8 +1,18 @@
 import {FlatList, SafeAreaView, StyleSheet, Text, View} from "react-native";
 import { MemberNoticeItemList } from "../../constants/MemberNoticeItemList";
 import MemberNoticeItem from "../../component/notice/MemberNoticeItem";
+import { CompositeScreenProps } from "@react-navigation/core";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { HomeStackParamList } from "../../navigation/HomeStack";
+import { RootStackParamList } from "../../navigation/RootStack";
+import { StackScreenProps } from "@react-navigation/stack";
 
-export default function MatchScreen() {
+export type MatchScreenProps = CompositeScreenProps<
+    BottomTabScreenProps<HomeStackParamList, 'Match'>,
+    StackScreenProps<RootStackParamList>
+>
+
+export default function MatchScreen({navigation} : MatchScreenProps) {
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
@@ -19,7 +29,7 @@ export default function MatchScreen() {
                         title={item.title}
                         hashTags={item.hashTags}
                         isHome={false}
-                        onPress={() => {console.log("안녕")}}
+                        onPress={(id) => {navigation.navigate("InMatch", {matchId : id})}}
                     />
                 )}
             />
