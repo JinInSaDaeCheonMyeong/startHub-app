@@ -56,7 +56,7 @@ export default function MemberNoticeItem({
                 offset={[0, 4]}
                 startColor="rgba(185, 185, 185, 0.2)"
                 style={{
-                    width : isHome ? width/2 : "100%"
+                    width : isHome ? width/2 : width - 32
                 }}
             >
                 <View style={styles.mainContainer} >
