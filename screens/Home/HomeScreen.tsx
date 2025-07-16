@@ -5,11 +5,54 @@ import { Shadow } from "react-native-shadow-2";
 import BMCNote from "../../assets/icons/bmc_note.svg"
 import NoticeItem from "../../component/notice/NoticeItem";
 import { NoticeItemList } from "../../constants/NoticeItemList";
-import MemberNoticeItem from "../../component/notice/MemberNoticeItem";
-import { MemberNoticeItemList } from "../../constants/MemberNoticeItemList";
+import MemberNoticeItem from "../../component/notice/RecruitsItem";
 import ImminentView from "../../component/home/ImminentView";
+import { RecruitsItemType } from "../../type/notice/recruits.type";
+import { useCallback, useState } from "react";
+import RecruitsItem from "../../component/notice/RecruitsItem";
+import { CompositeScreenProps, useFocusEffect } from "@react-navigation/core";
+import { ShowToast, ToastType } from "../../util/ShowToast";
+import { isAxiosError } from "axios";
+import { getRecruitsList } from "../../api/recruits";
+import { ErrorResponse } from "../../type/util/response.type";
+import { HomeStackParamList } from "../../navigation/HomeStack";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { RootStackParamList } from "../../navigation/RootStack";
+import { StackScreenProps } from "@react-navigation/stack";
 
-export default function HomeScreen() {
+export type HomeScreenProps = CompositeScreenProps<
+    BottomTabScreenProps<HomeStackParamList, 'Home'>,
+    StackScreenProps<RootStackParamList>
+>
+
+export default function HomeScreen({navigation} : HomeScreenProps) {
+    const [recruitsItems, setRecruitsItems] = useState<RecruitsItemType[]>([])
+
+    const getRecruitsItems = async () => {
+        try {
+            const response = (await getRecruitsList(0, 10)).data
+            setRecruitsItems(response.content)
+        } catch (error : unknown) {
+            if(isAxiosError(error)){
+                const response = error.response
+                if(!response){
+                    ShowToast("오류 발생", "네트워크 오류가 발생했습니다", ToastType.ERROR)
+                    return
+                } 
+                const errorData = response.data as ErrorResponse
+                ShowToast("오류 발생", errorData.message, ToastType.ERROR)
+                return
+            }
+            ShowToast("오류 발생", "알 수 없는 오류가 발생했습니다", ToastType.ERROR)
+        }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            getRecruitsItems()
+        }, [])
+    )
+
     return (
         <SafeAreaView style={styles.container}>
             <StatusBar barStyle="dark-content" backgroundColor={Colors.white1}/>
@@ -43,6 +86,9 @@ export default function HomeScreen() {
                         contentContainerStyle={{gap : 16, paddingHorizontal : 16, paddingBottom : 16 }}
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
+                        onEndReached={() => {
+
+                        }}
                         style={{overflow : 'visible'}}
                         data={NoticeItemList}
                         renderItem={({item}) => (
@@ -66,18 +112,18 @@ export default function HomeScreen() {
                         showsHorizontalScrollIndicator={false}
                         horizontal={true}
                         style={{overflow : 'visible'}}
-                        data={MemberNoticeItemList}
+                        data={recruitsItems}
                         renderItem={({item}) => (
-                            <MemberNoticeItem
+                            <RecruitsItem
                                 id={item.id}
-                                img={item.img}
-                                location={item.location}
-                                workHistory={item.workHistory}
-                                category={item.category}
                                 title={item.title}
-                                hashTags={item.hashTags}
+                                companyName={item.companyName}
+                                endDate={item.endDate}
+                                viewCount={item.viewCount}
+                                isClosed={item.isClosed}
+                                createdAt={item.createdAt}
                                 isHome={true}
-                                onPress={() => {console.log("안녕")}}
+                                onPress={(id) => {navigation.navigate('InMatch', {matchId : id})}}
                             />
                         )}
                     />
