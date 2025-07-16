@@ -31,10 +31,13 @@ export default function InChatFooterBar({onPress} : InChatFooterBarProps) {
                     placeholderTextColor={Colors.gray2}
                     onChangeText={(value) => {setText(value)}}
                 />
-                <TouchableOpacity onPress={() => {
-                    onPress(text)
-                    setText('')
-                }}>
+                <TouchableOpacity 
+                    style={{marginBottom : 4}}
+                    onPress={() => {
+                        onPress(text)
+                        setText('')
+                    }}
+                >
                     <SendIcon
                         width={32}
                         height={32}

@@ -18,7 +18,7 @@ import { Fonts } from "../../../constants/Fonts";
 import { useFocusEffect } from "@react-navigation/core";
 import { getUser } from "../../../api/user";
 import { getCompanyById } from "../../../api/company";
-import { createRoom } from "../../../api/chat";
+import { createRoom, getMessages } from "../../../api/chat";
 
 type InMatchScreenProps = StackScreenProps<RootStackParamList, "InMatch">;
 
@@ -139,10 +139,11 @@ export default function InMatchScreen({ navigation, route: { params } }: InMatch
                         const roomId = (await createRoom(id, matchData.companyId)).data.id
                         console.log(roomId)
                         const companyImg = (await getCompanyById(matchData.companyId)).data.logoImage
+                        const chatList = (await getMessages(roomId)).data
                         navigation.navigate("InChat", 
                             {
                                 roomId : roomId, 
-                                chatLst : [], 
+                                chatLst : chatList, 
                                 name : matchData.writerNickname, 
                                 affiliation : matchData.companyName, 
                                 img : companyImg

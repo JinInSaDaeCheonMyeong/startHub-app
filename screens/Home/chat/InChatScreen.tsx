@@ -56,7 +56,7 @@ export default function InChatScreen({navigation, route : {params}} : InChatScre
                 ref={flatListRef}
                 data={reversedMsgs}
                 keyExtractor={(item, idx) => item.id?.toString() ?? idx.toString()}
-                contentContainerStyle={styles.listContent}
+                contentContainerStyle={[styles.listContent, {flexGrow : 1, justifyContent : "flex-end"}]}
                 showsVerticalScrollIndicator={false}
                 inverted
                 initialNumToRender={20}
@@ -99,11 +99,23 @@ export default function InChatScreen({navigation, route : {params}} : InChatScre
                                     gap : 12,
                                     marginVertical: 24 }
                                 }>
-                                    <View style={{borderStyle : "solid", borderBottomColor : Colors.gray3, borderWidth : 0.5, height : 0, flex : 1}}/>
+                                    <View style={{
+                                        borderStyle : "solid", 
+                                        borderColor : Colors.gray3,
+                                        borderWidth : 0.5, 
+                                        height : 0, 
+                                        flex : 1
+                                    }}/>
                                     <Text style={{ fontSize: 14, color: Colors.gray3, fontFamily: Fonts.semiBold }}>
                                         {formatToDate(item.sentAt)}
                                     </Text>
-                                    <View style={{borderStyle : "solid", borderBottomColor : Colors.gray3, borderWidth : 0.5, height : 0, flex : 1}}/>
+                                    <View style={{
+                                        borderStyle : "solid", 
+                                        borderColor : Colors.gray3,
+                                        borderWidth : 0.5, 
+                                        height : 0, 
+                                        flex : 1
+                                    }}/>
                                 </View>
                             )}
                         </>
