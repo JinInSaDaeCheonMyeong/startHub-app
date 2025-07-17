@@ -91,10 +91,10 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                         <FlatList
                             showsVerticalScrollIndicator={false}
                             data={filterList()}
-                            scrollEnabled={(filterList().length !== 0)}
-                            contentContainerStyle={{gap : 16}}
+                            scrollEnabled={filterList().length !== 0}
+                            contentContainerStyle={{ gap: 16 }}
                             keyExtractor={(item) => item.id.toString()}
-                            ListHeaderComponent={() => {
+                            ListEmptyComponent={() => {
                                 const hasNoMatch = filterList().length === 0;
                                 const showError = filterText && hasNoMatch;
 
@@ -115,22 +115,23 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                                         </View>
                                     );
                                 }
+
                                 return null;
                             }}
-                            renderItem={({item}) => (
-                                <TouchableOpacity 
-                                    onPress={ async () => {
+                            renderItem={({ item }) => (
+                                <TouchableOpacity
+                                    onPress={async () => {
                                         try {
                                             const messagesResponse = (await getMessages(item.id)).data
                                             navigation.navigate('InChat', {
-                                                roomId : item.id,
-                                                chatLst : messagesResponse,
-                                                img : item.otherUser.profileImage,
-                                                name : item.otherUser.username,
-                                                companyName : item.otherCompany
+                                                roomId: item.id,
+                                                chatLst: messagesResponse,
+                                                img: item.otherUser.profileImage,
+                                                name: item.otherUser.username,
+                                                companyName: item.otherCompany
                                             })
-                                        } catch (error : unknown) {
-                                            if(isAxiosError(error)){
+                                        } catch (error: unknown) {
+                                            if (isAxiosError(error)) {
                                                 const response = error.response?.data
                                                 const errorData = response as ErrorResponse
                                                 ShowToast("오류 발생", errorData.message, ToastType.ERROR)
@@ -138,26 +139,24 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                                         }
                                     }}
                                 >
-                                    <View 
-                                        style={styles.chatRoomContainer}
-                                    >
-                                        <Image 
+                                    <View style={styles.chatRoomContainer}>
+                                        <Image
                                             style={{
-                                                width : 48, 
-                                                height : 48,
-                                                borderRadius : 8
+                                                width: 48,
+                                                height: 48,
+                                                borderRadius: 8
                                             }}
-                                            source={{uri : item.otherUser.profileImage}}
+                                            source={{ uri: item.otherUser.profileImage }}
                                         />
                                         <View style={styles.chatInfoContainer}>
-                                            <Text 
+                                            <Text
                                                 style={styles.msgText}
                                                 numberOfLines={1}
                                                 ellipsizeMode="tail"
                                             >
                                                 {item.otherCompany}
                                             </Text>
-                                            <Text 
+                                            <Text
                                                 style={styles.userText}
                                                 numberOfLines={1}
                                                 ellipsizeMode="tail"
@@ -167,14 +166,14 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                                         </View>
                                         <View style={styles.menuContainer}>
                                             <ChatMenuButton
-                                                onDelete={() => {console.log("삭제하기")}}
+                                                onDelete={() => { console.log("삭제하기") }}
                                             />
                                         </View>
                                     </View>
                                 </TouchableOpacity>
                             )}
                         />
-                        </View>
+                    </View>
                 </Shadow>
             </View>
         </SafeAreaView>

@@ -14,7 +14,7 @@ export interface GetMeResponse extends Response {
 
 export interface GetUserResponse extends Response {
     data : {
-        username : string
+        username : string,
         profileImage : string,
         companyIds : number[]
     }
