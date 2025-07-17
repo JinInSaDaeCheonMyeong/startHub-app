@@ -27,9 +27,10 @@ export default function NoticeItem({
     title,
     startTime,
     endTime,
-    hashTags,
+    location,
+    years,
     isHome,
-    onPress
+    onPress,
 } : NoticeItemProps ){
     const {width} = useWindowDimensions()
     const [isSelected, setIsSelected] = useState(false)
@@ -86,7 +87,7 @@ export default function NoticeItem({
                     </View>
                     <View style={styles.bookMarkCotainer}>
                         <View style={[styles.hashTagContainer, {height : isHome ? 34 : 'auto'}]}>
-                            {hashTags.map((value, index) => (
+                            {[location, ...years].map((value, index) => (
                                 <Text key={index} style={styles.hashTagText}>{`#${value}`}</Text>
                             ))}
                         </View>

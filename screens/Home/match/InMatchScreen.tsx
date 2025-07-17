@@ -16,6 +16,9 @@ import { formatToDate } from "../../../util/DateFormat";
 import CommonButton from "../../../component/CommonButton";
 import { Fonts } from "../../../constants/Fonts";
 import { useFocusEffect } from "@react-navigation/core";
+import { getMe } from "../../../api/user";
+import { getCompanyById } from "../../../api/company";
+import { createRoom, getMessages } from "../../../api/chat";
 
 type InMatchScreenProps = StackScreenProps<RootStackParamList, "InMatch">;
 
@@ -109,7 +112,7 @@ export default function InMatchScreen({ navigation, route: { params } }: InMatch
 
                 <View style={styles.textBox}>
                     <Text style={styles.boxTitle}>기술 스택</Text>
-                    <Text style={styles.boxContent}>{matchData?.techStack}</Text>
+                    <Text style={styles.boxContent}>{matchData?.techStack.join(', ')}</Text>
                 </View>
                 <View style={styles.textBox}>
                     <Text style={styles.boxTitle}>모집 인원</Text>
@@ -129,7 +132,39 @@ export default function InMatchScreen({ navigation, route: { params } }: InMatch
             <CommonButton
                 title={matchData?.isClosed ? "매칭 마감됨" : "스타트업 매칭하기"}
                 disabled={matchData?.isClosed ?? false}
-                onPress={() => {}}
+                onPress={ async() => {
+                    if(!matchData) return
+                    try {
+                        const id = (await getMe()).data.id
+                        const roomId = (await createRoom(id, matchData.companyId)).data.id
+                        console.log(roomId)
+                        const companyImg = (await getCompanyById(matchData.companyId)).data.logoImage
+                        const chatList = (await getMessages(roomId)).data
+                        navigation.navigate("InChat", 
+                            {
+                                roomId : roomId, 
+                                chatLst : chatList, 
+                                name : matchData.writerNickname, 
+                                companyName : matchData.companyName, 
+                                img : companyImg
+                            }
+                        )
+                    } catch (error : unknown) {
+                        if(isAxiosError(error)){
+                            const response = error.response
+                            if(!response) {
+                                ShowToast("오류 발생", "네트워크 오류가 발생했습니다", ToastType.ERROR)
+                                return
+                            }
+                            const data = response.data as ErrorResponse
+                            ShowToast("오류 발생", data.message, ToastType.ERROR)
+                            return
+                        }
+                        ShowToast("오류 발생", "알 수 없는 오류가 발생하였습니다", ToastType.ERROR)
+                        console.log(error)
+                        return
+                    }
+                }}
             />
             </View>
         </View>

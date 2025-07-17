@@ -16,7 +16,7 @@ export type RootStackParamList = {
         roomId : number
         chatLst : ChatMessage[]
         name : string
-        affiliation : string
+        companyName : string
         img : string
     },
     SystemStack : undefined,

@@ -16,7 +16,7 @@ export default function InChatFooterBar({onPress} : InChatFooterBarProps) {
         <Shadow
             distance={4} 
             offset={[0, -4]} 
-            startColor="rgba(185, 185, 185, 0.2)"
+            startColor="rgba(185, 185, 185, 0.05)"
             style={{
                 width : "100%"
             }}
@@ -24,17 +24,20 @@ export default function InChatFooterBar({onPress} : InChatFooterBarProps) {
             <View style={styles.mainContainer}>
                 <TextInput
                     multiline
-                    numberOfLines={4}
+                    numberOfLines={5}
                     style={styles.textInputBox}
                     value={text}
                     placeholder="채팅을 입력해주세요..."
                     placeholderTextColor={Colors.gray2}
                     onChangeText={(value) => {setText(value)}}
                 />
-                <TouchableOpacity onPress={() => {
-                    onPress(text)
-                    setText('')
-                }}>
+                <TouchableOpacity 
+                    style={{marginBottom : 4}}
+                    onPress={() => {
+                        onPress(text)
+                        setText('')
+                    }}
+                >
                     <SendIcon
                         width={32}
                         height={32}

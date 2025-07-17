@@ -1,17 +1,15 @@
 import { Response } from "../util/response.type"
 
 export interface ChatRoomType{
-    id : number,
-    userName : string,
-    lastMsg : string,
-    date : Date,
-    img : string
+    id : number
+    userId : number
+    founderId : number
 }
 
 export interface ChatRoomResponse extends Response{
-    data : {
-        id : number
-        userId : string
-        founderId : string
-    }
+    data : ChatRoomType
+}
+
+export interface ChatRoomListResponse extends Response{
+    data : ChatRoomType[]
 }
