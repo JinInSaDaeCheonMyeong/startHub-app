@@ -6,5 +6,9 @@ export interface NoticeItemType {
     title : string
     startTime : Date
     endTime : Date
-    hashTags : string[]
+    location : string
+    target  : string
+    years : string[]
+    entre : string
+    webLink : string
 }
