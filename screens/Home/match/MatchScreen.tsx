@@ -1,8 +1,8 @@
-import { FlatList, SafeAreaView, StyleSheet, Text } from "react-native";
+import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, useWindowDimensions, View } from "react-native";
 import { CompositeScreenProps, useFocusEffect } from "@react-navigation/core";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackScreenProps } from "@react-navigation/stack";
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { getRecruitsList } from "../../../api/recruits";
 import { ShowToast, ToastType } from "../../../util/ShowToast";
 import { isAxiosError } from "axios";
@@ -13,6 +13,9 @@ import { RecruitsItemType } from "../../../type/notice/recruits.type";
 import { ErrorResponse } from "../../../type/util/response.type";
 import { Colors } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Fonts";
+import SearchBar from "../../../component/home/SearchBar";
+import * as Progress from 'react-native-progress';
+import { dummyRecruitsItems } from "../../../constants/dummy/RecruitsDummy";
 
 export type MatchScreenProps = CompositeScreenProps<
     BottomTabScreenProps<HomeStackParamList, "Match">,
@@ -20,82 +23,133 @@ export type MatchScreenProps = CompositeScreenProps<
 >;
 
 export default function MatchScreen({ navigation }: MatchScreenProps) {
+    // 기본값 더미 데이터 유지
     const [recruitsItems, setRecruitsItems] = useState<RecruitsItemType[]>([]);
+    const [filteredList, setFilteredList] = useState<RecruitsItemType[]>([]);
     const [isFetching, setIsFetching] = useState(false);
     const [page, setPage] = useState(0);
+    const [search, setSearch] = useState('');
+    const [hasMore, setHasMore] = useState(true);
+    const lastRequestTime = useRef<number>(0);
+    const hasFetchedOnce = useRef(false);
+    const { height } = useWindowDimensions();
 
-    const getRecruitsItems = async () => {
+    const filterRecruits = useCallback((text: string, list: RecruitsItemType[]) => {
+        const filtered = list.filter(item =>
+            item.title.toLowerCase().includes(text.toLowerCase()) ||
+            item.companyName.toLowerCase().includes(text.toLowerCase())
+        );
+        setFilteredList(filtered);
+    }, []);
+
+    const getRecruitsItems = async (reset = false) => {
         if (isFetching) return;
+
+        // 이미 정상 데이터 한번 받았으면 reset 시 서버 재요청 막기 (필요하면 제거 가능)
+        if (reset && hasFetchedOnce.current) return;
+
+        const nextPage = reset ? 0 : page;
+        const now = Date.now();
+
+        if (!reset && now - lastRequestTime.current < 200) return;
+        lastRequestTime.current = now;
+
         setIsFetching(true);
 
         try {
-        const response = (await getRecruitsList(page, 10)).data;
+            const response = (await getRecruitsList(nextPage, 10)).data;
 
-        if (response.empty) {
-            setIsFetching(false);
-            return;
-        }
-
-        setPage(prev => prev + 1);
-
-        setRecruitsItems(prev => {
-            const map = new Map(prev.map(item => [item.id, item]));
-
-            response.content.forEach(item => {
-            const prevItem = map.get(item.id);
-            const isDifferent =
-                !prevItem ||
-                prevItem.title !== item.title ||
-                prevItem.companyName !== item.companyName ||
-                prevItem.endDate !== item.endDate ||
-                prevItem.viewCount !== item.viewCount ||
-                prevItem.isClosed !== item.isClosed ||
-                prevItem.createdAt !== item.createdAt;
-
-            if (isDifferent) {
-                map.set(item.id, item);
+            if (response.empty || response.content.length === 0) {
+                setHasMore(false);
+                // 빈 데이터면 reset 시에도 더미 유지 (아무 작업 안 함)
+                return;
             }
-            });
 
-            const ordered = [...prev.filter(i => map.has(i.id)).map(i => map.get(i.id)!), 
-                ...response.content.filter(i => !prev.find(p => p.id === i.id))];
-            return ordered;
-        });
+            setPage(reset ? 1 : nextPage + 1);
+
+            if (reset) {
+                setRecruitsItems(response.content);
+                filterRecruits(search, response.content);
+                setHasMore(true);
+                hasFetchedOnce.current = true;
+            } else {
+                setRecruitsItems(prev => {
+                    const updatedMap = new Map(prev.map(item => [item.id, item]));
+                    response.content.forEach(item => {
+                        updatedMap.set(item.id, item);
+                    });
+                    const updatedList = Array.from(updatedMap.values());
+                    filterRecruits(search, updatedList);
+                    return updatedList;
+                });
+            }
         } catch (error: unknown) {
-        const errMsg = isAxiosError(error)
-            ? error.response
-            ? (error.response.data as ErrorResponse).message
-            : "네트워크 오류가 발생했습니다"
-            : "알 수 없는 오류가 발생했습니다";
-        ShowToast("오류 발생", errMsg, ToastType.ERROR);
+            const errMsg = isAxiosError(error)
+                ? error.response
+                    ? (error.response.data as ErrorResponse).message
+                    : "네트워크 오류가 발생했습니다"
+                : "알 수 없는 오류가 발생했습니다";
+            ShowToast("오류 발생", errMsg, ToastType.ERROR);
+            // 에러 시 기존 더미 유지
         } finally {
-        setIsFetching(false);
+            setIsFetching(false);
         }
     };
 
     useFocusEffect(
         useCallback(() => {
-        getRecruitsItems();
+            getRecruitsItems(true);
         }, [])
     );
 
+    const onSearch = (text: string) => {
+        setSearch(text);
+        filterRecruits(text, recruitsItems);
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-        <Text style={styles.titleText}>매칭</Text>
-        <FlatList
-            style={styles.list}
-            data={recruitsItems}
-            contentContainerStyle={styles.content}
-            onEndReachedThreshold={0.2}
-            onEndReached={getRecruitsItems}
-            renderItem={({ item }) => (
-            <RecruitsItem
-                {...item}
-                isHome={false}
-                onPress={id => navigation.navigate("InMatch", { matchId: id })}
+            <View style={styles.searchBar}>
+                <SearchBar onPress={onSearch} />
+            </View>
+            <FlatList
+                style={styles.list}
+                data={filteredList}
+                contentContainerStyle={styles.content}
+                onEndReachedThreshold={0.2}
+                onEndReached={() => {
+                    if (!isFetching && hasMore) {
+                        getRecruitsItems(false);
+                    }
+                }}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                    <RecruitsItem
+                        {...item}
+                        isHome={false}
+                        onPress={id => navigation.navigate("InMatch", { matchId: id })}
+                    />
+                )}
+                ListFooterComponent={() => {
+                    return isFetching && hasMore ? (
+                        <View style={[styles.indicatorContainer, { marginTop: height * 0.05 }]}>
+                            <Progress.Circle
+                                color={Colors.primary}
+                                size={36}
+                                indeterminate={true}
+                                thickness={4}
+                            />
+                        </View>
+                    ) : <View style={{ height: 16 }} />;
+                }}
+                ListEmptyComponent={() => {
+                    return !isFetching && (
+                        <View style={styles.emptyContainer}>
+                            <Text style={styles.emptyText}>일치하는 채용 공고가 없습니다.</Text>
+                        </View>
+                    );
+                }}
             />
-            )}
-        />
         </SafeAreaView>
     );
 }
@@ -115,5 +169,27 @@ const styles = StyleSheet.create({
     },
     content: {
         gap: 16,
+        paddingBottom: 16,
     },
+    searchBar: {
+        marginHorizontal: 16,
+        marginTop: 16,
+        marginBottom: 25,
+        height: 40,
+    },
+    emptyContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 80,
+    },
+    emptyText: {
+        fontSize: 16,
+        color: Colors.gray2,
+        fontFamily: Fonts.medium,
+    },
+    indicatorContainer: {
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+    }
 });
