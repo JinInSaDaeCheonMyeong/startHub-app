@@ -6,7 +6,8 @@ export interface UserInfo {
     day : string,
 } 
 export interface LocationInfo {
-    location : string
+    introduction : string,
+    gender : string
 } 
 export interface InterestInfo {
     interestList : string[]
