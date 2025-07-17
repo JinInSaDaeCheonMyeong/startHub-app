@@ -12,7 +12,7 @@ import { RootStackParamList } from "../../../navigation/RootStack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { HomeStackParamList } from "../../../navigation/HomeStack";
 import { getMessages, getMyRoom } from "../../../api/chat";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getMe, getUser } from "../../../api/user";
 import { GetUserResponse } from "../../../type/user/user.type";
 import { GetCompanyByIdResponse } from "../../../type/company/company.type";
@@ -20,6 +20,8 @@ import { getCompanyById } from "../../../api/company";
 import { isAxiosError } from "axios";
 import { ErrorResponse } from "../../../type/util/response.type";
 import { ShowToast, ToastType } from "../../../util/ShowToast";
+import { Provider } from "react-native-paper";
+import ErrorChatIcon from "../../../assets/icons/error-chat.svg"
 
 export type ChatScreenProps = CompositeScreenProps<
     BottomTabScreenProps<HomeStackParamList, 'Chat'>,
@@ -33,6 +35,7 @@ interface ChatRoomListItem extends ChatRoomType {
 
 export default function ChatScreen({navigation} : ChatScreenProps) {
     const [chatRoomList, setChatRoomList] = useState<ChatRoomListItem[]>([])
+    const [filterText, setFilterText] = useState('')
 
     const setInitialRoomList = async () => {
         const list = (await getMyRoom()).data;
@@ -46,15 +49,21 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
             ? (await getCompanyById(otherUserData.companyIds[0])).data.companyName
             : "무소속";
             return {
-            ...data,
-            otherUser: otherUserData,
-            otherCompany: companyName,
+                ...data,
+                otherUser: otherUserData,
+                otherCompany: companyName,
             };
         }));
 
         setChatRoomList(totalList);
     };
 
+    const filterList = () : ChatRoomListItem[] => {
+        return chatRoomList.filter(item =>  
+            item.otherCompany.includes(filterText) ||
+            item.otherUser.username.includes(filterText)
+        )
+    }
 
     useFocusEffect(
         useCallback(() => {
@@ -63,9 +72,12 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
     )
 
     return (
+        <Provider>
         <SafeAreaView style={styles.mainContainer}>
             <View style={styles.searchContainer}>
-                <SearchBar onPress={(text : string) => {console.log(text)}}/>
+                <SearchBar onPress={(text : string) => {
+                    setFilterText(text)
+                }}/>
             </View>
             <View style={styles.chatWrapper}>
                 <Shadow
@@ -76,32 +88,56 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                 >
                     <View style={styles.chatContainer}>
                         <Text style={styles.mainText}>내 채팅</Text>
-                            <FlatList
-                                showsVerticalScrollIndicator={false}
-                                data={chatRoomList}
-                                contentContainerStyle={{gap : 16}}
-                                keyExtractor={(item) => item.id.toString()}
-                                renderItem={({item}) => (
-                                    <TouchableOpacity 
-                                        onPress={ async () => {
-                                            try {
-                                                const messagesResponse = (await getMessages(item.id)).data
-                                                navigation.navigate('InChat', {
-                                                    roomId : item.id,
-                                                    chatLst : messagesResponse,
-                                                    img : item.otherUser.profileImage,
-                                                    name : item.otherUser.username,
-                                                    companyName : item.otherCompany
-                                                })
-                                            } catch (error : unknown) {
-                                                if(isAxiosError(error)){
-                                                    const response = error.response?.data
-                                                    const errorData = response as ErrorResponse
-                                                    ShowToast("오류 발생", errorData.message, ToastType.ERROR)
-                                                }
+                        <FlatList
+                            showsVerticalScrollIndicator={false}
+                            data={filterList()}
+                            scrollEnabled={(filterList().length !== 0)}
+                            contentContainerStyle={{gap : 16}}
+                            keyExtractor={(item) => item.id.toString()}
+                            ListHeaderComponent={() => {
+                                const hasNoMatch = filterList().length === 0;
+                                const showError = filterText && hasNoMatch;
+
+                                if (hasNoMatch) {
+                                    const color = showError ? Colors.error : Colors.info;
+                                    const text = showError ? "채팅을 찾을 수 없습니다" : "채팅을 찾는 중입니다";
+
+                                    return (
+                                        <View style={{ paddingVertical: 24, alignItems: "center", gap: 12 }}>
+                                            <ErrorChatIcon width={40} height={40} color={color} />
+                                            <Text style={{
+                                                fontFamily: Fonts.bold,
+                                                color,
+                                                fontSize: 16
+                                            }}>
+                                                {text}
+                                            </Text>
+                                        </View>
+                                    );
+                                }
+                                return null;
+                            }}
+                            renderItem={({item}) => (
+                                <TouchableOpacity 
+                                    onPress={ async () => {
+                                        try {
+                                            const messagesResponse = (await getMessages(item.id)).data
+                                            navigation.navigate('InChat', {
+                                                roomId : item.id,
+                                                chatLst : messagesResponse,
+                                                img : item.otherUser.profileImage,
+                                                name : item.otherUser.username,
+                                                companyName : item.otherCompany
+                                            })
+                                        } catch (error : unknown) {
+                                            if(isAxiosError(error)){
+                                                const response = error.response?.data
+                                                const errorData = response as ErrorResponse
+                                                ShowToast("오류 발생", errorData.message, ToastType.ERROR)
                                             }
-                                        }}
-                                    >
+                                        }
+                                    }}
+                                >
                                     <View 
                                         style={styles.chatRoomContainer}
                                     >
@@ -135,13 +171,14 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                                             />
                                         </View>
                                     </View>
-                                    </TouchableOpacity>
-                                )}
-                            />
+                                </TouchableOpacity>
+                            )}
+                        />
                         </View>
                 </Shadow>
             </View>
         </SafeAreaView>
+        </Provider>
     )
 
 }
