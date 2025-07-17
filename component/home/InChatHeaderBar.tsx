@@ -44,13 +44,14 @@ export default function InChatHeaderBar({img, name, affiliation, backClick, menu
                         </Text>
                     </View>
                 </View>
-                <TouchableOpacity onPress={() => {menuClick()}}>
+                <View style={{width : 28, height : 28}}/>
+                {/* <TouchableOpacity onPress={() => {menuClick()}}>
                     <LineMenuIcon 
                         width={28} 
                         height={28} 
                         color={Colors.black2}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </Shadow>
     )
