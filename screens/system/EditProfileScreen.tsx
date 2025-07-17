@@ -40,7 +40,7 @@ export default function EditProfileScreen({navigation, route : {params}} : Profi
                             introduction : user.introduction,
                             birth: `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`,
                             gender : selectGender ? "MALE" : "FEMALE",
-                            profileImage : user.profileImage,
+                            profileImage : "https://storage.googleapis.com/starthub-storage/profile-images/default_user_profile.png",
                             interests : []
                         })
                             ShowToast("프로필 수정", "프로필 수정에 성공하셨습니다", ToastType.SUCCESS)
@@ -63,8 +63,9 @@ export default function EditProfileScreen({navigation, route : {params}} : Profi
             <View style={styles.dataContainer}>
                 <View style={styles.imgContainer}>
                     <TouchableOpacity onPress={async () => {
-                        const uri = await pickerImage()
-                        if (uri) setUser({...user, profileImage : uri})
+                        ShowToast("정보", "아직 개발 중입니다", ToastType.INFO)
+                        // const uri = await pickerImage()
+                        // if (uri) setUser({...user, profileImage : uri})
                     }}>
                         <Shadow
                             distance={4}
@@ -72,45 +73,45 @@ export default function EditProfileScreen({navigation, route : {params}} : Profi
                             startColor="rgba(185, 185, 185, 0.2)"
                             style={{ borderRadius: 80 }}
                         >
-                        <View style={{ position: "relative" }}>
-                            <Image
-                                style={{
-                                width: width / 4,
-                                height: width / 4,
-                                borderRadius: 80,
-                                }}
-                                source={{ uri : user.profileImage }}
-                            />
-                        <View
-                            style={{
-                            position: "absolute",
-                            bottom: 0,
-                            right: 0,
-                            }}
-                        >
-                            <Shadow
-                            distance={4}
-                            offset={[0, 4]}
-                            startColor="rgba(185, 185, 185, 0.2)"
-                            style={{ borderRadius: 20 }}
-                            >
+                            <View style={{ position: "relative" }}>
+                                <Image
+                                    style={{
+                                    width: width / 4,
+                                    height: width / 4,
+                                    borderRadius: 80,
+                                    }}
+                                    source={{ uri : user.profileImage }}
+                                />
                                 <View
                                     style={{
-                                    backgroundColor: Colors.white1,
-                                    borderRadius: 20,
-                                    padding: 8,
+                                    position: "absolute",
+                                    bottom: 0,
+                                    right: 0,
                                     }}
                                 >
-                                    <CameraIcon
-                                        width={20} 
-                                        height={20}
-                                        color={Colors.gray2}
-                                        fill={Colors.gray2}
-                                    />
+                                    <Shadow
+                                    distance={4}
+                                    offset={[0, 4]}
+                                    startColor="rgba(185, 185, 185, 0.2)"
+                                    style={{ borderRadius: 20 }}
+                                    >
+                                        <View
+                                            style={{
+                                            backgroundColor: Colors.white1,
+                                            borderRadius: 20,
+                                            padding: 8,
+                                            }}
+                                        >
+                                            <CameraIcon
+                                                width={20} 
+                                                height={20}
+                                                color={Colors.gray2}
+                                                fill={Colors.gray2}
+                                            />
+                                        </View>
+                                    </Shadow>
                                 </View>
-                            </Shadow>
-                        </View>
-                        </View>
+                            </View>
                         </Shadow>
                     </TouchableOpacity>
                 </View>

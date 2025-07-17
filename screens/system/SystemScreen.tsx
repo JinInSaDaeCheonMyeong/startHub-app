@@ -100,7 +100,8 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                 <Text style={styles.headerTitle}>설정</Text>
                 <View style={styles.headerRight}/>
             </View>
-            <ScrollView 
+            <ScrollView
+                horizontal={false}
                 showsVerticalScrollIndicator={false} 
                 style={styles.scroll} 
                 contentContainerStyle={styles.scrollContent}

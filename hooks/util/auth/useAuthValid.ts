@@ -67,9 +67,9 @@ export const useAuthValid = () => {
     }
 
     const isValidLocation = (data : LocationInfo) : ValidError => {
-        const {location} = data
-        if(!location){
-            return {isValid : false, message : "지역을 선택해주세요!"}
+        const {introduction} = data
+        if(!introduction){
+            return {isValid : false, message : "소개를 입력해주세요!"}
         }
         return {isValid : true}
     }

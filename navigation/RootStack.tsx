@@ -6,6 +6,8 @@ import InChatScreen from "../screens/Home/chat/InChatScreen";
 import { ChatMessage } from "../type/chat/messages.type";
 import SystemStack from "./SystemStack";
 import InMatchScreen from "../screens/Home/match/InMatchScreen";
+import InBMCScreen from "../screens/Home/BMC/InBMCScreen";
+import {BMCType} from "../type/BMC/BMC.type";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -22,6 +24,9 @@ export type RootStackParamList = {
     SystemStack : undefined,
     InMatch : {
         matchId : number
+    },
+    InBMC : {
+        BMC: BMCType
     }
 };
 
@@ -41,6 +46,7 @@ export default function RootStack() {
             <Stack.Screen name="InChat" component={InChatScreen}/>
             <Stack.Screen name="SystemStack" component={SystemStack}/>
             <Stack.Screen name="InMatch" component={InMatchScreen}/>
+            <Stack.Screen name="InBMC" component={InBMCScreen}/>
         </Stack.Navigator>
     )
 };

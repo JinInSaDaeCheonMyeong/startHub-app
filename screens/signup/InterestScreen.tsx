@@ -17,7 +17,7 @@ export default function InterestScreen(props : InterestScreenProps){
                 <Text style={styles.subText}>드디어 마지막입니다!</Text>
                 <Text style={styles.mainText}>어떤 주제에 관심 있으신가요?</Text>
             </View>
-            <FlatList 
+            <FlatList
             data={InterestTypeList}
             showsVerticalScrollIndicator={false}
             contentContainerStyle = {styles.listContentContainer}
@@ -37,6 +37,7 @@ export default function InterestScreen(props : InterestScreenProps){
                             props.setInterestList(interestList)
                         }
                     }}
+                    selected = {props.interestList.includes(id)}
                 />
             )}
             />

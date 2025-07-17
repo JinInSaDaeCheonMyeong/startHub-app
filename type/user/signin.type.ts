@@ -10,6 +10,7 @@ export interface SigninFormData extends SigninRequest {}
 export interface SigninResponse extends Response{
     data : {
         access : string,
-        refresh : string
+        refresh : string,
+        isFirstLogin : boolean
     }
 }

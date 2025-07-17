@@ -10,21 +10,30 @@ import {
 import {Fonts} from "../../constants/Fonts";
 import {Colors} from "../../constants/Color";
 import {Shadow} from "react-native-shadow-2";
-import {dummyBMC} from "../../constants/dummy/BMCDummy";
-import {BMCMenuButton} from "../../component/home/BMCMenuButton";
+import {BMCDummyData} from "../../constants/dummy/BMCDummy";
 import {PaperProvider} from "react-native-paper";
+import {CompositeScreenProps} from "@react-navigation/core";
+import {BottomTabScreenProps} from "@react-navigation/bottom-tabs";
+import {HomeStackParamList} from "../../navigation/HomeStack";
+import {StackScreenProps} from "@react-navigation/stack";
+import {RootStackParamList} from "../../navigation/RootStack";
 
 const screenWidth = Dimensions.get('window').width;
 
-export default function BMCScreen() {
-    const recentBMC = dummyBMC
-        .sort((a, b) => new Date(b.date.replace(/\./g, '-')).getTime() - new Date(a.date.replace(/\./g, '-')).getTime())
+export type BMCScreenProps = CompositeScreenProps<
+    BottomTabScreenProps<HomeStackParamList, 'BMC'>,
+    StackScreenProps<RootStackParamList>
+>
+
+export default function BMCScreen(navigation: BMCScreenProps) {
+    const recentBMC = BMCDummyData
+        .sort((a, b) => b.date.getTime() - a.date.getTime())
         .slice(0, 8);
     return (
         <PaperProvider>
         <SafeAreaView style={styles.container}>
             <FlatList
-                data={dummyBMC}
+                data={BMCDummyData}
                 numColumns={2}
                 columnWrapperStyle={{ paddingHorizontal: 16, justifyContent: 'space-between' }}
                 ListHeaderComponent={
@@ -49,19 +58,17 @@ export default function BMCScreen() {
                                 <View style={styles.recentBMCBox}>
                                     <Image
                                         source={item.thumbnail}
+                                        style={styles.thumbnail}
                                     />
                                     <View style={styles.BMCContentContainer}>
                                         <View style={styles.BMCTextContainer}>
                                             <Text style={styles.titleText}>{item.title}</Text>
-                                            <Text style={styles.dateText}>{item.date}</Text>
+                                            <Text style={styles.dateText}>
+                                                {item.date.toLocaleDateString('ko-KR')}
+                                            </Text>
                                         </View>
-                                        <TouchableOpacity>
-                                            <BMCMenuButton onDelete={() => {
-                                                console.log('삭제 실행')
-                                            }}/>
-                                        </TouchableOpacity>
                                     </View>
-                                </View>
+                                    </View>
                             </TouchableOpacity>
                             </Shadow>
                         )
@@ -77,7 +84,9 @@ export default function BMCScreen() {
                         startColor="rgba(185, 185, 185, 0.2)"
                         style={{ marginVertical: 4, marginHorizontal: 2, borderRadius: 8 ,marginBottom: 16}}
                     >
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{navigation.navigation.navigate('InBMC', {
+                            BMC:item
+                        })}}>
                             <View style={[styles.myBMCBox, {width : screenWidth/2-30}]}>
                                 <Image
                                     source={item.thumbnail}
@@ -86,13 +95,10 @@ export default function BMCScreen() {
                                 <View style={styles.BMCContentContainer}>
                                     <View style={styles.BMCTextContainer}>
                                         <Text style={styles.titleText}>{item.title}</Text>
-                                        <Text style={styles.dateText}>{item.date}</Text>
+                                        <Text style={styles.dateText}>
+                                            {item.date.toLocaleDateString('ko-KR')}
+                                        </Text>
                                     </View>
-                                    <TouchableOpacity>
-                                        <BMCMenuButton onDelete={() => {
-                                            console.log('삭제 실행')
-                                        }}/>
-                                    </TouchableOpacity>
                                 </View>
                             </View>
                         </TouchableOpacity>
@@ -130,6 +136,7 @@ const styles = StyleSheet.create({
         width: 16,
     },
     BMCContentContainer: {
+        width: '100%',
         flexDirection: 'row',
         marginHorizontal: 8,
         flex: 1,
@@ -164,5 +171,6 @@ const styles = StyleSheet.create({
     thumbnail: {
         width: '100%',
         resizeMode: 'cover',
+        height: 100,
     }
 })

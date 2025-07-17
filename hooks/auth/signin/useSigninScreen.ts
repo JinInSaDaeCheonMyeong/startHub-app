@@ -4,8 +4,9 @@ import { SigninFormData, SigninRequest } from "../../../type/user/signin.type";
 import { saveAccToken, saveRefToken } from "../../../util/token";
 import { useSigninValid } from "./useSigninValid";
 import { useDisabled } from "../../util/useDisabled";
-import { signin } from "../../../api/user";
+import { getMe, signin } from "../../../api/user";
 import { SigninScreenProps } from "../../../screens/SigninScreen";
+import { ShowToast, ToastType } from "../../../util/ShowToast";
 
 export const useSigninScreen = ({navigation} : SigninScreenProps) => {
     const [formData, setFormData] = useState<SigninFormData>({
@@ -65,9 +66,15 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             const { data } = await signin(loginRequest)
             await saveAccToken(data.access)
             await saveRefToken(data.refresh)
-            setFormData({email : '', password : ''})
-            successLogin()
-        } catch (error) {
+            ShowToast("성공", "로그인에 성공하셨습니다", ToastType.SUCCESS)
+            const userData = await (await getMe()).data
+            console.log(JSON.stringify(userData))
+            if(!data.isFirstLogin && userData.username !== null){
+                successLogin()
+            } else {
+                navigation.navigate("SignupInput")
+            }
+        } catch (error) { 
             handleAxiosError(error, (value) => {showError(value)})
         } finally {
             enabledBtn()
