@@ -3,8 +3,9 @@ import { SignupRequest } from "../type/user/signup.type";
 import { RefreshRequest, RefreshResponse } from "../type/user/refresh.type";
 import StartHubAxios from "../lib/StartHubAxios";
 import { Response } from "../type/util/response.type";
-import { GetUserResponse } from "../type/user/user.type";
+import { GetMeResponse, GetUserResponse } from "../type/user/user.type";
 import { getAccToken } from "../util/token";
+import { SetProfileRequest } from "../type/user/profile.type";
 
 const GET_TOKEN_API_HEADERS = {'X-Platform': 'app'}
 
@@ -25,5 +26,11 @@ export const refresh = async (refreshData : RefreshRequest) : Promise<RefreshRes
         { headers : GET_TOKEN_API_HEADERS }
     )).data
 
-export const getUser = async () : Promise<GetUserResponse> => 
+export const setProfile = async (setProfileData: SetProfileRequest): Promise<Response> =>
+    (await StartHubAxios.patch('/user/profile', setProfileData)).data;
+
+export const getMe = async () : Promise<GetMeResponse> => 
     (await StartHubAxios.get('/user/me', {headers : {Authorization : await getAccToken()}})).data
+
+export const getUser = async (userId : number) : Promise<GetUserResponse> => 
+    (await StartHubAxios.get(`/user/${userId}/profile`, {headers : {Authorization : await getAccToken()}})).data

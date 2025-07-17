@@ -1,22 +1,25 @@
 import { Client, Frame } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { getUser } from '../../api/user';
+import { getMe, } from '../../api/user';
 import { ChatMessage } from '../../type/chat/messages.type';
+import { isAxiosError } from 'axios';
+import { ErrorResponse } from '../../type/util/response.type';
+import { ShowToast, ToastType } from '../../util/ShowToast';
 
 const SOCKET_URL = process.env.EXPO_PUBLIC_API_URL + '/ws';
 
 export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
     const [msgs, setMsgs] = useState<ChatMessage[]>(chatLst);
     const clientRef = useRef<Client | null>(null);
-    const [senderId, setSenderId] = useState<string | null>(null);
+    const [senderId, setSenderId] = useState<number | null>(null);
 
     useEffect(() => {
         let client: Client;
 
         const setupStompClient = async () => {
             try {
-                const user = await getUser();
+                const user = await getMe();
                 const fetchedSenderId = user?.data?.id;
 
                 if (!fetchedSenderId) throw new Error("No sender ID found");
@@ -40,7 +43,12 @@ export function useInChatScreen(roomId : number, chatLst: ChatMessage[]) {
                 client.activate();
                 clientRef.current = client;
 
-            } catch (error) {
+            } catch (error : unknown) {
+                if(isAxiosError(error)){
+                    const response = error.response?.data
+                    const errorData = response as ErrorResponse
+                    ShowToast("오류 발생", errorData.message, ToastType.ERROR)
+                }
                 console.error("Failed to initialize STOMP client:", error);
             }
         };

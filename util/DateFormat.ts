@@ -36,7 +36,7 @@ export const formatToTime = (data : string) : string => {
 export const formatToDate = (data : string) : string => {
     const dateTime = new Date(data)
     const years = dateTime.getFullYear()
-    const months = dateTime.getMonth()
+    const months = dateTime.getMonth()+1
     const days = dateTime.getDate()
-    return `${years}-${months}-${days}`
+    return `${years}.${months}.${days}`
 }
