@@ -4,6 +4,9 @@ import { useSignupInputValid } from "./useSignupInputValid"
 import { SignupInputScreenProps } from "../../../../screens/SignupInputScreen"
 import { InterestInfo, LocationInfo, SignupInputFormData, UserInfo } from "../../../../type/user/signupInput.type"
 import { useDisabled } from "../../../util/useDisabled"
+import { setProfile } from "../../../../api/user"
+import { isAxiosError } from "axios"
+import { ErrorResponse } from "../../../../type/util/response.type"
 
 export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXPROGRESS : number) => {
     const [formData, setFormData] = useState<SignupInputFormData>({
@@ -11,7 +14,8 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
         year : '',
         month : '',
         day : '',
-        location : '',
+        introduction : '',
+        gender : 'MALE',
         interestList : []
     })
 
@@ -46,18 +50,9 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
     const setYear = useCallback((value : string) => updateFormData("year", value), [updateFormData])
     const setMonth = useCallback((value : string) => updateFormData("month", value), [updateFormData])
     const setDay = useCallback((value : string) => updateFormData("day", value), [updateFormData])
-    const setLocation = useCallback((value : string) => updateFormData("location", value), [updateFormData])
+    const setIntroduction = useCallback((value : string) => updateFormData("introduction", value), [updateFormData])
+    const setGender = useCallback((value : string) => updateFormData("gender", value), [updateFormData])
     const setInterestList = useCallback((value : string[]) => updateFormData("interestList", value), [updateFormData])
-
-    const transformDate = (year : string, month : string, day : string) : Date | null=> {
-        if(!year || !month || !day) return null
-
-        const dateString = `${year}-${month.padStart(2, "0")}-${day.padStart(2,"0")}`
-        const date = new Date(dateString)
-
-        if(isNaN(date.getTime())) return null
-        return date
-    }
 
     const goBack = () => {
         hideError()
@@ -69,7 +64,7 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
     }
 
     const getValidData = () : UserInfo | LocationInfo | InterestInfo | undefined => {
-        const {name, year, month, day, location, interestList} = formData
+        const {name, year, month, day, introduction, gender, interestList} = formData
         switch(currentProgress) {
             case 1:
                 return {
@@ -80,7 +75,8 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
                 }
             case 2:
                 return {
-                    location : location.trim()
+                    introduction : introduction.trim(),
+                    gender : gender
                 }
             case 3:
                 return {
@@ -91,7 +87,7 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
         }
     }
 
-    const goNext = () => {
+    const goNext = async () => {
         disabledBtn()
         const validData = getValidData()
         if(!validData) {
@@ -107,8 +103,26 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
         hideError()
         enabledBtn()
         if(currentProgress >= MAXPROGRESS) {
-            // 프로필 세팅 나중에 구현 할 예정
-            navigation.popTo("Signin")
+            console.log("들어옴")
+            try {
+                const req = {
+                    username : formData.name,
+                    introduction : formData.introduction,
+                    birth : `${formData.year}-${formData.month.padStart(2, '0')}-${formData.day.padStart(2, '0')}`,
+                    gender : formData.gender,
+                    interests : [],
+                    profileImage : "https://storage.googleapis.com/starthub-storage/profile-images/default_user_profile.png"
+                }
+                console.log(JSON.stringify(req))
+                await setProfile(req)
+                navigation.navigate("HomeStack")
+                navigation.popTo("Signin")
+            } catch (error : unknown) {
+                if(!isAxiosError(error)) return
+                const response = error.response
+                const data = response?.data as ErrorResponse
+                console.log(data.message)
+            }
         } else {
             setCurrentProgress(prev => prev + 1)
         }
@@ -121,7 +135,8 @@ export const useSignupInputScreen = ({navigation} : SignupInputScreenProps, MAXP
             setYear,
             setMonth,
             setDay,
-            setLocation,
+            setGender,
+            setIntroduction,
             setInterestList,
         },
         ui : {

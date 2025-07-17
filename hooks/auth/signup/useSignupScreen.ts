@@ -113,7 +113,8 @@ export const useSignupScreen = ({navigation} : SignupScreenProps ) => {
         try {
             await verify(verifyData) 
             await signup(signupData)
-            navigation.navigate('SignupInput')
+            ShowToast("성공", "회원가입에 성공하셨습니다", ToastType.SUCCESS)
+            navigation.goBack()
         } catch (error) {
             handleAxiosError(error, (value) => {showError(value)})
         } finally {

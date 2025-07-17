@@ -11,12 +11,13 @@ type CategorySelectButtonProps = {
     icons : React.FC<SvgProps>,
     text : string,
     color : string,
-    onClick : (categoryKey : string) => void
+    onClick : (categoryKey : string) => void,
+    selected : boolean
 }
 
 export default function CategorySelectButton(props : CategorySelectButtonProps) {
 
-    const [isSelected, setIsSelected] = useState(false)
+    const [isSelected, setIsSelected] = useState(props.selected)
 
     return(
         <TouchableOpacity

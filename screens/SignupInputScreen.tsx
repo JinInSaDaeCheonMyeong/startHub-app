@@ -10,9 +10,13 @@ import CommonButton from "../component/CommonButton";
 import LocationScreen from "./signup/LocationScreen";
 import { useSignupInputScreen } from "../hooks/auth/signup/input/useSignupInputScreen";
 import { Fonts } from "../constants/Fonts";
+import { CompositeScreenProps } from "@react-navigation/core";
+import { RootStackParamList } from "../navigation/RootStack";
 
-export type SignupInputScreenProps = StackScreenProps<AuthStackParamList, 'SignupInput'>
-
+export type SignupInputScreenProps = CompositeScreenProps<
+    StackScreenProps<AuthStackParamList, 'SignupInput'>,
+    StackScreenProps<RootStackParamList>
+>;
 const SCREENS = [
     InfoScreen,
     LocationScreen,
@@ -68,7 +72,9 @@ export default function SignupInputScreen(props : SignupInputScreenProps) {
             {errorVisible && <Text style={styles.errorText}>{errorText}</Text>}
             <CommonButton
                 title={currentProgress == MAXPROGRESS ? "완료" : "다음"}
-                onPress={() => {goNext()}}
+                onPress={() => {
+                    goNext()
+                }}
                 disabled={disabled}
             />
         </View>

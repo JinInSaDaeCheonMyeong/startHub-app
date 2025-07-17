@@ -1,36 +1,60 @@
-import {Dimensions, StyleSheet, Text, View} from "react-native";
-import DropDown from "../../component/DropDown";
+import {Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View} from "react-native";
 import { useState } from "react";
-import { LocationItems } from "../../constants/LocationItems";
 import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
 
 type LocationScreenProps = {
-    location : string,
-    setLocation : (value : string) => void
+    introduction : string,
+    setIntroduction : (value : string) => void
+    gender : string,
+    setGender : (value : string) => void
 }
-
-const width = Dimensions.get("window").width;
 
 export default function LocationScreen(props : LocationScreenProps) {
 
-    const [open, setOpen] = useState(false)
+    const [selectGender, setSelectGender] = useState(props.gender === "MALE" ? true : false)
 
     return(
         <View style={styles.mainContainer}>
-            <View style={styles.textBox}>
-                <Text style={styles.subText}>회원님이 사는 지역을 선택해주세요!</Text>
-                <Text style={styles.mainText}>가까운 주변 공고를 알려드릴게요!</Text>
+            <View style={styles.inputBox}>
+                <View style={styles.textBox}>
+                    <Text style={styles.subText}>{"회원님의 간단한 \n소개를 입력해주세요!"}</Text>
+                    <Text style={styles.mainText}>당신의 소개가 궁금합니다!</Text>
+                </View>
+                <TextInput
+                    style={styles.inputText}
+                    placeholder="자신을 간단히 소개해주세요..."
+                    placeholderTextColor={Colors.gray3}
+                    value={props.introduction}
+                    onChangeText={(s) => {props.setIntroduction(s)}}
+                />
             </View>
-            <DropDown
-                open={open}
-                value={props.location}
-                setOpen={setOpen}
-                setValue={(s) => {props.setLocation(s)}}
-                items={LocationItems}
-                placeholder="지역"
-                minWidth={width-32}
-            />
+            <View style={styles.inputBox}>
+                <View style={styles.textBox}>
+                    <Text style={styles.subText}>회원님의 성별을 선택해주세요!</Text>
+                    <Text style={styles.mainText}>당신의 성별이 궁금합니다!</Text>
+                </View>
+                <View style={styles.genderContainer}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            props.setGender("MALE")
+                            setSelectGender(true)
+                        }}
+                        style={[styles.genderBox, {borderColor : selectGender ? Colors.primary : Colors.white2 }]}
+                    >
+                        <Text style={[styles.selectText, {color : selectGender ? Colors.primary : Colors.gray2 }]}>남</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        onPress={() => {
+                            props.setGender("FEMALE")
+                            setSelectGender(false)
+                        }}
+                        style={[styles.genderBox, {borderColor : !selectGender ? Colors.primary : Colors.white2 }]}
+                    >
+                        <Text style={[styles.selectText, {color : !selectGender ? Colors.primary : Colors.gray2 }]}>여</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
         </View>
     )
 }
@@ -38,7 +62,7 @@ export default function LocationScreen(props : LocationScreenProps) {
 const styles = StyleSheet.create({
     mainContainer : {
         flex : 1,
-        gap : 16,
+        gap : 56,
         overflow : "hidden"
     },
     textBox : {
@@ -53,5 +77,32 @@ const styles = StyleSheet.create({
         fontSize : 20,
         fontFamily : Fonts.bold,
         color : Colors.black2
-    }
+    },
+    inputText : {
+        fontSize : 18,
+        color : Colors.black2,
+        fontFamily : Fonts.medium
+    },
+    inputBox : {
+        gap : 16,
+    },
+    genderBox : {
+        flex : 1,
+        padding  : 16,
+        backgroundColor : Colors.white2,
+        borderRadius : 8,
+        alignItems : "center",
+        borderWidth : 1,
+        borderStyle : "solid",
+    },
+    selectText : {
+        fontFamily : Fonts.medium,
+        fontSize : 16,
+        color : Colors.gray2,
+    },
+    genderContainer : {
+        flexDirection : "row",
+        justifyContent : "space-between",
+        gap : 16
+    },
 })
