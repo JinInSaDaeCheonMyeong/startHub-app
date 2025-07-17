@@ -26,6 +26,7 @@
     "expo-web-browser": "~14.1.6",
     "react": "19.0.0",
     "react-native": "0.79.3",
+    "react-native-drawer-layout": "^4.1.12",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-image-picker": "^8.2.1",

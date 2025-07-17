@@ -4,7 +4,7 @@ import {BottomBar} from "../component/nav/BottomBar";
 import NoticeScreen from "../screens/Home/NoticeScreen";
 import MatchScreen from "../screens/Home/match/MatchScreen";
 import BMCScreen from "../screens/Home/BMCScreen";
-import ChatScreen from "../screens/Home/ChatScreen";
+import ChatScreen from "../screens/Home/chat/ChatScreen";
 import { Colors } from '../constants/Color';
 import { Easing } from 'react-native';
 import HeaderBar from '../component/HeaderBar';

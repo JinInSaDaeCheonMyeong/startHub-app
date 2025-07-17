@@ -18,7 +18,7 @@ export default function InChatHeaderBar({img, name, affiliation, backClick, menu
         <Shadow
             distance={4} 
             offset={[0, 4]}
-            startColor="rgba(185, 185, 185, 0.2)"
+            startColor="rgba(185, 185, 185, 0.05)"
             style={{
                 width : "100%"
             }}
@@ -36,21 +36,22 @@ export default function InChatHeaderBar({img, name, affiliation, backClick, menu
                         source={{uri : img}}
                     />
                     <View style={styles.textContainer}>
-                        <Text style={styles.nameText}>
-                            {name}
-                        </Text>
                         <Text style={styles.affiliationText}>
                             {affiliation}
                         </Text>
+                        <Text style={styles.nameText}>
+                            {name}
+                        </Text>
                     </View>
                 </View>
-                <TouchableOpacity onPress={() => {menuClick()}}>
+                <View style={{width : 28, height : 28}}/>
+                {/* <TouchableOpacity onPress={() => {menuClick()}}>
                     <LineMenuIcon 
                         width={28} 
                         height={28} 
-                        fill={Colors.black2}
+                        color={Colors.black2}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </Shadow>
     )
