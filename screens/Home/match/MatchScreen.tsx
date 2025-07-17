@@ -2,7 +2,7 @@ import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, useWindowDimensio
 import { CompositeScreenProps, useFocusEffect } from "@react-navigation/core";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackScreenProps } from "@react-navigation/stack";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { getRecruitsList } from "../../../api/recruits";
 import { ShowToast, ToastType } from "../../../util/ShowToast";
 import { isAxiosError } from "axios";
@@ -73,11 +73,15 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
                 setHasMore(true);
                 hasFetchedOnce.current = true;
             } else {
-                const existingIds = new Set(recruitsItems.map(item => item.id));
-                const newItems = response.content.filter(item => !existingIds.has(item.id));
-                const updatedList = [...recruitsItems, ...newItems];
-                setRecruitsItems(updatedList);
-                filterRecruits(search, updatedList);
+                setRecruitsItems(prev => {
+                    const updatedMap = new Map(prev.map(item => [item.id, item]));
+                    response.content.forEach(item => {
+                        updatedMap.set(item.id, item);
+                    });
+                    const updatedList = Array.from(updatedMap.values());
+                    filterRecruits(search, updatedList);
+                    return updatedList;
+                });
             }
         } catch (error: unknown) {
             const errMsg = isAxiosError(error)
@@ -92,10 +96,11 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
         }
     };
 
-    // 최초 마운트시에만 서버 데이터 요청
-    useEffect(() => {
-        getRecruitsItems(true);
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            getRecruitsItems(true);
+        }, [])
+    );
 
     const onSearch = (text: string) => {
         setSearch(text);
