@@ -2,7 +2,7 @@ import { Dimensions, FlatList, SafeAreaView, StyleSheet, Text, useWindowDimensio
 import { CompositeScreenProps, useFocusEffect } from "@react-navigation/core";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { StackScreenProps } from "@react-navigation/stack";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import { getRecruitsList } from "../../../api/recruits";
 import { ShowToast, ToastType } from "../../../util/ShowToast";
 import { isAxiosError } from "axios";
@@ -15,7 +15,6 @@ import { Colors } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Fonts";
 import SearchBar from "../../../component/home/SearchBar";
 import * as Progress from 'react-native-progress';
-import { dummyRecruitsItems } from "../../../constants/dummy/RecruitsDummy";
 
 export type MatchScreenProps = CompositeScreenProps<
     BottomTabScreenProps<HomeStackParamList, "Match">,
@@ -23,7 +22,6 @@ export type MatchScreenProps = CompositeScreenProps<
 >;
 
 export default function MatchScreen({ navigation }: MatchScreenProps) {
-    // 기본값 더미 데이터 유지
     const [recruitsItems, setRecruitsItems] = useState<RecruitsItemType[]>([]);
     const [filteredList, setFilteredList] = useState<RecruitsItemType[]>([]);
     const [isFetching, setIsFetching] = useState(false);
@@ -40,18 +38,21 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
             item.companyName.toLowerCase().includes(text.toLowerCase())
         );
         setFilteredList(filtered);
-    }, []);
+    }, []); 
 
     const getRecruitsItems = async (reset = false) => {
-        if (isFetching) return;
+        if (isFetching) {
+            return;
+        }
 
-        // 이미 정상 데이터 한번 받았으면 reset 시 서버 재요청 막기 (필요하면 제거 가능)
-        if (reset && hasFetchedOnce.current) return;
+        // if (reset && hasFetchedOnce.current) return;
 
         const nextPage = reset ? 0 : page;
         const now = Date.now();
 
-        if (!reset && now - lastRequestTime.current < 200) return;
+        if (!reset && now - lastRequestTime.current < 200) {
+            return;
+        }
         lastRequestTime.current = now;
 
         setIsFetching(true);
@@ -61,7 +62,9 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
 
             if (response.empty || response.content.length === 0) {
                 setHasMore(false);
-                // 빈 데이터면 reset 시에도 더미 유지 (아무 작업 안 함)
+                if (reset) {
+                    setRecruitsItems([]);
+                }
                 return;
             }
 
@@ -69,7 +72,6 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
 
             if (reset) {
                 setRecruitsItems(response.content);
-                filterRecruits(search, response.content);
                 setHasMore(true);
                 hasFetchedOnce.current = true;
             } else {
@@ -78,9 +80,8 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
                     response.content.forEach(item => {
                         updatedMap.set(item.id, item);
                     });
-                    const updatedList = Array.from(updatedMap.values());
-                    filterRecruits(search, updatedList);
-                    return updatedList;
+                    const newList = Array.from(updatedMap.values());
+                    return newList;
                 });
             }
         } catch (error: unknown) {
@@ -90,7 +91,6 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
                     : "네트워크 오류가 발생했습니다"
                 : "알 수 없는 오류가 발생했습니다";
             ShowToast("오류 발생", errMsg, ToastType.ERROR);
-            // 에러 시 기존 더미 유지
         } finally {
             setIsFetching(false);
         }
@@ -99,12 +99,15 @@ export default function MatchScreen({ navigation }: MatchScreenProps) {
     useFocusEffect(
         useCallback(() => {
             getRecruitsItems(true);
-        }, [])
+        }, []) 
     );
+
+    useEffect(() => {
+        filterRecruits(search, recruitsItems);
+    }, [recruitsItems, search, filterRecruits]); 
 
     const onSearch = (text: string) => {
         setSearch(text);
-        filterRecruits(text, recruitsItems);
     };
 
     return (
