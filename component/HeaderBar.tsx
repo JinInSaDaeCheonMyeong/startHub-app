@@ -2,6 +2,7 @@ import { Image, SafeAreaView, StyleSheet, TouchableOpacity, View } from "react-n
 import { Colors } from "../constants/Color"
 import BellIcon from "../assets/icons/header/bell.svg"
 import SystemIcon from "../assets/icons/header/cogwheel-outline.svg"
+import { ShowToast, ToastType } from "../util/ShowToast"
 
 type HeaderBarProps = {
     onClickBellIcon : () => void,
@@ -15,7 +16,7 @@ export default function HeaderBar(props : HeaderBarProps){
             <View style={styles.headerContainer}>
                 <Image style={{width : 88, height : 36}} source={logo}/>
                 <View style={styles.iconContainer}>
-                    <TouchableOpacity onPress={props.onClickBellIcon}>
+                    <TouchableOpacity onPress={() => {ShowToast("개발" ,"아직 개발 중인 기능입니다", ToastType.INFO)}}>
                         <BellIcon width={24} height={24} color={Colors.black2}/>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={props.onClickSystemIcon}>

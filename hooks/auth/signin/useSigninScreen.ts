@@ -65,6 +65,7 @@ export const useSigninScreen = ({navigation} : SigninScreenProps) => {
             const { data } = await signin(loginRequest)
             await saveAccToken(data.access)
             await saveRefToken(data.refresh)
+            setFormData({email : '', password : ''})
             successLogin()
         } catch (error) {
             handleAxiosError(error, (value) => {showError(value)})
