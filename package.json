@@ -29,6 +29,7 @@
     "react-native-drawer-layout": "^4.1.12",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "~2.24.0",
+    "react-native-indicators": "^0.17.0",
     "react-native-image-picker": "^8.2.1",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-paper": "^5.14.5",
@@ -45,6 +46,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
+    "@types/react-native-indicators": "^0.16.6",
     "expo-module-scripts": "^4.1.7",
     "react-native-svg-transformer": "^1.5.1",
     "typescript": "~5.8.3"

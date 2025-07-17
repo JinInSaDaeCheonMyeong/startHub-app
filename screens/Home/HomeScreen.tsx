@@ -93,12 +93,16 @@ export default function HomeScreen({navigation} : HomeScreenProps) {
                         data={NoticeItemList}
                         renderItem={({item}) => (
                             <NoticeItem
+                                webLink={item.webLink}
                                 id={item.id}
                                 category={item.category}
                                 title={item.title}
                                 startTime={item.startTime}
                                 endTime={item.endTime}
-                                hashTags={item.hashTags}
+                                location={item.location}
+                                years={item.years}
+                                target={item.target}
+                                entre={item.entre}
                                 isHome={true}
                                 onPress={() => {console.log("안녕")}}
                             />
