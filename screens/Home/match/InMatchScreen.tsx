@@ -16,7 +16,7 @@ import { formatToDate } from "../../../util/DateFormat";
 import CommonButton from "../../../component/CommonButton";
 import { Fonts } from "../../../constants/Fonts";
 import { useFocusEffect } from "@react-navigation/core";
-import { getUser } from "../../../api/user";
+import { getMe } from "../../../api/user";
 import { getCompanyById } from "../../../api/company";
 import { createRoom, getMessages } from "../../../api/chat";
 
@@ -135,7 +135,7 @@ export default function InMatchScreen({ navigation, route: { params } }: InMatch
                 onPress={ async() => {
                     if(!matchData) return
                     try {
-                        const id = (await getUser()).data.id
+                        const id = (await getMe()).data.id
                         const roomId = (await createRoom(id, matchData.companyId)).data.id
                         console.log(roomId)
                         const companyImg = (await getCompanyById(matchData.companyId)).data.logoImage
@@ -145,7 +145,7 @@ export default function InMatchScreen({ navigation, route: { params } }: InMatch
                                 roomId : roomId, 
                                 chatLst : chatList, 
                                 name : matchData.writerNickname, 
-                                affiliation : matchData.companyName, 
+                                companyName : matchData.companyName, 
                                 img : companyImg
                             }
                         )

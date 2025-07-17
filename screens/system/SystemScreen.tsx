@@ -17,9 +17,9 @@ import { Fonts } from "../../constants/Fonts";
 import { useCallback, useEffect, useState } from "react";
 import { ShowToast, ToastType } from "../../util/ShowToast";
 import {  isAxiosError } from "axios";
-import { getUser } from "../../api/user";
+import { getMe } from "../../api/user";
 import { SystemStackParamList } from "../../navigation/SystemStack";
-import { GetUserResponse } from "../../type/user/user.type";
+import { GetMeResponse } from "../../type/user/user.type";
 import {useFocusEffect} from "@react-navigation/native"
 import { removeTokens } from "../../util/token";
 
@@ -28,7 +28,7 @@ type SystemScreenProps = StackScreenProps<SystemStackParamList, 'System'>
 export default function SystemScreen({navigation} : SystemScreenProps) {
     const DEFAULT_DATA = ''
     const [companyName, setCompanyName] = useState('소속된 기업이 없습니다...')
-    const [user, setUser] = useState<GetUserResponse['data']>({
+    const [user, setUser] = useState<GetMeResponse['data']>({
         id : -1, 
         email : DEFAULT_DATA,
         username : DEFAULT_DATA,
@@ -71,7 +71,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
         useCallback(() => {
             const fetchUserProfile = async () => {
                 try {
-                    const userInfo = (await getUser()).data
+                    const userInfo = (await getMe()).data
                     setUser(userInfo)
                 } catch (error) {
                     if(isAxiosError(error)){
