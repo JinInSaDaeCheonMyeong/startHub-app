@@ -38,6 +38,10 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
         introduction : DEFAULT_DATA
     })
 
+    const onPress = () => {
+        ShowToast("개발", "아직 개발 중인 기능입니다", ToastType.INFO)
+    }
+
     const menus = [
         {label : '경쟁사\n분석', icon : <AnalysisIcon width={40} height={40} color={Colors.primary} />},
         {label : '지원금\n비교', icon : <ScaleIcon width={40} height={40} color={Colors.primary} />},
@@ -111,10 +115,10 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                     >
                         <View style={styles.profileCardInner}>
                             <Image source={{uri: user.profileImage}} style={styles.profileImage}/>
-                            <View style={styles.profileInfo}>
-                                <Text style={styles.profileCompany}>{companyName}</Text>
-                                <Text style={styles.profileName}>{user.username}</Text>
-                            </View>
+                                <View style={styles.profileInfo}>
+                                    <Text style={styles.profileCompany}>{companyName}</Text>
+                                    <Text style={styles.profileName}>{user.username}</Text>
+                                </View>
                             <RightArrow width={16} height={16} color={Colors.black2}/>
                         </View>
                     </Shadow>
@@ -122,6 +126,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                 <View style={styles.menuRowWrap}>
                     {menus.map(({label, icon}, index) => (
                         <TouchableOpacity  
+                            onPress={() => onPress()}
                             key={index} 
                             style={styles.menuButton}
                         >
@@ -151,7 +156,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                             <Text style={styles.sectionTitle}>{value.title}</Text>
                             <View style={styles.sectionRowWrap}>
                                 {value.sections.map(({label, icon}, idx) => (
-                                    <TouchableOpacity key={idx} style={styles.sectionRow}>
+                                    <TouchableOpacity onPress={() => onPress()} key={idx} style={styles.sectionRow}>
                                         <View style={styles.sectionRowLeft}>
                                             {icon}
                                             <Text style={styles.sectionRowText}>{label}</Text>
@@ -168,7 +173,7 @@ export default function SystemScreen({navigation} : SystemScreenProps) {
                     onPress={ async() => {
                         try {
                             await removeTokens()
-                            ShowToast("로그아웃", "로그아웃에 성공하셨습니다", ToastType.INFO)
+                            ShowToast("로그아웃", "로그아웃에 성공하셨습니다", ToastType.SUCCESS)
                             navigation.popToTop()
                             
                         } catch (error) {
@@ -313,6 +318,6 @@ const styles = StyleSheet.create({
     logoutText : {
         fontSize : 12,
         color : Colors.error,
-        fontFamily : Fonts.semiBold
+        fontFamily : Fonts.bold
     }
 });
