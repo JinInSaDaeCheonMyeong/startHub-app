@@ -3,30 +3,66 @@ import SearchBar from "../../../component/home/SearchBar";
 import { Shadow } from "react-native-shadow-2";
 import { Colors } from "../../../constants/Color";
 import { Fonts } from "../../../constants/Fonts";
-import {PaperProvider } from "react-native-paper";
 import { ChatMenuButton } from "../../../component/home/ChatMenuButton";
-import { dummyChatRommList } from "../../../constants/dummy/ChatDummy";
 import { getDateDifference } from "../../../util/DateFormat";
 import { ChatRoomType } from "../../../type/chat/room.type";
-import { CompositeScreenProps } from "@react-navigation/core";
+import { CompositeScreenProps, useFocusEffect } from "@react-navigation/core";
 import { StackScreenProps } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../navigation/RootStack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { HomeStackParamList } from "../../../navigation/HomeStack";
-import { getMessages } from "../../../api/chat";
+import { getMessages, getMyRoom } from "../../../api/chat";
+import { useCallback, useState } from "react";
+import { getMe, getUser } from "../../../api/user";
+import { GetUserResponse } from "../../../type/user/user.type";
+import { GetCompanyByIdResponse } from "../../../type/company/company.type";
+import { getCompanyById } from "../../../api/company";
+import { isAxiosError } from "axios";
+import { ErrorResponse } from "../../../type/util/response.type";
+import { ShowToast, ToastType } from "../../../util/ShowToast";
 
 export type ChatScreenProps = CompositeScreenProps<
     BottomTabScreenProps<HomeStackParamList, 'Chat'>,
     StackScreenProps<RootStackParamList>
 >
 
-export default function ChatScreen({navigation} : ChatScreenProps) {
+interface ChatRoomListItem extends ChatRoomType {
+    otherUser : GetUserResponse["data"]
+    otherCompany : GetCompanyByIdResponse["data"]["companyName"]
+}
 
-    const chatRoomListSort = (list : ChatRoomType[]) => 
-    [...list].sort((a, b) => b.date.getTime() - a.date.getTime())
+export default function ChatScreen({navigation} : ChatScreenProps) {
+    const [chatRoomList, setChatRoomList] = useState<ChatRoomListItem[]>([])
+
+    const setInitialRoomList = async () => {
+        const list = (await getMyRoom()).data;
+        if (!list.length) return;
+        const myId = (await getMe()).data.id;
+        const totalList = await Promise.all(list.map(async (data) => {
+            const isMe = data.userId === myId;
+            const targetId = isMe ? data.founderId : data.userId;
+            const otherUserData = (await getUser(targetId)).data;
+            const companyName = otherUserData.companyIds.length > 0
+            ? (await getCompanyById(otherUserData.companyIds[0])).data.companyName
+            : "무소속";
+            return {
+            ...data,
+            otherUser: otherUserData,
+            otherCompany: companyName,
+            };
+        }));
+
+        setChatRoomList(totalList);
+    };
+
+
+    useFocusEffect(
+        useCallback(() => {
+            setInitialRoomList()
+        }, [])
+    )
 
     return (
-        <PaperProvider>
         <SafeAreaView style={styles.mainContainer}>
             <View style={styles.searchContainer}>
                 <SearchBar onPress={(text : string) => {console.log(text)}}/>
@@ -42,24 +78,32 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                         <Text style={styles.mainText}>내 채팅</Text>
                             <FlatList
                                 showsVerticalScrollIndicator={false}
-                                data={chatRoomListSort(dummyChatRommList)}
+                                data={chatRoomList}
                                 contentContainerStyle={{gap : 16}}
+                                keyExtractor={(item) => item.id.toString()}
                                 renderItem={({item}) => (
                                     <TouchableOpacity 
-                                        onPress={async () => {
-                                            const messagesResponse = await (await getMessages(item.id)).data
-                                            navigation.navigate('InChat', {
-                                                roomId : item.id,
-                                                chatLst : messagesResponse,
-                                                img : item.img,
-                                                name : item.userName,
-                                                affiliation : item.userName
-                                            })
+                                        onPress={ async () => {
+                                            try {
+                                                const messagesResponse = (await getMessages(item.id)).data
+                                                navigation.navigate('InChat', {
+                                                    roomId : item.id,
+                                                    chatLst : messagesResponse,
+                                                    img : item.otherUser.profileImage,
+                                                    name : item.otherUser.username,
+                                                    companyName : item.otherCompany
+                                                })
+                                            } catch (error : unknown) {
+                                                if(isAxiosError(error)){
+                                                    const response = error.response?.data
+                                                    const errorData = response as ErrorResponse
+                                                    ShowToast("오류 발생", errorData.message, ToastType.ERROR)
+                                                }
+                                            }
                                         }}
                                     >
                                     <View 
                                         style={styles.chatRoomContainer}
-                                        key={item.id}
                                     >
                                         <Image 
                                             style={{
@@ -67,24 +111,25 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                                                 height : 48,
                                                 borderRadius : 8
                                             }}
-                                            source={{uri : item.img}}
+                                            source={{uri : item.otherUser.profileImage}}
                                         />
                                         <View style={styles.chatInfoContainer}>
+                                            <Text 
+                                                style={styles.msgText}
+                                                numberOfLines={1}
+                                                ellipsizeMode="tail"
+                                            >
+                                                {item.otherCompany}
+                                            </Text>
                                             <Text 
                                                 style={styles.userText}
                                                 numberOfLines={1}
                                                 ellipsizeMode="tail"
                                             >
-                                                {item.userName}
-                                            </Text>
-                                            <Text style={styles.msgText}>
-                                                {item.lastMsg}
+                                                {item.otherUser.username}
                                             </Text>
                                         </View>
                                         <View style={styles.menuContainer}>
-                                            <Text style={styles.dateText}>      
-                                                {getDateDifference(item.date)}                       
-                                            </Text>
                                             <ChatMenuButton
                                                 onDelete={() => {console.log("삭제하기")}}
                                             />
@@ -97,7 +142,6 @@ export default function ChatScreen({navigation} : ChatScreenProps) {
                 </Shadow>
             </View>
         </SafeAreaView>
-        </PaperProvider>
     )
 
 }
@@ -143,8 +187,7 @@ const styles = StyleSheet.create({
     },
     menuContainer : {
         paddingVertical : 4,
-        justifyContent : "space-between",
-        alignItems : "flex-end"
+        alignItems : "center"
     },
     mainText : {
         fontFamily : Fonts.semiBold,
