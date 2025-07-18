@@ -141,7 +141,15 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
                     <View style={styles.BMCContainer}>
                         {/* <BMCNote width={50} height={50} />
                         <Text style={styles.BMCText}>내 BMC가 없어요...</Text> */}
-                        <Image source={BMCDummyData[0].thumbnail} resizeMode="contain"/>
+                        <Image style={{
+                            backgroundColor : Colors.white1,
+                            resizeMode : "contain",
+                            width : "100%",
+                            borderRadius : 8
+
+                            }} source={BMCDummyData[0].thumbnail}
+                               resizeMode={"cover"}
+                        />
                     </View>
                 </Shadow>
             </TouchableOpacity>
@@ -225,7 +233,7 @@ const commonContainer = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 8,
-        paddingVertical : 16,
+        padding : 16,
         gap: 12,
     },
     flatListContainer: {
