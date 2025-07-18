@@ -12,9 +12,9 @@ const { width } = Dimensions.get('window');
 
 //나중에 변경예정
 const images = [
-    require('../assets/images/slide.png'),
-    require('../assets/images/slide.png'),
-    require('../assets/images/slide.png')
+    require('../assets/images/onBoarding1.png'),
+    require('../assets/images/onBoarding2.png'),
+    require('../assets/images/onBoarding3.png')
 ];
 
 type WelcomeScreenProps = StackScreenProps<AuthStackParamList, 'Welcome'>;
@@ -42,7 +42,7 @@ export default function WelcomeScreen({navigation}: WelcomeScreenProps) {
                   data={images}
                   renderItem={({ item }) => (
                       <View style={styles.item}>
-                          <Image source={item} style={styles.image} resizeMode='cover' />
+                          <Image source={item} style={styles.image} resizeMode='contain' />
                       </View>
                   )}
                   mode="parallax"
@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     item: {
-        backgroundColor: Colors.black1,
-        width: 240,
+        backgroundColor: Colors.white1,
+        width: 280,
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center',
