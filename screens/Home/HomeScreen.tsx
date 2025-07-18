@@ -1,4 +1,4 @@
-import { FlatList, Linking, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, Linking, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../../constants/Color";
 import { Fonts } from "../../constants/Fonts";
 import { Shadow } from "react-native-shadow-2";
@@ -20,6 +20,7 @@ import { HomeStackParamList } from "../../navigation/HomeStack";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { RootStackParamList } from "../../navigation/RootStack";
 import { StackScreenProps } from "@react-navigation/stack";
+import { BMCDummyData } from "../../constants/dummy/BMCDummy";
 
 export type HomeScreenProps = CompositeScreenProps<
     BottomTabScreenProps<HomeStackParamList, "Home">,
@@ -84,6 +85,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
     const now = new Date();
 
+    const BMCData = BMCDummyData[0].thumbnail
+
     // endTime이 문자열이라 Date로 변환 필요
     return items.reduce((prev, curr) => {
         const prevDate = new Date(prev.endTime);
@@ -124,19 +127,24 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             />
             <View style={{ height: 16 }} />
             <View style={commonContainer.container}>
-            <Shadow
-                distance={4}
-                offset={[0, 4]}
-                startColor="rgba(185, 185, 185, 0.2)"
-                style={{
-                width: "100%",
-                }}
+            <TouchableOpacity 
+                onPress={() => {navigation.navigate("InBMC", {BMC : BMCDummyData[0]})}}
             >
-                <View style={styles.BMCContainer}>
-                <BMCNote width={50} height={50} />
-                <Text style={styles.BMCText}>내 BMC가 없어요...</Text>
-                </View>
-            </Shadow>
+                <Shadow
+                    distance={4}
+                    offset={[0, 4]}
+                    startColor="rgba(185, 185, 185, 0.2)"
+                    style={{
+                    width: "100%",
+                    }}
+                >
+                    <View style={styles.BMCContainer}>
+                        {/* <BMCNote width={50} height={50} />
+                        <Text style={styles.BMCText}>내 BMC가 없어요...</Text> */}
+                        <Image source={BMCDummyData[0].thumbnail} resizeMode="contain"/>
+                    </View>
+                </Shadow>
+            </TouchableOpacity>
             </View>
             <View style={{ height: 16 }} />
             <View style={[commonContainer.container, styles.flatListContainer]}>
@@ -216,8 +224,8 @@ const commonContainer = StyleSheet.create({
         backgroundColor: Colors.white1,
         justifyContent: "center",
         alignItems: "center",
-        paddingVertical: 60,
         borderRadius: 8,
+        paddingVertical : 16,
         gap: 12,
     },
     flatListContainer: {
