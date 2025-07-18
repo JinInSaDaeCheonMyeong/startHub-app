@@ -37,7 +37,7 @@ export default function DropDown(props :DropDownProps){
             if (/[가-힣]/.test(char)) {
                 width += 16;
             } else if (/[a-zA-Z0-9]/.test(char)) {
-                width += 8;
+                width += 13;
             } else {
                 width += 6;
             }

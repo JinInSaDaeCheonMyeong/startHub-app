@@ -186,7 +186,7 @@ export default function NoticeScreen() {
                             items={YearsItems}
                             placeholder={"연령"}
                             setOpen={setYearsOpen}
-                            minWidth={80}
+                            minWidth={120}
                             maxWidth={250}
                             setValue={(s) => {
                                 if (s === years) {
